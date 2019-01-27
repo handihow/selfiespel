@@ -1,0 +1,16 @@
+<div style="margin: 2rem 0 2rem 0"
+   fxLayout="row"
+   fxLayout.lt-md="column"
+   fxLayoutAlign="center"
+   fxLayoutGap.lt-md="20px"
+   fxLayoutGap="40px">
+
+	<mat-card fxFlex="50">
+      <mat-card-content>
+        <ngx-auth-firebaseui (onSuccess)="printUser($event)"
+                             (onError)="printError($event)"
+                             [providers]="['google', 'facebook', 'twitter']">
+        </ngx-auth-firebaseui>
+      </mat-card-content>
+    </mat-card>
+</div>
