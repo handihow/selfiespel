@@ -1,7 +1,12 @@
 export interface Game {
   id?: string;
-  title: string;
+  name: string;
   imageUrl?: string;
+  code?: string;
   owner: string;
-  date: Date;
+  created: any;
+  date?: any;
+  reviewers?: any;
+  participants?: any;
+  groups?: any;
 }

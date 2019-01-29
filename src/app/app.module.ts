@@ -25,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
 
 import { AuthService } from './auth/auth.service';
 import { UIService } from './shared/ui.service';
+import { GameService } from './games/game.service';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
@@ -57,7 +58,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     AuthService,
-    UIService],
+    UIService,
+    GameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

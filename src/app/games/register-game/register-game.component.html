@@ -1,25 +1,20 @@
-<section class="new-game" fxLayout fxLayoutAlign="center">
+<section class="register-game" fxLayout fxLayoutAlign="center">
 	<form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
 		<mat-card fxFlex.xs="100%" fxFlex="400px">
 			<mat-card-title fxLayoutAlign="center">
-				Maak een nieuw spel
+				Registreer voor een spel
 			</mat-card-title>
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="!(isLoading$ | async)">
 				<mat-form-field class="full-width">
-				   <input matInput placeholder="Naam" formControlName="name" required>
-				   <mat-error>Vul de naam van het spel in</mat-error>
-				</mat-form-field>
-				<mat-form-field class="full-width">
-				  <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Datum spel" formControlName="date" required>
-				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-				  <mat-datepicker touchUi #picker></mat-datepicker>
+				   <input matInput placeholder="Code" formControlName="code" required>
+				   <mat-error>Vul de code van het spel in</mat-error>
 				</mat-form-field>
 			</mat-card-content>
 			<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>	
 			<mat-card-actions fxLayoutAlign="center">
 				<a routerLink="/games" mat-button color="warn">Annuleren</a>
 				<button type="submit" mat-raised-button color="primary" [disabled]="gameForm.invalid">
-					Bewaar
+					Registreer
 				</button>
 			</mat-card-actions>
 		</mat-card>	

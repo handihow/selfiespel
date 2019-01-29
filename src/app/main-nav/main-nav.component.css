@@ -30,3 +30,7 @@ mat-toolbar a {
 	color: white;
 	text-decoration: none;
 }
+
+.active {
+	text-decoration: underline !important;
+}

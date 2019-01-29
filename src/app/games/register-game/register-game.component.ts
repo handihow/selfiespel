@@ -15,16 +15,16 @@ import { Router } from '@angular/router';
 import { UIService } from '../../shared/ui.service';
 
 @Component({
-  selector: 'app-new-game',
-  templateUrl: './new-game.component.html',
-  styleUrls: ['./new-game.component.css']
+  selector: 'app-register-game',
+  templateUrl: './register-game.component.html',
+  styleUrls: ['./register-game.component.css']
 })
-export class NewGameComponent implements OnInit {
+export class RegisterGameComponent implements OnInit {
   
   gameForm: FormGroup;
   user: User;
   isLoading$: Observable<boolean>;
-  minDate = new Date();
+  game: Game;
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
@@ -39,29 +39,37 @@ export class NewGameComponent implements OnInit {
       if(user){
         this.user = user;
       }
-    })
+    });
     //create the course form
     this.gameForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      date: new FormControl(null, Validators.required)
+      code: new FormControl(null, Validators.compose([
+      				Validators.minLength(6),
+      				Validators.maxLength(6),
+      				Validators.required
+      				])),
     });
-    this.gameForm.get('date').setValue((new Date()).toISOString());
   }
 
-  onSubmit(){
-    let newGame : Game = {
-      name: this.gameForm.value.name,
-      code: Math.random().toString(36).replace('0.', '').substring(0,6),
-      owner: this.user.uid,
-      created: new Date(),
-    }
-    try{
-      newGame.date = new Date(this.gameForm.value.date);
-      this.gameService.addGame(newGame);
-      this.router.navigate(['/games']);
-    } catch {
-      this.uiService.showSnackbar("Er ging iets mis met het bewaren van het spel", null, 3000);
-    }
+   onSubmit(){
+    this.gameService.fetchGameWithCode(this.gameForm.value.code)
+    	.pipe(take(1)).subscribe(games => {
+    		if(games && games[0]){
+    			let gameFound = games[0];
+    			if(gameFound.owner === this.user.uid) {
+    				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
+            this.router.navigate(['/games']);
+    			} else {
+    				this.gameService.manageGameParticipants(this.user, gameFound, true)
+             .then( _ => {
+               this.router.navigate(['/games']);
+             });
+    			}
+    		} else {
+    			this.uiService.showSnackbar("Geen spel gevonden met deze code", null, 3000);
+    		}
+    	});
   }
 
 }
+
+

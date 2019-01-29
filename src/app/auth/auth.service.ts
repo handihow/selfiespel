@@ -53,7 +53,7 @@ export class AuthService {
 	    		this.router.navigate(['/games'])
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
-	    		this.router.navigate(['/login']);
+	    		this.router.navigate(['/']);
 	    	}
 	    });
 	}

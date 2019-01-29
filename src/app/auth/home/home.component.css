@@ -1,0 +1,83 @@
+@media (min-width: 1023px) {
+  
+  	.background-image {
+	  background-image: url("/assets/desktop.png");
+	  height: 100%; 
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	}
+
+	.join-button {
+		width: 400px;
+		height: auto;
+		padding: 15px;
+		border: 7px solid white;
+	  	border-radius: 10px;
+	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+	}
+
+	.spacing {
+		height: 37%;
+	}
+
+	.second-spacing {
+		height: 45%;
+	}
+
+	.copyright {
+		width: 150px;
+		height: auto;
+	}
+  
+}
+
+@media (min-width: 767px) and (max-width: 1023px) {
+  
+  	.background-image {
+	  background-image: url("/assets/ipad.png");
+	  height: 100%; 
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	}
+
+	.join-button {
+		width: 350px;
+		height: auto;
+		padding: 15px;
+		border: 7px solid white;
+	  	border-radius: 10px;
+	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+	}
+
+	.spacing {
+		height: 83%;
+	}
+  
+}
+
+@media (max-width: 767px) {
+  
+  	.background-image {
+	  background-image: url("/assets/phone.png");
+	  height: 100%; 
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	}
+
+	.join-button {
+		width: 150px;
+		height: auto;
+		padding: 10px;
+		border: 5px solid white;
+	  	border-radius: 10px;
+	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+	}
+
+	.spacing {
+		height: 83%;
+	}
+  
+}
