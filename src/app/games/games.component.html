@@ -7,6 +7,10 @@
 			mat-fab color="primary"><mat-icon>add</mat-icon></a>
 	</span>
 </section>
+<section fxLayout="column" fxLayoutAlign="center center">
+	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+	<h2 *ngIf="(adminGames$ | async)?.length===0 && (participantGames$ | async)?.length===0">Nog geen spellen</h2>
+</section>
 <section fxLayout="row wrap" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" 
 			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center" >
 
