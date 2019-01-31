@@ -1,0 +1,21 @@
+<mat-card class="admin-card">
+	<mat-card-header>
+		<mat-card-title>
+			Spelers
+		</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<mat-list>
+			<mat-list-item *ngFor="let player of users$ | async">
+				<mat-icon matListIcon matTooltip="Speler" color="primary">face</mat-icon>
+				<h3 matLine>{{player?.displayName}}</h3>
+				<p matLine>Speler</p>
+				<button mat-icon-button matTooltip="Voeg toe als jurylid" 
+						*ngIf="player.uid !== user.uid"
+						(click)="onAddJudge(player)">
+					<mat-icon>add</mat-icon>
+				</button>
+			</mat-list-item>
+		</mat-list>
+	</mat-card-content>
+</mat-card>

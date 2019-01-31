@@ -27,10 +27,14 @@
 mat-toolbar a {
 	display: inline-block;
 	margin: 0 10px;
-	color: white;
+	color: lightgrey;
 	text-decoration: none;
 }
 
-.active {
-	text-decoration: underline !important;
+mat-toolbar a.active {
+	color: white;
+}
+
+.selfieTheGame {
+	height: 40px;
 }

@@ -6,7 +6,10 @@ export interface Game {
   owner: string;
   created: any;
   date?: any;
-  reviewers?: any;
+  judges?: any;
   participants?: any;
   groups?: any;
+  isActive?: boolean;
+  isPauzed?: boolean;
+  isFinished?: boolean;
 }

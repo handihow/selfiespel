@@ -44,6 +44,10 @@ export class GameService {
 			}))
 	}
 
+	fetchGame(gameId: string){
+		return this.db.collection('games').doc(gameId).valueChanges() as Observable<Game>;
+	}
+
 	updateGameToDatabase(game: Game): Promise<boolean>{
 		return this.db.collection('games').doc(game.id).set(game, {merge: true})
 			.then( _ => {
@@ -54,21 +58,6 @@ export class GameService {
 				this.uiService.showSnackbar(error.message, null, 3000);
 				return false;
 			})
-	}
-
-	fetchAdminGames(user: User): Observable<Game[]> {
-		this.store.dispatch(new UI.StartLoading());
-		var queryStr = (ref => ref.where('owner', '==', user.uid));
-		return this.db.collection('games', queryStr)
-			.snapshotChanges().pipe(
-			map(docArray => {
-				this.store.dispatch(new UI.StopLoading());
-				return docArray.map(doc => {
-						const data = doc.payload.doc.data() as Game;
-						const id = doc.payload.doc.id;
-						return { id, ...data };
-					})
-			}))	
 	}
 
 	fetchParticipantGames(user: User): Observable<Game[]> {
@@ -84,12 +73,35 @@ export class GameService {
 						const id = doc.payload.doc.id;
 						return { id, ...data };
 					})
-			}))	
+			}))
 	}
 
-	fetchGameAdminAndParticipants(game: Game) : Observable<User[]> {
-		let str = 'games.' + game.id;
-		var queryStr = (ref => ref.where(str, '==', true).orderBy('displayName'));
+	fetchGameParticipants(gameId: string) : Observable<User[]> {
+		let str = 'games.' + gameId;
+		var queryStr = (ref => ref.where(str, '==', true));
+		return this.db.collection('users', queryStr)
+			.snapshotChanges().pipe(
+			map(docArray => {
+				this.store.dispatch(new UI.StopLoading());
+				return docArray.map(doc => {
+						const data = doc.payload.doc.data() as User;
+						const id = doc.payload.doc.id;
+						return { id, ...data };
+					}).sort(this.compare)
+			}))
+	}
+
+	private compare(a,b) {
+	  if (a.displayName < b.displayName)
+	    return -1;
+	  if (a.displayName > b.displayName)
+	    return 1;
+	  return 0;
+	}
+
+	fetchGameJudges(gameId: string) : Observable<User[]> {
+		let str = 'gamesJudged.' + gameId;
+		var queryStr = (ref => ref.where(str, '==', true));
 		return this.db.collection('users', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -102,19 +114,52 @@ export class GameService {
 			}))
 	}
 
-	manageGameParticipants(participant: User, game: Game, add: boolean){
-		//if add is true, participants will be added to course, otherwise, removed from course
-		let str = '{"games":{"' + game.id + '":' + add + '}}';
+	manageGameParticipants(participant: User, gameId: string, add: boolean){
+		console.log(participant);
+		console.log(gameId);
+		//if add is true, participants will be added to game, otherwise, removed from game
+		let str = '{"games":{"' + gameId + '":' + add + '}}';
 		let gameOfParticipant = JSON.parse(str);
 		let str2 = '{"participants":{"' + participant.uid + '":' + add + '}}';
 		let participantOfGame = JSON.parse(str2);
 		return this.db.collection('users').doc(participant.uid)
 			.set(gameOfParticipant, {merge: true})
 			.then( _ => {
-				return this.db.collection('games').doc(game.id)
+				return this.db.collection('games').doc(gameId)
 				.set(participantOfGame, {merge: true})
 				.then( _ => {
-					return this.uiService.showSnackbar("Je doet mee aan het spel!", null, 3000);
+					if(add){
+						return this.uiService.showSnackbar("Je doet mee aan het spel!", null, 3000);	
+					} else {
+						return this.uiService.showSnackbar("Je bent verwijderd van het spel!", null, 3000);	
+					}
+				})
+				.catch(error => {
+					return this.uiService.showSnackbar(error.message, null, 3000);
+				})
+			})
+			.catch(error => {
+				return this.uiService.showSnackbar(error.message, null, 3000);
+			})
+	}
+
+	manageGameJudges(judge: User, gameId: string, add: boolean){
+		//if add is true, judges will be added to game, otherwise, removed from game
+		let str = '{"gamesJudged":{"' + gameId + '":' + add + '}}';
+		let gameOfJudge = JSON.parse(str);
+		let str2 = '{"judges":{"' + judge.uid + '":' + add + '}}';
+		let judgeOfGame = JSON.parse(str2);
+		return this.db.collection('users').doc(judge.uid)
+			.set(gameOfJudge, {merge: true})
+			.then( _ => {
+				return this.db.collection('games').doc(gameId)
+				.set(judgeOfGame, {merge: true})
+				.then( _ => {
+					if(add){
+						return this.uiService.showSnackbar("Je bent jurylid van het spel!", null, 3000);
+					} else {
+						return this.uiService.showSnackbar("Je bent verwijderd als jurylid!", null, 3000);
+					}
 				})
 				.catch(error => {
 					return this.uiService.showSnackbar(error.message, null, 3000);

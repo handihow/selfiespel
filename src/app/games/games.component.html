@@ -8,46 +8,14 @@
 	</span>
 </section>
 <section fxLayout="column" fxLayoutAlign="center center">
+	<mat-divider [inset]="true"></mat-divider>
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
 	<h2 *ngIf="(adminGames$ | async)?.length===0 && (participantGames$ | async)?.length===0">Nog geen spellen</h2>
 </section>
 <section fxLayout="row wrap" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" 
 			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center" >
 
-	<mat-card fxFlex.gt-xs="30" *ngFor="let adminGame of adminGames$ | async">
-		<mat-card-header>
-			<mat-card-title>
-				{{adminGame?.name}}
-			</mat-card-title>
-			<mat-card-subtitle>
-				Beheerder
-			</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-content>
-			<p>Datum: {{adminGame?.date.toDate().toLocaleDateString()}}</p>
-			<p>Code: {{adminGame?.code}}</p>
-		</mat-card-content>
-		<mat-card-actions>
-			<a mat-button color="primary" routerLink="/games/{{adminGame.id}}">Open spel</a>
-		</mat-card-actions>
-	</mat-card>
-
-	<mat-card fxFlex.gt-xs="30" *ngFor="let participantGame of participantGames$ | async">
-		<mat-card-header>
-			<mat-card-title>
-				{{participantGame?.name}}
-			</mat-card-title>
-			<mat-card-subtitle>
-				Speler
-			</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-content>
-			<p>Datum: {{participantGame?.date.toDate().toLocaleDateString()}}</p>
-			<p>Code: {{participantGame?.code}}</p>
-		</mat-card-content>
-		<mat-card-actions>
-			<a mat-button color="primary" routerLink="/games/{{participantGame.id}}">Open spel</a>
-		</mat-card-actions>
-	</mat-card>
+	<app-games-card fxFlex.gt-xs="30" *ngFor="let game of games$ | async"
+		[game]="game" [user]="user"></app-games-card>
 
 </section>

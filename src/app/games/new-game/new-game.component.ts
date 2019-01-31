@@ -49,10 +49,12 @@ export class NewGameComponent implements OnInit {
   }
 
   onSubmit(){
+    let str = 'participants.' + this.user.uid;
     let newGame : Game = {
       name: this.gameForm.value.name,
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
       owner: this.user.uid,
+      participants: str,
       created: new Date(),
     }
     try{

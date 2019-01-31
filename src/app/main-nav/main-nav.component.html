@@ -22,7 +22,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Selfie Game</span>
+      <span><img src="/assets/selfieTheGame.png" class="selfieTheGame"></span>
       <span class="spacer"></span>
       <div [ngClass]="{hidden: isHandset$ | async}">
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -19,12 +19,13 @@ import { UIService } from '../../shared/ui.service';
   templateUrl: './register-game.component.html',
   styleUrls: ['./register-game.component.css']
 })
-export class RegisterGameComponent implements OnInit {
+export class RegisterGameComponent implements OnInit, OnDestroy {
   
   gameForm: FormGroup;
   user: User;
   isLoading$: Observable<boolean>;
   game: Game;
+  sub: Subscription;
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
@@ -50,16 +51,22 @@ export class RegisterGameComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(){
+    if(this.sub){
+      this.sub.unsubscribe();  
+    }
+  }
+
    onSubmit(){
-    this.gameService.fetchGameWithCode(this.gameForm.value.code)
-    	.pipe(take(1)).subscribe(games => {
+    this.sub = this.gameService.fetchGameWithCode(this.gameForm.value.code)
+    	.subscribe(games => {
     		if(games && games[0]){
     			let gameFound = games[0];
     			if(gameFound.owner === this.user.uid) {
     				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
             this.router.navigate(['/games']);
     			} else {
-    				this.gameService.manageGameParticipants(this.user, gameFound, true)
+    				this.gameService.manageGameParticipants(this.user, gameFound.id, true)
              .then( _ => {
                this.router.navigate(['/games']);
              });
