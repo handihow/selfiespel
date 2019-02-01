@@ -5,8 +5,14 @@
 		</mat-card-title>
 	</mat-card-header>
 	<mat-card-actions>
-		<button mat-fab><mat-icon>play_arrow</mat-icon></button>
-		<button mat-fab><mat-icon>pause</mat-icon></button>
-		<button mat-fab><mat-icon>stop</mat-icon></button>
+		<button mat-fab color="primary" matTooltip="Begin het spel!">
+			<mat-icon>play_arrow</mat-icon>
+		</button>
+		<button mat-fab color="accent" matTooltip="Pauzeer het spel">
+			<mat-icon>pause</mat-icon>
+		</button>
+		<button mat-fab color="warn" matTooltip="Stop het spel">
+			<mat-icon>stop</mat-icon>
+		</button>
 	</mat-card-actions>
 </mat-card>
