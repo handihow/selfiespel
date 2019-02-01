@@ -6,24 +6,24 @@ export class Assignments {
 		    {assignment: "een tuinkabouter", isOutside: true, level:2},
 		    {assignment: "iets wat geluid maakt", isOutside: false, level:1},
 		    {assignment: "iets roods", isOutside: false, level:1},
-		    {assignment: "iets blauws", isOutside: false, level:2}
+		    {assignment: "iets blauws", isOutside: false, level:2},
 		    {assignment: "iets paars", isOutside: false, level:3},
 		    {assignment: "een dier", isOutside: true, level:1},
-		    {assignment: "een eend", isOutside: false, level:2}
-		    {assignment: "een gans", isOutside: false, level:3}
+		    {assignment: "een eend", isOutside: false, level:2},
+		    {assignment: "een gans", isOutside: false, level:3},
 		    {assignment: "iets wat stinkt", isOutside: false, level:1},
 		    {assignment: "zwerfvuil", isOutside: true, level:1},
-		    {assignment: "papier", isOutside: false, level:2}
-		    {assignment: "iets om mee te schrijven", isOutside: false, level:3}
-		    {assignment: "een spinnenweb", isOutside: true, level:3}
-		    {assignment: "brandnetels", isOutside: true, level:2}
-		    {assignment: "mos", isOutside: true, level:1}
-		    {assignment: "nummer 14", isOutside: false, level:1}
-		    {assignment: "nummer 123", isOutside: false, level:2}
-		    {assignment: "nummer 2a", isOutside: false, level:3}
+		    {assignment: "papier", isOutside: false, level:2},
+		    {assignment: "iets om mee te schrijven", isOutside: false, level:3},
+		    {assignment: "een spinnenweb", isOutside: true, level:3},
+		    {assignment: "brandnetels", isOutside: true, level:2},
+		    {assignment: "mos", isOutside: true, level:1},
+		    {assignment: "nummer 14", isOutside: false, level:1},
+		    {assignment: "nummer 123", isOutside: false, level:2},
+		    {assignment: "nummer 2a", isOutside: false, level:3},
 		    {assignment: "fruit", isOutside: false, level:1},
-		    {assignment: "appel", isOutside: false, level:2}
-		    {assignment: "besjes", isOutside: false, level:3}
+		    {assignment: "appel", isOutside: false, level:2},
+		    {assignment: "besjes", isOutside: false, level:3},
 		    {assignment: "een wandelpad paal", isOutside: true, level:1},
  			{assignment: "een voorrangsbord", isOutside: true, level:2},
   			{assignment: "een bord doodlopende weg", isOutside: true, level:3},			
