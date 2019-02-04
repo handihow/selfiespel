@@ -2,7 +2,7 @@
  dropZone
  (hovered)="toggleHover($event)"
  (dropped)="startUpload($event)"
- [class.hovering]="isHovering">
+ [class.hovering]="isHovering" *ngIf="(screenType$ | async) !=='phone'">
 
  <h3>Drop hier een foto</h3>
 
@@ -10,6 +10,12 @@
     Upload een foto
  </button>
  <input #fileInput type="file" (change)="startUpload($event.target.files)" style="display:none;" />
+</div>
+
+<div *ngIf="(screenType$ | async)=='phone'"> 
+  <button type="button" color="accent" mat-raised-button (click)="fileInput.click()">
+    Upload een foto
+ </button>
 </div>
 
 <div *ngIf="percentage | async as pct">

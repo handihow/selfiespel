@@ -10,8 +10,6 @@ import { GameService } from '../game.service';
 import { Game } from '../games.model';
 import { User } from '../../auth/user.model';
 
-import { Assignments } from '../../shared/assignments';
-
 @Component({
   selector: 'app-admin-game',
   templateUrl: './admin-game.component.html',
@@ -22,8 +20,7 @@ export class AdminGameComponent implements OnInit {
   game$: Observable<Game>;
   user: User;
   sub: Subscription;
-  assignments = Assignments.assignments;
-
+  
   constructor(private route: ActivatedRoute,
 			        private router: Router,
 			        private store: Store<fromRoot.State>,

@@ -14,9 +14,11 @@ import { PlayGameComponent } from './play-game/play-game.component';
 import { JudgesCardComponent } from './partials/judges-card/judges-card.component';
 import { PlayersCardComponent } from './partials/players-card/players-card.component';
 import { ActionsCardComponent } from './partials/actions-card/actions-card.component';
+import { AssignmentsCardComponent } from './partials/assignments-card/assignments-card.component';
+import { TeamsCardComponent } from './partials/teams-card/teams-card.component';
 
 @NgModule({
-  declarations: [GamesComponent, NewGameComponent, RegisterGameComponent, ViewGameComponent, GamesCardComponent, AdminGameComponent, PlayGameComponent, JudgesCardComponent, PlayersCardComponent, ActionsCardComponent],
+  declarations: [GamesComponent, NewGameComponent, RegisterGameComponent, ViewGameComponent, GamesCardComponent, AdminGameComponent, PlayGameComponent, JudgesCardComponent, PlayersCardComponent, ActionsCardComponent, AssignmentsCardComponent, TeamsCardComponent],
   imports: [
     CommonModule,
     GamesRoutingModule,
