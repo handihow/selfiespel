@@ -1,25 +1,26 @@
-<mat-card>
+<mat-card  *ngIf="game?.date">
 	<mat-card-header>
 		<mat-card-title>
-			{{game.name}}
+			{{game?.name}}
 		</mat-card-title>
 		<mat-card-subtitle>
 			{{isOwner ? 'Beheerder' : 'Speler'}}
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<p>Datum: {{game.date.toDate() | date : 'dd-MM-yyyy'}}</p>
-		<p>Code: {{game.code}}</p>
+		<p>Datum: {{game?.date.toDate() | date : 'dd-MM-yyyy'}}</p>
+		<p>Code: {{game?.code}}</p>
+		<h4 *ngIf="game.status<2 && !isOwner">Spel is nog niet begonnen...</h4>
 	</mat-card-content>
 	<mat-card-actions>
-		<a mat-icon-button routerLink="/games/{{game.id}}/admin" matTooltip="Beheer spel" 
-					*ngIf="!game.isFinished && isOwner">
-			<mat-icon>settings</mat-icon></a>
-		<a mat-icon-button routerLink="/games/{{game.id}}/view" matTooltip="Bekijk spel" 
-					*ngIf="game.isFinished">
-			<mat-icon>visibility</mat-icon></a>
-		<a mat-icon-button routerLink="/games/{{game.id}}/play" matTooltip="Speel spel" 
-					*ngIf="game.isActive">
-			<mat-icon>play_circle_outline</mat-icon></a>
+		<a mat-raised-button color="primary" routerLink="/games/{{game.id}}/admin" 
+					*ngIf="game.status<2 && isOwner">
+			Beheer</a>
+		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/view" 
+					*ngIf="game.status==3 || game.status==4">
+			Bekijk</a>
+		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/play" 
+					*ngIf="game.status==2">
+			Speel</a>
 	</mat-card-actions>
 </mat-card>

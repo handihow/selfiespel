@@ -65,7 +65,10 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
     			if(gameFound.owner === this.user.uid) {
     				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
             this.router.navigate(['/games']);
-    			} else {
+    			} else if(gameFound.status>1) {
+            this.uiService.showSnackbar("Dit spel is al begonnen. Je kunt niet meer meedoen.", null, 3000);
+            this.router.navigate(['/games']);
+          } else {
     				this.gameService.manageGameParticipants(this.user, gameFound.id, true)
              .then( _ => {
                this.router.navigate(['/games']);

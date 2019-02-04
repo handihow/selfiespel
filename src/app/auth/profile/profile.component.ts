@@ -12,4 +12,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDeleteUser(){
+  	console.log("I am deleting myself!");
+  }
+
 }

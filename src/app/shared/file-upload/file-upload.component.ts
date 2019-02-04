@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take, map, startWith, finalize, tap } from 'rxjs/operators';
 
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer'; 
 import { UIService } from '../ui.service';
 
 @Component({
@@ -11,14 +13,15 @@ import { UIService } from '../ui.service';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements OnInit {
 
+  @Input() identifier: string;
+  screenType$: Observable<string>;
   // Main task 
   task: AngularFireUploadTask;
 
   // Progress monitoring
   percentage: Observable<number>;
-
   snapshot: Observable<any>;
 
   // Download URL
@@ -27,9 +30,16 @@ export class FileUploadComponent {
   // State for dropzone CSS toggling
   isHovering: boolean;
 
-  constructor(private storage: AngularFireStorage, private db: AngularFirestore, private uiService: UIService) { }
+  constructor(  private storage: AngularFireStorage, 
+                private db: AngularFirestore, 
+                private uiService: UIService,
+                private store: Store<fromRoot.State>) { }
 
   
+  ngOnInit(){
+    this.screenType$ = this.store.select(fromRoot.getScreenType);
+  }
+
   toggleHover(event: boolean) {
     this.isHovering = event;
   }
@@ -49,7 +59,7 @@ export class FileUploadComponent {
     const path = `images/${new Date().getTime()}_${file.name}`;
 
     // Totally optional metadata
-    const customMetadata = { app: 'SelfieTheGame' };
+    const customMetadata = { identifier: this.identifier };
 
     // The main task
     this.task = this.storage.upload(path, file, { customMetadata })
@@ -64,7 +74,7 @@ export class FileUploadComponent {
 	        // Update firestore on completion
           const refTN = this.storage.ref(path);
           this.downloadURL$ = refTN.getDownloadURL();
-	        this.db.collection('photos').add( { path, size: snap.totalBytes })
+	        this.db.collection('photos').add( { path, size: snap.totalBytes, identifier: this.identifier })
 	      }
 	    })
 	  )

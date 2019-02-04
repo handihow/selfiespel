@@ -12,10 +12,10 @@
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
 	<h2 *ngIf="(adminGames$ | async)?.length===0 && (participantGames$ | async)?.length===0">Nog geen spellen</h2>
 </section>
-<section fxLayout="row wrap" fxLayoutAlign="space-around stretch" fxLayoutGap="10px" 
+<section fxLayout="row wrap" fxLayoutAlign="space-around start" fxLayoutGap="10px" 
 			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center" >
 
-	<app-games-card fxFlex.gt-xs="30" *ngFor="let game of games$ | async"
+	<app-games-card fxFlex.gt-xs="30" *ngFor="let game of games$ | async" class="games-card"
 		[game]="game" [user]="user"></app-games-card>
 
 </section>

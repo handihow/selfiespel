@@ -13,6 +13,7 @@ import { User } from '../../auth/user.model';
 import { Router } from '@angular/router';
 
 import { UIService } from '../../shared/ui.service';
+import { Settings } from '../../shared/settings';
 
 @Component({
   selector: 'app-new-game',
@@ -25,6 +26,7 @@ export class NewGameComponent implements OnInit {
   user: User;
   isLoading$: Observable<boolean>;
   minDate = new Date();
+  gameNames = Settings.gameNames;
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
@@ -42,25 +44,25 @@ export class NewGameComponent implements OnInit {
     })
     //create the course form
     this.gameForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
+      name: new FormControl(this.gameNames[Math.floor(Math.random() * this.gameNames.length)], Validators.required),
       date: new FormControl(null, Validators.required)
     });
     this.gameForm.get('date').setValue((new Date()).toISOString());
   }
 
   onSubmit(){
-    let str = 'participants.' + this.user.uid;
     let newGame : Game = {
       name: this.gameForm.value.name,
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
       owner: this.user.uid,
-      participants: str,
       created: new Date(),
+      status: 0
     }
     try{
       newGame.date = new Date(this.gameForm.value.date);
-      this.gameService.addGame(newGame);
-      this.router.navigate(['/games']);
+      this.gameService.addGame(this.user, newGame).then( _ => {
+         this.router.navigate(['/games']);
+      });
     } catch {
       this.uiService.showSnackbar("Er ging iets mis met het bewaren van het spel", null, 3000);
     }

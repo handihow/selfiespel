@@ -1,4 +1,4 @@
-export class Assignments {	
+export class Settings {	
 
 		//list of assignments
 		public static assignments = [
@@ -67,6 +67,41 @@ export class Assignments {
 			{assignment: "kerstlichtjes", isOutside: false, level:3, theme: "christmas"},
 			{assignment: "een kerstbal", isOutside: false, level:2, theme: "christmas"},
 
+		  ];
+
+		  //list of gameNames
+		public static gameNames = [
+			"Turn around and take a selfie",
+			"Do you wanna selfie?",
+			"Hey, that's my selfie",
+			"Selfies are my life",
+			"Live life the selfie way",
+			"Take it easy, take a selfie",
+			"Selfie is the Game you play",
+			"Play the game selfie me",
+			"Selfie you selfie me",
+			"Can I take a selfie with you?",
+			"Selfies everywhere",
+			"Come with me on a selfie tour",
+			"Live the selfie way",
+			"Watch my selfie",
+			"It's not easy being a selfie",
+			"Always look on the selfie side of life"
+		  ];
+
+		public static groupNames = [
+			"TeamSelfie",
+			"Selfie4Life",
+			"I<3Selfie",
+			"Selfie4Ever",
+			"SuperSelfie",
+			"De Selfies",
+			"SuperDuperSelfies",
+			"SunnySelfie",
+			"SelfieIt",
+			"SeeMySelfie",
+			"TheBestSelfieMakers",
+			"HappySelfieMakers"
 		  ];
 	
 }

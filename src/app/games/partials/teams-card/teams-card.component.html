@@ -1,0 +1,24 @@
+<mat-card class="full-width">
+	<mat-card-header>
+		<mat-card-title>
+			Groepeer
+		</mat-card-title>
+		<mat-card-subtitle>
+			Voeg groepen toe en deel de spelers in!
+		</mat-card-subtitle>
+	</mat-card-header>
+	<mat-slider min="2" max="4" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
+	<mat-card-content cdkDropListGroup>
+		<mat-list cdkDropList class="list"
+					[cdkDropListData]="group?.members" 
+					(cdkDropListDropped)="drop($event)"
+					*ngFor="let group of game?.groups">
+			<h3>{{group?.name}}</h3>
+			<mat-list-item *ngFor="let player of group?.members" cdkDrag [cdkDragData]="player" class="list-item">					{{player.displayName}}
+			</mat-list-item>
+		</mat-list>
+	</mat-card-content>
+	<mat-card-actions>
+		<button mat-raised-button color="accent" (click)="onShuffle()">Shuffle!</button>
+	</mat-card-actions>
+</mat-card>

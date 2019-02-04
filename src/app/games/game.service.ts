@@ -19,10 +19,10 @@ export class GameService {
 				 private store: Store<fromUI.State> ){}
 
 
-	addGame(game: Game){
-		this.db.collection('games').add(game)
+	addGame(owner: User, game: Game){
+		return this.db.collection('games').add(game)
 			.then(doc => {
-				this.uiService.showSnackbar("Spel is succesvol bewaard.", null, 3000);
+				this.manageGameParticipants(owner, doc.id, true);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -51,7 +51,6 @@ export class GameService {
 	updateGameToDatabase(game: Game): Promise<boolean>{
 		return this.db.collection('games').doc(game.id).set(game, {merge: true})
 			.then( _ => {
-				this.uiService.showSnackbar("Spel updated", null, 3000);
 				return true;
 			})
 			.catch(error => {
@@ -72,9 +71,19 @@ export class GameService {
 						const data = doc.payload.doc.data() as Game;
 						const id = doc.payload.doc.id;
 						return { id, ...data };
-					})
+					}).sort(this.compareDates)
 			}))
 	}
+
+	private compareDates(a, b) {
+	  if(a && b){
+	  	var dateA = a.date.toDate().getTime();
+	  	var dateB = b.date.toDate().getTime();
+	  	return dateB - dateA;
+	  } else {
+	  	return a - b;
+	  }	  
+	};
 
 	fetchGameParticipants(gameId: string) : Observable<User[]> {
 		let str = 'games.' + gameId;
@@ -110,13 +119,11 @@ export class GameService {
 						const data = doc.payload.doc.data() as User;
 						const id = doc.payload.doc.id;
 						return { id, ...data };
-					})
+					}).sort(this.compare)
 			}))
 	}
 
 	manageGameParticipants(participant: User, gameId: string, add: boolean){
-		console.log(participant);
-		console.log(gameId);
 		//if add is true, participants will be added to game, otherwise, removed from game
 		let str = '{"games":{"' + gameId + '":' + add + '}}';
 		let gameOfParticipant = JSON.parse(str);

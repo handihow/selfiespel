@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DropZoneDirective } from './drop-zone.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileSizePipe } from './file-size.pipe';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FileSizePipe } from './file-size.pipe';
 		ReactiveFormsModule,
 		MaterialModule,
 		FlexLayoutModule,
-		RouterModule
+		RouterModule,
+		DragDropModule
 	],
 	exports: [
 		CommonModule,
@@ -30,7 +32,8 @@ import { FileSizePipe } from './file-size.pipe';
 		MaterialModule,
 		FlexLayoutModule,
 		DropZoneDirective,
-		FileUploadComponent
+		FileUploadComponent,
+		DragDropModule
 	],
 	entryComponents: []
 })

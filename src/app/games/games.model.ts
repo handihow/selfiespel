@@ -1,3 +1,23 @@
+import { User } from '../auth/user.model';
+
+enum Status {
+    created,
+    assigned,
+    playing,
+    pauzed,
+    finished
+}
+
+interface Group {
+  name: string;
+  position: number;
+  members?: User[];
+}
+
+interface Participants {
+  [key: string]: boolean
+}
+
 export interface Game {
   id?: string;
   name: string;
@@ -7,9 +27,8 @@ export interface Game {
   created: any;
   date?: any;
   judges?: any;
-  participants?: any;
-  groups?: any;
-  isActive?: boolean;
-  isPauzed?: boolean;
-  isFinished?: boolean;
+  participants?: Participants[];
+  groups?: Group[];
+  status?: Status,
+  assignments?: string[];
 }
