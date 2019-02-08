@@ -33,11 +33,4 @@ export class PlayersCardComponent implements OnInit {
   	this.gameService.manageGameJudges(user, this.gameId, true);
   }
 
-  onAddSelf(){
-  	this.gameService.manageGameParticipants(this.user, this.gameId, true);
-  }
-
-  onRemoveSelf(){
-  	this.gameService.manageGameParticipants(this.user, this.gameId, false);
-  }
 }

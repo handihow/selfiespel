@@ -1,0 +1,4 @@
+  <mat-spinner *ngIf="!(downloadURL$ | async)"></mat-spinner>
+  <div *ngIf="downloadURL$ | async as url">
+    <img class="full-width" [src]="url" [@photoState]="imageState">
+  </div> 

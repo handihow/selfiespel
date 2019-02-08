@@ -12,3 +12,14 @@
 .header-section{
 	margin-bottom: 10px;
 }
+
+.image-handler {
+	width: 60%;
+	max-width: 500px;
+	margin: auto;
+}
+
+mat-spinner {
+	width: 50px;
+	margin: auto;
+}

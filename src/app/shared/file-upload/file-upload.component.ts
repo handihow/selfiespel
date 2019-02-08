@@ -15,7 +15,10 @@ import { UIService } from '../ui.service';
 })
 export class FileUploadComponent implements OnInit {
 
-  @Input() identifier: string;
+  @Input() groupId: string;
+  @Input() assignmentId: string;
+  @Input() userId: string; 
+  @Input() gameId: string;
   screenType$: Observable<string>;
   // Main task 
   task: AngularFireUploadTask;
@@ -59,7 +62,12 @@ export class FileUploadComponent implements OnInit {
     const path = `images/${new Date().getTime()}_${file.name}`;
 
     // Totally optional metadata
-    const customMetadata = { identifier: this.identifier };
+    const customMetadata = { 
+       groupId: this.groupId, 
+       assignmentId: this.assignmentId,
+       userId: this.userId,
+       gameId: this.gameId 
+     };
 
     // The main task
     this.task = this.storage.upload(path, file, { customMetadata })
@@ -74,7 +82,7 @@ export class FileUploadComponent implements OnInit {
 	        // Update firestore on completion
           const refTN = this.storage.ref(path);
           this.downloadURL$ = refTN.getDownloadURL();
-	        this.db.collection('photos').add( { path, size: snap.totalBytes, identifier: this.identifier })
+	        this.db.collection('photos').add( { path, size: snap.totalBytes, ...customMetadata })
 	      }
 	    })
 	  )

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
@@ -10,6 +10,8 @@ import { GameService } from '../game.service';
 import { Game } from '../games.model';
 import { User } from '../../auth/user.model';
 
+import { ImageViewerComponent } from '../../shared/image-viewer/image-viewer.component';
+
 @Component({
   selector: 'app-play-game',
   templateUrl: './play-game.component.html',
@@ -18,11 +20,17 @@ import { User } from '../../auth/user.model';
 export class PlayGameComponent implements OnInit {
 
   gameId: string;
+  assignmentId: number;
   game: Game;
+  groupId: number;
   user: User;
   subs: Subscription[] = [];
   isOwner: boolean;
-  
+  hasObtainedImageStatus: boolean;
+  containsImage: boolean;
+
+  @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
+
   constructor(private route: ActivatedRoute,
 			        private router: Router,
 			        private store: Store<fromRoot.State>,
@@ -36,6 +44,7 @@ export class PlayGameComponent implements OnInit {
   			this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
 		      if(user){
 		        this.user = user;
+            this.groupId = this.game.groups.findIndex(group => group.members.map(user => user.uid).includes(this.user.uid));
 		        if(this.game.owner===this.user.uid){
 		        	this.isOwner = true;
 		        }
@@ -43,7 +52,6 @@ export class PlayGameComponent implements OnInit {
 		    }))
   		}
   	}))
-     
   }
 
   ngOnDestroy(){
@@ -53,10 +61,20 @@ export class PlayGameComponent implements OnInit {
   }
 
   onOpenPanel(index: number){
-  	console.log(index);
+    this.containsImage = true;
+  	this.assignmentId = index;
   }
 
   onClosePanel(index: number){
-  	console.log(index);
+    this.hasObtainedImageStatus = false;
+  }
+
+  retrieveImageState(containsImage: boolean){
+    this.containsImage = containsImage;
+    this.hasObtainedImageStatus = true;
+  }
+
+  onRotate(){
+    this.child.rotate();
   }
 }

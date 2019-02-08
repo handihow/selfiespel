@@ -8,7 +8,7 @@
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<p>Datum: {{game?.date.toDate() | date : 'dd-MM-yyyy'}}</p>
+		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
 		<h4 *ngIf="game.status<2 && !isOwner">Spel is nog niet begonnen...</h4>
 	</mat-card-content>

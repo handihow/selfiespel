@@ -12,6 +12,7 @@ export class GamesCardComponent implements OnInit {
   @Input() game: Game;
   @Input() user: User;
   isOwner: boolean;
+  gameDate: string;
 
   constructor() { }
 
@@ -19,6 +20,21 @@ export class GamesCardComponent implements OnInit {
     if(this.game.owner === this.user.uid){
       this.isOwner = true;
     }
+    this.checkDate();
+  }
+
+  checkDate(){
+    if(this.game){
+      try {
+        this.gameDate = this.game.date.toDate().toLocaleDateString();
+      } catch(e) {
+        console.log(e);
+      }
+    }
+  }
+
+  ngOnChange(){
+    this.checkDate();
   }
 
 }
