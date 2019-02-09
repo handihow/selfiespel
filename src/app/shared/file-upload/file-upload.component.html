@@ -16,6 +16,7 @@
   <button type="button" color="accent" mat-raised-button (click)="fileInput.click()">
     Upload een foto
  </button>
+ <input #fileInput type="file" (change)="startUpload($event.target.files)" style="display:none;" />
 </div>
 
 <div *ngIf="percentage | async as pct">
@@ -26,9 +27,9 @@
 <div *ngIf="snapshot | async as snap">
   {{ snap.bytesTransferred | fileSize }} van {{ snap.totalBytes | fileSize }} 
 
-  <div *ngIf="downloadURL$ | async as url">
+<!--   <div *ngIf="downloadURL$ | async as url">
     <img class="full-width" [src]="url">
-  </div> 
+  </div>  -->
 
   <button (click)="task.pause()" mat-button color="accent" [disabled]="!isActive(snap)">Pause</button>
   <button (click)="task.cancel()" mat-button color="warn" [disabled]="!isActive(snap)">Cancel</button>

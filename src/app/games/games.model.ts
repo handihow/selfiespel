@@ -31,4 +31,5 @@ export interface Game {
   groups?: Group[];
   status?: Status,
   assignments?: string[];
+  thumbnails?: any;
 }

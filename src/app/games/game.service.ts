@@ -76,12 +76,12 @@ export class GameService {
 	}
 
 	private compareDates(a, b) {
-	  if(a && b){
+	  if(a && b && a.date && b.date){
 	  	var dateA = a.date.toDate().getTime();
 	  	var dateB = b.date.toDate().getTime();
 	  	return dateB - dateA;
 	  } else {
-	  	return a - b;
+	  	return a.name - b.name;
 	  }	  
 	};
 

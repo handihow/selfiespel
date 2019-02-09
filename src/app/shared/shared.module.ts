@@ -9,13 +9,15 @@ import { DropZoneDirective } from './drop-zone.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileSizePipe } from './file-size.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 
 
 @NgModule({
 	declarations: [
 	DropZoneDirective,
 	FileUploadComponent,
-	FileSizePipe],
+	FileSizePipe,
+	ImageViewerComponent],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -33,7 +35,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 		FlexLayoutModule,
 		DropZoneDirective,
 		FileUploadComponent,
-		DragDropModule
+		DragDropModule,
+		ImageViewerComponent
 	],
 	entryComponents: []
 })

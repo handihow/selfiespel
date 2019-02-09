@@ -7,6 +7,7 @@ import { take, map, startWith, finalize, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
 import { UIService } from '../ui.service';
+import { Game } from '../../games/games.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -15,7 +16,10 @@ import { UIService } from '../ui.service';
 })
 export class FileUploadComponent implements OnInit {
 
-  @Input() identifier: string;
+  @Input() groupId: string;
+  @Input() assignmentId: string;
+  @Input() userId: string; 
+  @Input() gameId: string;
   screenType$: Observable<string>;
   // Main task 
   task: AngularFireUploadTask;
@@ -49,17 +53,34 @@ export class FileUploadComponent implements OnInit {
     // The File object
     const file = event.item(0)
 
+    //don't upload if user has cancelled selecting the image
+    if(!event.item(0)){
+      return
+    }
+
     // Client-side validation example
     if (file.type.split('/')[0] !== 'image') { 
       this.uiService.showSnackbar('Geen geldig image file type. Upload geannuleerd.', null, 3000);
       return;
     }
 
+    const storagePathPrefix='images/'
+    const dateTime = new Date().getTime();
+    const filename = "_" + file.name;
+    const resize = 'resized-'
     // The storage path
-    const path = `images/${new Date().getTime()}_${file.name}`;
+    const path = storagePathPrefix + dateTime + filename;
+    const pathTN = storagePathPrefix + resize + dateTime + filename;
+
+    const size = file.size;
 
     // Totally optional metadata
-    const customMetadata = { identifier: this.identifier };
+    const customMetadata = { 
+       groupId: this.groupId, 
+       assignmentId: this.assignmentId,
+       userId: this.userId,
+       gameId: this.gameId
+     };
 
     // The main task
     this.task = this.storage.upload(path, file, { customMetadata })
@@ -69,16 +90,12 @@ export class FileUploadComponent implements OnInit {
     this.snapshot   = this.task.snapshotChanges();
 
     this.snapshot = this.task.snapshotChanges().pipe(
-    tap(snap => {
-	      if (snap.bytesTransferred === snap.totalBytes) {
-	        // Update firestore on completion
-          const refTN = this.storage.ref(path);
-          this.downloadURL$ = refTN.getDownloadURL();
-	        this.db.collection('photos').add( { path, size: snap.totalBytes, identifier: this.identifier })
-	      }
-	    })
+    finalize(async () => {
+	        this.db.collection('photos').add( { path, size: size, ...customMetadata });
+	      })
 	  )
   }
+
 
   // Determines if the upload task is active
   isActive(snapshot) {

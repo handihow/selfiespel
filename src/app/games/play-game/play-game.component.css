@@ -12,3 +12,28 @@
 .header-section{
 	margin-bottom: 10px;
 }
+
+.image-handler {
+	width: 60%;
+	max-width: 500px;
+	margin: auto;
+}
+
+mat-spinner {
+	width: 50px;
+	margin: auto;
+}
+
+.avatar {
+	width: 45px;
+}
+
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
