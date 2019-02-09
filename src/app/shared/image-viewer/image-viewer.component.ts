@@ -42,8 +42,8 @@ import {
 })
 export class ImageViewerComponent implements OnInit, OnDestroy {
 
-  @Input() groupId: string;
-  @Input() assignmentId: string;
+  @Input() groupId: number;
+  @Input() assignmentId: number;
   @Input() userId: string; 
   @Input() gameId: string;
   screenType$: Observable<string>;

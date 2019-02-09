@@ -17,8 +17,21 @@ export class ImageService {
 	constructor( private db: AngularFirestore,
 				 private uiService: UIService, ){}
 
-	fetchImageReference(assignmentId: string, gameId: string, groupId: string): Observable<Image[]> {
+	fetchImageReference(assignmentId: number, gameId: string, groupId: number): Observable<Image[]> {
 		var queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('groupId', '==', groupId));
+		return this.db.collection('photos', queryStr)
+			.snapshotChanges().pipe(
+			map(docArray => {
+				return docArray.map(doc => {
+						const data = doc.payload.doc.data() as Image;
+						const id = doc.payload.doc.id;
+						return { id, ...data };
+					})
+			}))
+	}
+
+	fetchThumbnailReferences(gameId: string, groupId: number): Observable<Image[]>{
+		var queryStr = (ref => ref.where('gameId', '==', gameId).where('groupId', '==', groupId));
 		return this.db.collection('photos', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {

@@ -25,13 +25,18 @@
 				(opened)="onOpenPanel(i)"
                 (closed)="onClosePanel(i)">
 	  <mat-expansion-panel-header>
-	    <mat-panel-title>{{assignment.assignment}}</mat-panel-title>
-	    <!-- <mat-panel-description><mat-icon>done</mat-icon></mat-panel-description> -->
+	    <mat-panel-title>
+		    {{assignment.assignment}}
+		</mat-panel-title>
+	    <mat-panel-description *ngIf="thumbnails$[i] | async as url">
+		    	<mat-icon>check</mat-icon>
+	    		<img class="avatar" [src]="url">
+  	    </mat-panel-description>
 	  </mat-expansion-panel-header>
 	  <div *ngIf="i===assignmentId" class="image-handler">
 		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" 
 		  					[assignmentId]="assignmentId" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
-		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" *ngIf="containsImage"
+		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" [hidden]="!containsImage"
 		  					[assignmentId]="assignmentId" (containsImage)="retrieveImageState($event)"></app-image-viewer>
 	  </div>
 	   <mat-action-row *ngIf="containsImage">

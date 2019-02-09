@@ -16,6 +16,7 @@
   <button type="button" color="accent" mat-raised-button (click)="fileInput.click()">
     Upload een foto
  </button>
+ <input #fileInput type="file" (change)="startUpload($event.target.files)" style="display:none;" />
 </div>
 
 <div *ngIf="percentage | async as pct">
