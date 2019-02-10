@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Game } from '../../games.model';
+import { Game } from '../../games/games.model';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { GameService } from '../../game.service';
+import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
-import { Settings } from '../../../shared/settings';
+import { Settings } from '../../shared/settings';
 
 @Component({
   selector: 'app-assignments-card',

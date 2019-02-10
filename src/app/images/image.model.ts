@@ -2,9 +2,9 @@ export interface Image {
 	id?: string;
 	path: string;
 	pathTN?: string;
-	assignmentId: number;
+	assignmentId: string;
 	gameId: string;
-	groupId: number;
+	groupId: string;
 	size: number;
 	userId: string;
   	imageState?: string;

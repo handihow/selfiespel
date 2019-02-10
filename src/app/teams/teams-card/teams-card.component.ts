@@ -3,11 +3,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
-import { GameService } from '../../game.service';
-import { Game } from '../../games.model';
+import { GameService } from '../../games/game.service';
+import { Game } from '../../games/games.model';
 
-import { Settings } from '../../../shared/settings';
-import { User } from '../../../auth/user.model';
+import { Settings } from '../../shared/settings';
+import { User } from '../../auth/user.model';
 
 @Component({
   selector: 'app-teams-card',
