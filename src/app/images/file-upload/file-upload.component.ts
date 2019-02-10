@@ -6,7 +6,7 @@ import { take, map, startWith, finalize, tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
-import { UIService } from '../ui.service';
+import { UIService } from '../../shared/ui.service';
 import { Game } from '../../games/games.model';
 
 @Component({
@@ -67,19 +67,15 @@ export class FileUploadComponent implements OnInit {
     const storagePathPrefix='images/'
     const dateTime = new Date().getTime();
     const filename = "_" + file.name;
-    const resize = 'resized-'
     // The storage path
     const path = storagePathPrefix + dateTime + filename;
-    const pathTN = storagePathPrefix + resize + dateTime + filename;
-
-    const size = file.size;
 
     // Totally optional metadata
     const customMetadata = { 
        groupId: this.groupId, 
        assignmentId: this.assignmentId,
        userId: this.userId,
-       gameId: this.gameId
+       gameId: this.gameId,
      };
 
     // The main task
@@ -89,11 +85,6 @@ export class FileUploadComponent implements OnInit {
     this.percentage = this.task.percentageChanges();
     this.snapshot   = this.task.snapshotChanges();
 
-    this.snapshot = this.task.snapshotChanges().pipe(
-    finalize(async () => {
-	        this.db.collection('photos').add( { path, size: size, ...customMetadata });
-	      })
-	  )
   }
 
 

@@ -33,7 +33,7 @@
 	    		<img class="avatar" [src]="url">
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
-	  <div *ngIf="i===assignmentId" class="image-handler">
+	  <div *ngIf="i.toString()===assignmentId" class="image-handler">
 		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" 
 		  					[assignmentId]="assignmentId" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
 		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" [hidden]="!containsImage"

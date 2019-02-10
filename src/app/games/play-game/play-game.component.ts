@@ -11,10 +11,10 @@ import { Game } from '../games.model';
 import { User } from '../../auth/user.model';
 import { AngularFireStorage } from '@angular/fire/storage';
 
-import { Image } from '../../shared/image.model';
-import { ImageService } from '../../shared/image.service';
+import { Image } from '../../images/image.model';
+import { ImageService } from '../../images/image.service';
 
-import { ImageViewerComponent } from '../../shared/image-viewer/image-viewer.component';
+import { ImageViewerComponent } from '../../images/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-play-game',
@@ -24,9 +24,9 @@ import { ImageViewerComponent } from '../../shared/image-viewer/image-viewer.com
 export class PlayGameComponent implements OnInit {
 
   gameId: string;
-  assignmentId: number;
+  assignmentId: string;
   game: Game;
-  groupId: number;
+  groupId: string;
   user: User;
   subs: Subscription[] = [];
   isOwner: boolean;
@@ -52,7 +52,7 @@ export class PlayGameComponent implements OnInit {
   			this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
 		      if(user){
 		        this.user = user;
-            this.groupId = this.game.groups.findIndex(group => group.members.map(user => user.uid).includes(this.user.uid));
+            this.groupId = this.game.groups.findIndex(group => group.members.map(user => user.uid).includes(this.user.uid)).toString();
             this.subs.push(this.imageService.fetchThumbnailReferences(this.game.id, this.groupId).subscribe(thumbnailReferences =>{
               this.thumbnailReferences = thumbnailReferences;
               this.createThumbnailArray();
@@ -74,7 +74,7 @@ export class PlayGameComponent implements OnInit {
 
   onOpenPanel(index: number){
     this.containsImage = true;
-  	this.assignmentId = index;
+  	this.assignmentId = index.toString();
   }
 
   onClosePanel(index: number){
@@ -93,7 +93,7 @@ export class PlayGameComponent implements OnInit {
   createThumbnailArray(){
     this.thumbnails$ = [];
     this.game.assignments.forEach((assignment, index) => {
-      const refTN : Image = this.thumbnailReferences.find(ref => ref.assignmentId === index);
+      const refTN : Image = this.thumbnailReferences.find(ref => ref.assignmentId === index.toString());
       if(refTN && refTN.pathTN){
         const ref = this.storage.ref(refTN.pathTN);
         const downloadURL$ = ref.getDownloadURL();

@@ -7,7 +7,7 @@ import { take, map, startWith, finalize, tap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
-import { UIService } from '../ui.service';
+import { UIService } from '../../shared/ui.service';
 
 import { Image } from '../image.model';
 import { ImageService } from '../image.service';
@@ -28,13 +28,13 @@ import {
   animations: [
     trigger('photoState', [
       state('90', style({
-        transform: 'rotateZ(90deg) scale(0.70)',
+        transform: 'rotateZ(90deg)',
       })),
       state('180',   style({
         transform: 'rotateY(180deg) rotateZ(180deg)'
       })),
       state('270',   style({
-        transform: 'rotateY(180deg) rotateZ(-90deg) scale(0.70)',
+        transform: 'rotateY(180deg) rotateZ(-90deg)',
       })),
       transition('* => *', animate('500ms ease')),
     ])
@@ -42,8 +42,8 @@ import {
 })
 export class ImageViewerComponent implements OnInit, OnDestroy {
 
-  @Input() groupId: number;
-  @Input() assignmentId: number;
+  @Input() groupId: string;
+  @Input() assignmentId: string;
   @Input() userId: string; 
   @Input() gameId: string;
   screenType$: Observable<string>;
