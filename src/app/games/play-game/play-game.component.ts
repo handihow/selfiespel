@@ -90,6 +90,10 @@ export class PlayGameComponent implements OnInit {
     this.child.rotate();
   }
 
+  onRemoveImage(){
+    this.child.deleteImage();
+  }
+
   createThumbnailArray(){
     this.thumbnails$ = [];
     this.game.assignments.forEach((assignment, index) => {

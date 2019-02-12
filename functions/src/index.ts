@@ -4,7 +4,9 @@ admin.initializeApp(functions.config().firebase);
 
 const {Storage} = require('@google-cloud/storage');
 // Creates a client
-const gcs = new Storage();
+const gcs = new Storage({
+	projectId: process.env.GCP_PROJECT
+});
 
 const db = admin.firestore();
 
@@ -53,6 +55,7 @@ export const generateThumbs = functions.storage
 
 		//resize source image
 		await sharp(tmpFilePath)
+			.rotate()
 			.resize(size,size)
 			.toFile(thumbPath);
 
@@ -70,6 +73,7 @@ export const generateThumbs = functions.storage
 
 	let imageRef = db.collection('images').doc()
 	return imageRef.set({
+		pathOriginal: filePath,
 		path: filePaths[1],
 		pathTN: filePaths[0],
 		assignmentId: metaData ? metaData.assignmentId : null,
