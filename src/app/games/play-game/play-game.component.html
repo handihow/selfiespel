@@ -41,7 +41,7 @@
 	  </div>
 	   <mat-action-row *ngIf="containsImage">
 	    <button mat-button (click)="onRotate()">Roteren</button>
-	    <button mat-button>Neem opnieuw</button>
+	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
 	  </mat-action-row>
 	</mat-expansion-panel>
 </mat-accordion>

@@ -102,4 +102,8 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
     this.image.imageState = this.imageState;
     this.imageService.updateImageReference(this.image);
   }
+
+  deleteImage(){
+    this.imageService.removeImagesFromStorage(this.image);
+  }
 }

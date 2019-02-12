@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {map,  take } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -15,7 +16,8 @@ import { Image } from './image.model';
 export class ImageService {
 
 	constructor( private db: AngularFirestore,
-				 private uiService: UIService, ){}
+				 private uiService: UIService,
+				 private storage: AngularFireStorage, ){}
 
 	fetchImageReference(assignmentId: string, gameId: string, groupId: string): Observable<Image[]> {
 		var queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('groupId', '==', groupId));
@@ -52,6 +54,16 @@ export class ImageService {
 				this.uiService.showSnackbar(error.message, null, 3000);
 				return false;
 			})
+	}
+
+	async removeImagesFromStorage(image: Image){
+		console.log(image);
+		//first, remove all images from storage
+		await this.storage.ref(image.path).delete();
+		await this.storage.ref(image.pathOriginal).delete();
+		await this.storage.ref(image.pathTN).delete();
+		//then delete the image record from the database
+		this.db.collection('images').doc(image.id).delete();
 	}
 
 }
