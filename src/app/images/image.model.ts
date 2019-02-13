@@ -5,7 +5,7 @@ export interface Image {
 	pathTN?: string;
 	assignmentId?: string;
 	gameId?: string;
-	groupId?: string;
+	teamId?: string;
 	size?: number;
 	userId?: string;
   	imageState?: string;

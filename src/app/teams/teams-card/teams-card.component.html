@@ -9,16 +9,33 @@
 	</mat-card-header>
 	<mat-slider min="2" max="4" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
 	<mat-card-content cdkDropListGroup>
-		<mat-list cdkDropList class="list"
-					[cdkDropListData]="group?.members" 
-					(cdkDropListDropped)="drop($event)"
-					*ngFor="let group of game?.groups">
-			<h3>{{group?.name}}</h3>
-			<mat-list-item *ngFor="let player of group?.members" cdkDrag [cdkDragData]="player" class="list-item">					{{player.displayName}}
-			</mat-list-item>
-		</mat-list>
+		<div *ngFor="let team of teams">
+			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id!==teamId">
+				<h3>{{team?.name}}</h3>
+				<button mat-icon-button matTooltip="Wijzig groepsnaam" (click)="onEdit(team)">
+					<mat-icon>edit</mat-icon>
+				</button>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id===teamId">
+				<mat-form-field>
+					<input matInput placeholder="Groepsnaam" [(ngModel)]="teamName">
+				</mat-form-field>
+				<button mat-icon-button matTooltip="Bewaar groepsnaam" (click)="onSave(team)">
+					<mat-icon>save</mat-icon>
+				</button>
+			</div>
+			
+			<mat-list cdkDropList class="list"
+						[cdkDropListData]="team?.participants" 
+						(cdkDropListDropped)="drop($event)">
+				
+				<mat-list-item *ngFor="let player of team?.participants" cdkDrag [cdkDragData]="player" class="list-item">			<mat-icon matListIcon>drag_handle</mat-icon>
+					<p matLine>{{player.displayName}}</p>
+				</mat-list-item>
+			</mat-list>
+		</div>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onShuffle()">Shuffle!</button>
+		<button mat-raised-button color="accent" (click)="onShuffle()">Opnieuw!</button>
 	</mat-card-actions>
 </mat-card>

@@ -27,6 +27,8 @@ import { AuthService } from './auth/auth.service';
 import { UIService } from './shared/ui.service';
 import { GameService } from './games/game.service';
 import { ImageService } from './images/image.service';
+import { AssignmentService } from './assignments/assignment.service';
+import { TeamService } from './teams/team.service';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
@@ -61,7 +63,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AuthService,
     UIService,
     GameService,
-    ImageService],
+    ImageService,
+    AssignmentService,
+    TeamService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

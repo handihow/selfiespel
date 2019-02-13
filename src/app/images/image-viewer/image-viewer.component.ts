@@ -42,7 +42,7 @@ import {
 })
 export class ImageViewerComponent implements OnInit, OnDestroy {
 
-  @Input() groupId: string;
+  @Input() teamId: string;
   @Input() assignmentId: string;
   @Input() userId: string; 
   @Input() gameId: string;
@@ -69,7 +69,7 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
 
   ngOnChanges(){
   	if(typeof this.assignmentId !== 'undefined'){
-  		this.sub = this.imageService.fetchImageReference(this.assignmentId, this.gameId, this.groupId)
+  		this.sub = this.imageService.fetchImageReference(this.assignmentId, this.gameId, this.teamId)
       .subscribe(references => {
 	  		if(references && references[0]){
           this.image = references[0];

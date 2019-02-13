@@ -9,6 +9,9 @@ import { Game } from '../../games/games.model';
 import { Settings } from '../../shared/settings';
 import { User } from '../../auth/user.model';
 
+import { Team } from '../team.model';
+import { TeamService } from '../team.service';
+
 @Component({
   selector: 'app-teams-card',
   templateUrl: './teams-card.component.html',
@@ -22,45 +25,74 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   players: User[];
   subs: Subscription[] = [];
   playersPerGroup: number = 2;
+  teams: Team[];
+  teamName: string;
+  teamId: string;
 
   constructor(private route: ActivatedRoute,
 			  private router: Router,
-			  private gameService: GameService) { }
+			  private gameService: GameService,
+        private teamService: TeamService ) { }
 
   ngOnInit() {
   	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game => {
-      this.game = game;
-      this.game.id = this.gameId;
-      this.subs.push(this.gameService.fetchGameParticipants(this.gameId).subscribe(players => {
-        if(players && players.length>1){
-          this.players = players;
-          if(!this.game.groups){
-            this.makeNewGroups();  
-          }
-        }
-      }));
+  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game => {
+      if(game){
+        this.game = game;
+        this.game.id = this.gameId;
+        await this.fetchParticipants();
+        this.fetchTeams();
+      }
     }));
   }
 
-  makeNewGroups(){
+  fetchParticipants(){
+    return new Promise((resolve, reject) => {
+      this.subs.push(this.gameService.fetchGameParticipants(this.gameId).subscribe(players => {
+        if(players){
+          this.players = players;
+          resolve(true);
+        }
+      }));
+    })
+  }
+
+  fetchTeams(){
+    this.subs.push(this.teamService.fetchTeams(this.gameId).subscribe(teams => {
+      if(teams && teams.length===0){
+        this.makeNewGroups();  
+      } else {
+        this.formTeams(teams)
+      }
+    }));      
+  }
+
+  async makeNewGroups(){
+    //first make sure that all teams in database are deleted
+    if(this.teams){
+      await this.teamService.deleteTeams(this.gameId, this.teams);
+    }
   	//first calculate how many groups you need
   	let randomIndeces = [];
-    this.game.groups = [];
-    let players = this.shuffle(this.players);
+    let teams : Team[] = [];
+    let players : User[] = this.shuffle(this.players);
     //create the groups
     for (var i = 0; i < players.length; i+=this.playersPerGroup){
       //generate random name
       let randomIndex = this.pickRandomIndex(this.groupNames, randomIndeces);
       randomIndeces.push(randomIndex);
-      let newGroup = {
+      let members = players.slice(i, i+this.playersPerGroup);
+      let newTeam : Team = {
         name: this.groupNames[randomIndex],
-        position: i,
-        members: players.slice(i, i+this.playersPerGroup)
+        order: i,
+        members: {}
       }
-      this.game.groups.push(newGroup);
+      members.forEach(member => {
+        newTeam.members[member.uid] = true;
+      })
+      teams.push(newTeam);
     }
-    this.gameService.updateGameToDatabase(this.game);
+    this.teamService.addTeams(this.gameId,teams);
   }
 
   private pickRandomIndex(array, randomIndices){
@@ -93,6 +125,19 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     return array;
   }
 
+  formTeams(teams: Team[]){
+    teams.forEach(team => {
+      let participants: User[] = [];
+      this.players.forEach(player => {
+        if(team.members[player.uid]){
+          participants.push(player);
+        }
+      });
+      team.participants = participants
+    });
+    this.teams = teams;
+  }
+
 
   ngOnDestroy(){
   	this.subs.forEach(sub => {
@@ -118,6 +163,17 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
                         event.previousIndex,
                         event.currentIndex);
     }
-    this.gameService.updateGameToDatabase(this.game);
+    this.teamService.updateTeams(this.teams);
+  }
+
+  onEdit(team: Team){
+    this.teamName = team.name;
+    this.teamId = team.id;
+  }
+
+  onSave(team: Team){
+    team.name = this.teamName;
+    this.teamService.updateTeam(team);
+    this.teamId = null;
   }
 }

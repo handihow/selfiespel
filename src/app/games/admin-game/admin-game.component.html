@@ -3,21 +3,49 @@
 	<h4>{{(game$ | async)?.date.toDate() | date:'dd-MM-yyyy'}}</h4>
 	<a mat-icon-button matTooltip="Terug" routerLink="/games"><mat-icon>arrow_back</mat-icon></a>
 </section>
-<section fxLayout="row" fxLayoutAlign="space-between stretch" 
-			fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch" fxLayoutGap.lt-md="10px">
-	
-	<div fxFlex.gt-sm="30" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px">
-		<app-actions-card></app-actions-card>
-		<app-judges-card  [user]="user"></app-judges-card>
-		<app-players-card [user]="user"></app-players-card>
-	</div>
+<section>
+	<mat-horizontal-stepper>
+		<mat-step>
+			<ng-template matStepLabel>Juryleden</ng-template>
+			<div fxLayout="row" fxLayoutAlign="space-around stretch">
+				<app-judges-card  [user]="user"></app-judges-card>
+				<app-players-card [user]="user"></app-players-card>
+			</div>
+			<div>
+		        <button mat-button matStepperNext>Volgende</button>
+		    </div>
+		</mat-step>
 
-	<div fxFlex.gt-sm="30">
-		<app-teams-card></app-teams-card>
-	</div>
+		<mat-step>
+			<ng-template matStepLabel>Teams</ng-template>
+			<div class="stepper">
+				<app-teams-card></app-teams-card>
+			</div>
+			<div>
+		       <button mat-button matStepperPrevious>Terug</button>
+		       <button mat-button matStepperNext>Volgende</button>
+		    </div>
+		</mat-step>
 
-	<div fxFlex.gt-sm="30">
-		<app-assignments-card></app-assignments-card>
-	</div>
+		<mat-step>
+			<ng-template matStepLabel>Opdrachten</ng-template>
+			<div class="stepper">
+				<app-assignments-card></app-assignments-card>
+			</div>
+			<div>
+		       <button mat-button matStepperPrevious>Terug</button>
+		       <button mat-button matStepperNext>Volgende</button>
+		    </div>
+		</mat-step>
 
+		<mat-step>
+			<ng-template matStepLabel>Speel</ng-template>
+			<div class="stepper">
+				<app-actions-card></app-actions-card>
+			</div>
+			<div>
+		       <button mat-button matStepperPrevious>Terug</button>
+		    </div>
+		</mat-step>
+	</mat-horizontal-stepper>
 </section>

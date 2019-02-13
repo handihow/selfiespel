@@ -1,0 +1,16 @@
+<mat-list-item *ngIf="!editMode">
+	<mat-icon matListIcon>drag_handle</mat-icon>
+	<p matLine>{{assignment.assignment}}</p>
+	<button mat-icon-button matTooltip="Opdracht bewerken"
+			(click)="onEdit()"><mat-icon>edit</mat-icon></button>
+	<button mat-icon-button matTooltip="Opdracht verwijderen"
+			(click)="onRemove()"><mat-icon>remove</mat-icon></button>
+</mat-list-item>
+
+<mat-list-item *ngIf="editMode">
+	<mat-form-field>
+		 <input matInput placeholder="Opdracht" [(ngModel)]="assignmentValue">
+	</mat-form-field>
+	<button mat-icon-button matTooltip="Opdracht bewaren"
+			(click)="onSave()"><mat-icon>save</mat-icon></button>
+</mat-list-item>

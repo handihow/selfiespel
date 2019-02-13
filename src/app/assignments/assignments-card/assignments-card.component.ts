@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Game } from '../../games/games.model';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -6,13 +6,16 @@ import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import { Settings } from '../../shared/settings';
+import { Status } from '../../shared/settings';
+import { Assignment } from '../assignment.model';
+import { AssignmentService } from '../assignment.service';
 
 @Component({
   selector: 'app-assignments-card',
   templateUrl: './assignments-card.component.html',
   styleUrls: ['./assignments-card.component.css']
 })
-export class AssignmentsCardComponent implements OnInit {
+export class AssignmentsCardComponent implements OnInit, OnDestroy {
   
   selectedLevel: number = 1;
   levels: any[] = [
@@ -23,32 +26,39 @@ export class AssignmentsCardComponent implements OnInit {
 
   game: Game;
   gameId: string;
-  sub: Subscription;
-  isVisible: boolean;
-  assignments: any;
+  subs: Subscription[] = []; 
+  isVisible: boolean = true;
+  assignments: Assignment[];
 
   allAssignments = Settings.assignments;
 
   quantity: number = 12;
+  get status() { return Status; }
 
   constructor(private route: ActivatedRoute,
-        private router: Router,
-        private gameService: GameService) { }
+              private router: Router,
+              private gameService: GameService,
+              private assignmentService: AssignmentService) { }
 
   ngOnInit() {
-  	this.onFilterAssignments(this.selectedLevel, this.quantity);
     this.gameId = this.route.snapshot.paramMap.get('id');
-    this.sub = this.gameService.fetchGame(this.gameId).subscribe(game => {
-      this.game = game;
-      this.game.id = this.gameId;
-    });
+    this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game => {
+      if(game){
+        this.game = {id: this.gameId, ...game};
+      }
+    }))
+    this.subs.push(this.assignmentService.fetchAssignments(this.gameId).subscribe(assignments => {
+      this.assignments = assignments.sort((a,b) => a.order - b.order);
+    }));
   }
 
-  onChangeLevel(){
-  	this.onFilterAssignments(this.selectedLevel, this.quantity);
+  ngOnDestroy() {
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    })
   }
 
-  onFilterAssignments(level: number, quantity: number){
+  onRandomAssignments(level: number, quantity: number){
   	let filteredAssignments = this.allAssignments.filter(o => o.level == level);
   	let assignments = [];
     let randomIndeces = [];
@@ -58,7 +68,7 @@ export class AssignmentsCardComponent implements OnInit {
   		var random = filteredAssignments[randomIndex];
   		assignments.push(random);
   	}
-  	this.assignments = assignments;
+  	return this.assignmentService.addAssignments(this.gameId, assignments);
   }
 
   private pickRandomIndex(array, randomIndices){
@@ -74,17 +84,17 @@ export class AssignmentsCardComponent implements OnInit {
 
   onChangeQuantity(quantity){
     this.quantity = quantity.value;
-    this.onFilterAssignments(this.selectedLevel, this.quantity);
   }
 
-  onSave(){
-    this.game.assignments = this.assignments;
-    this.game.status = 1;
+  async onSave(){
+    await this.onRandomAssignments(this.selectedLevel, this.quantity);
+    this.game.status = Status.assigned;
     this.gameService.updateGameToDatabase(this.game);
   }
 
-  onNewAssignments(){
-    this.game.status = 0;
+  async onNewAssignments(){
+    await this.assignmentService.deleteAssignments(this.gameId, this.assignments);
+    this.game.status = Status.hasPlayers;
     this.gameService.updateGameToDatabase(this.game);
   }
 
@@ -93,8 +103,11 @@ export class AssignmentsCardComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.game.assignments, event.previousIndex, event.currentIndex);
-    this.gameService.updateGameToDatabase(this.game);
+    moveItemInArray(this.assignments, event.previousIndex, event.currentIndex);
+    this.assignments.forEach((assignment, index) => {
+      assignment.order = index;
+    });
+    this.assignmentService.updateAssignments(this.gameId, this.assignments);
   }
 
   dropUnsaved(event: CdkDragDrop<string[]>) {

@@ -1,22 +1,5 @@
-import { User } from '../auth/user.model';
-
-enum Status {
-    created,
-    assigned,
-    playing,
-    pauzed,
-    finished
-}
-
-interface Group {
-  name: string;
-  position: number;
-  members?: User[];
-}
-
-interface Participants {
-  [key: string]: boolean
-}
+import { Status } from '../shared/settings';
+import { Participants } from '../shared/participants.model';
 
 export interface Game {
   id?: string;
@@ -27,9 +10,7 @@ export interface Game {
   created: any;
   date?: any;
   judges?: any;
-  participants?: Participants[];
-  groups?: Group[];
+  participants?: Participants;
   status?: Status,
-  assignments?: string[];
   thumbnails?: any;
 }

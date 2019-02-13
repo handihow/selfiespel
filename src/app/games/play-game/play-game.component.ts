@@ -14,7 +14,15 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Image } from '../../images/image.model';
 import { ImageService } from '../../images/image.service';
 
+import { Assignment } from '../../assignments/assignment.model';
+import { AssignmentService } from '../../assignments/assignment.service';
+
+import { Team } from '../../teams/team.model';
+import { TeamService } from '../../teams/team.service';
+
 import { ImageViewerComponent } from '../../images/image-viewer/image-viewer.component';
+
+import { UIService } from '../../shared/ui.service';
 
 @Component({
   selector: 'app-play-game',
@@ -26,7 +34,7 @@ export class PlayGameComponent implements OnInit {
   gameId: string;
   assignmentId: string;
   game: Game;
-  groupId: string;
+  teamId: string;
   user: User;
   subs: Subscription[] = [];
   isOwner: boolean;
@@ -34,6 +42,7 @@ export class PlayGameComponent implements OnInit {
   containsImage: boolean;
   thumbnailReferences: Image[];
   thumbnails$: Observable<string>[] = [];
+  assignments: Assignment[];
 
   @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
 
@@ -42,26 +51,26 @@ export class PlayGameComponent implements OnInit {
 			        private router: Router,
 			        private store: Store<fromRoot.State>,
               private gameService: GameService,
-              private imageService: ImageService) { }
+              private imageService: ImageService,
+              private assignmentService: AssignmentService,
+              private teamService: TeamService,
+              private uiService: UIService) { }
 
   ngOnInit() {
   	this.gameId = this.route.snapshot.paramMap.get('id');
   	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game=> {
   		if(game){
   			this.game = game;
-  			this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
-		      if(user){
-		        this.user = user;
-            this.groupId = this.game.groups.findIndex(group => group.members.map(user => user.uid).includes(this.user.uid)).toString();
-            this.subs.push(this.imageService.fetchThumbnailReferences(this.game.id, this.groupId).subscribe(thumbnailReferences =>{
-              this.thumbnailReferences = thumbnailReferences;
-              this.createThumbnailArray();
-            }))
-		        if(this.game.owner===this.user.uid){
-		        	this.isOwner = true;
-		        }
-		      }
-		    }))
+        this.setUser();
+        this.fetchAssignments();
+        this.teamService.fetchTeamId(this.gameId, this.user.uid).subscribe(teamId => {
+          if(!teamId){
+            this.uiService.showSnackbar("Je bent niet ingedeeld in een team voor dit spel", null, 3000);
+            return this.router.navigate(["/games"]);
+          }
+          this.teamId = teamId;
+          this.fetchImages();
+        });
   		}
   	}))
   }
@@ -72,12 +81,38 @@ export class PlayGameComponent implements OnInit {
     })
   }
 
-  onOpenPanel(index: number){
-    this.containsImage = true;
-  	this.assignmentId = index.toString();
+  fetchAssignments(){
+    this.subs.push(this.assignmentService.fetchAssignments(this.gameId).subscribe(assignments => {
+       if(assignments){
+         this.assignments = assignments;
+       }
+    }))
   }
 
-  onClosePanel(index: number){
+  fetchImages(){
+    this.subs.push(this.imageService.fetchThumbnailReferences(this.game.id, this.teamId).subscribe(thumbnailReferences =>{
+        this.thumbnailReferences = thumbnailReferences;
+        this.createThumbnailArray();
+      }))
+  }
+
+  setUser(){
+      this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
+        if(user){
+          this.user = user;
+          if(this.game.owner===this.user.uid){
+            this.isOwner = true;
+          }
+        }
+      }));
+  }
+
+  onOpenPanel(assignment: Assignment){
+    this.containsImage = true;
+  	this.assignmentId = assignment.id;
+  }
+
+  onClosePanel(){
     this.hasObtainedImageStatus = false;
   }
 
@@ -96,8 +131,8 @@ export class PlayGameComponent implements OnInit {
 
   createThumbnailArray(){
     this.thumbnails$ = [];
-    this.game.assignments.forEach((assignment, index) => {
-      const refTN : Image = this.thumbnailReferences.find(ref => ref.assignmentId === index.toString());
+    this.assignments.forEach(assignment => {
+      const refTN : Image = this.thumbnailReferences.find(ref => ref.assignmentId === assignment.id);
       if(refTN && refTN.pathTN){
         const ref = this.storage.ref(refTN.pathTN);
         const downloadURL$ = ref.getDownloadURL();

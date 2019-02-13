@@ -105,3 +105,13 @@ export class Settings {
 		  ];
 	
 }
+
+export enum Status  {
+    created,    //game has been created
+    waiting,    //waiting for players to join
+    hasPlayers, //players have joined the game, ready for assignments to be set
+    assigned,   //assignments are created and game is ready to be started
+    playing,    //game is ongoing
+    pauzed,     //game is pauzed
+    finished    //game is finished
+}

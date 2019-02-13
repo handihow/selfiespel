@@ -7,6 +7,8 @@ import { GameService } from '../../game.service';
 import { Game } from '../../games.model';
 import { User } from '../../../auth/user.model';
 
+import { Status } from '../../../shared/settings';
+
 @Component({
   selector: 'app-actions-card',
   templateUrl: './actions-card.component.html',
@@ -17,6 +19,7 @@ export class ActionsCardComponent implements OnInit, OnDestroy {
   game: Game;
   gameId: string;
   sub: Subscription;
+  get status() { return Status; }
 
   constructor(private route: ActivatedRoute,
 			  private router: Router,
@@ -35,25 +38,25 @@ export class ActionsCardComponent implements OnInit, OnDestroy {
   }
 
   onPlay(){
-    this.game.status = 2;
+    this.game.status = Status.playing;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/' + this.gameId + '/play']);
   }
 
   onPauze(){
-    this.game.status = 3;
+    this.game.status = Status.pauzed;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/' + this.gameId + '/view']);
   }
 
   onStop(){
-    this.game.status = 4;
+    this.game.status = Status.finished;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/' + this.gameId + '/view']);
   }
 
   onReopen(){
-    this.game.status = 2;
+    this.game.status = Status.playing;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/' + this.gameId + '/play']);
   }

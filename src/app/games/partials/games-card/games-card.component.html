@@ -10,17 +10,18 @@
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
-		<h4 *ngIf="game.status<2 && !isOwner">Spel is nog niet begonnen...</h4>
+		<h4 *ngIf="game.status<status.playing && !isOwner">Spel is nog niet begonnen...</h4>
+		<h4 *ngIf="game.status===status.waiting && isOwner">Wachten op spelers...</h4>
 	</mat-card-content>
 	<mat-card-actions>
 		<a mat-raised-button color="primary" routerLink="/games/{{game.id}}/admin" 
-					*ngIf="game.status<2 && isOwner">
+					*ngIf="(game.status===status.hasPlayers || game.status===status.assigned) && isOwner">
 			Beheer</a>
 		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/view" 
-					*ngIf="game.status==3 || game.status==4">
+					*ngIf="game.status==status.pauzed || game.status==status.finished">
 			Bekijk</a>
 		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/play" 
-					*ngIf="game.status==2">
+					*ngIf="game.status===status.playing">
 			Speel</a>
 	</mat-card-actions>
 </mat-card>

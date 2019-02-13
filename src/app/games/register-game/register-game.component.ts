@@ -8,6 +8,7 @@ import { take } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
 import { Game } from '../games.model';
+import { Status } from '../../shared/settings';
 
 import { User } from '../../auth/user.model';
 import { Router } from '@angular/router';
@@ -59,24 +60,24 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
 
    onSubmit(){
     this.sub = this.gameService.fetchGameWithCode(this.gameForm.value.code)
-    	.subscribe(games => {
+    	.subscribe(async games => {
     		if(games && games[0]){
     			let gameFound = games[0];
     			if(gameFound.owner === this.user.uid) {
     				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
-            this.router.navigate(['/games']);
-    			} else if(gameFound.status>1) {
+    			} else if(gameFound.status>Status.assigned) {
             this.uiService.showSnackbar("Dit spel is al begonnen. Je kunt niet meer meedoen.", null, 3000);
-            this.router.navigate(['/games']);
           } else {
-    				this.gameService.manageGameParticipants(this.user, gameFound.id, true)
-             .then( _ => {
-               this.router.navigate(['/games']);
-             });
+    				await this.gameService.manageGameParticipants(this.user, gameFound.id, true)
+            if(gameFound.status < Status.hasPlayers) {
+               gameFound.status = Status.hasPlayers;
+               await this.gameService.updateGameToDatabase(gameFound)
+            }
     			}
     		} else {
     			this.uiService.showSnackbar("Geen spel gevonden met deze code", null, 3000);
     		}
+        this.router.navigate(['/games']);
     	});
   }
 

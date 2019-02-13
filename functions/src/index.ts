@@ -78,7 +78,7 @@ export const generateThumbs = functions.storage
 		pathTN: filePaths[0],
 		assignmentId: metaData ? metaData.assignmentId : null,
 		gameId: metaData ? metaData.gameId : null,
-		groupId: metaData ? metaData.groupId: null,
+		teamId: metaData ? metaData.teamId: null,
 		userId: metaData ? metaData.userId : null
 	});
 	

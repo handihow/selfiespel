@@ -21,9 +21,9 @@
 </section>
 
 <mat-accordion class="headers-align">
-	<mat-expansion-panel *ngFor="let assignment of game?.assignments; let i=index"
-				(opened)="onOpenPanel(i)"
-                (closed)="onClosePanel(i)">
+	<mat-expansion-panel *ngFor="let assignment of assignments; let i=index"
+				(opened)="onOpenPanel(assignment)"
+                (closed)="onClosePanel()">
 	  <mat-expansion-panel-header>
 	    <mat-panel-title>
 		    {{assignment.assignment}}
@@ -33,10 +33,10 @@
 	    		<img class="avatar" [src]="url">
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
-	  <div *ngIf="i.toString()===assignmentId" class="image-handler">
-		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" 
+	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
+		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [teamId]="teamId" 
 		  					[assignmentId]="assignmentId" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
-		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [groupId]="groupId" [hidden]="!containsImage"
+		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [teamId]="teamId" [hidden]="!containsImage"
 		  					[assignmentId]="assignmentId" (containsImage)="retrieveImageState($event)"></app-image-viewer>
 	  </div>
 	   <mat-action-row *ngIf="containsImage">

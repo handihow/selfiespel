@@ -16,7 +16,8 @@ import { Game } from '../../games/games.model';
 })
 export class FileUploadComponent implements OnInit {
 
-  @Input() groupId: string;
+  isUploading: boolean;
+  @Input() teamId: string;
   @Input() assignmentId: string;
   @Input() userId: string; 
   @Input() gameId: string;
@@ -50,6 +51,7 @@ export class FileUploadComponent implements OnInit {
 
 
   startUpload(event: FileList) {
+    this.isUploading = true;
     // The File object
     const file = event.item(0)
 
@@ -72,7 +74,7 @@ export class FileUploadComponent implements OnInit {
 
     // Totally optional metadata
     const customMetadata = { 
-       groupId: this.groupId, 
+       teamId: this.teamId, 
        assignmentId: this.assignmentId,
        userId: this.userId,
        gameId: this.gameId,

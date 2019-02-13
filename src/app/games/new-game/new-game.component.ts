@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 
 import { UIService } from '../../shared/ui.service';
 import { Settings } from '../../shared/settings';
+import { Status } from '../../shared/settings';
 
 @Component({
   selector: 'app-new-game',
@@ -56,7 +57,7 @@ export class NewGameComponent implements OnInit {
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
       owner: this.user.uid,
       created: new Date(),
-      status: 0
+      status: Status.created
     }
     try{
       newGame.date = new Date(this.gameForm.value.date);

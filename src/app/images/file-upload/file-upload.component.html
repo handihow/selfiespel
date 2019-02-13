@@ -1,6 +1,6 @@
-<div> 
+<div *ngIf="!isUploading"> 
   <button type="button" color="accent" mat-raised-button (click)="fileInput.click()">
-    Upload een foto
+    Selfie!
  </button>
  <input #fileInput type="file" (change)="startUpload($event.target.files)" style="display:none;" />
 </div>

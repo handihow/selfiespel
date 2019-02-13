@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Game } from '../../games.model';
 import { User } from '../../../auth/user.model'; 
 
+import { Status } from '../../../shared/settings';
+
 @Component({
   selector: 'app-games-card',
   templateUrl: './games-card.component.html',
@@ -13,6 +15,7 @@ export class GamesCardComponent implements OnInit {
   @Input() user: User;
   isOwner: boolean;
   gameDate: string;
+  get status() { return Status; }
 
   constructor() { }
 

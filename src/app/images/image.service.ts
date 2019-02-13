@@ -19,8 +19,8 @@ export class ImageService {
 				 private uiService: UIService,
 				 private storage: AngularFireStorage, ){}
 
-	fetchImageReference(assignmentId: string, gameId: string, groupId: string): Observable<Image[]> {
-		var queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('groupId', '==', groupId));
+	fetchImageReference(assignmentId: string, gameId: string, teamId: string): Observable<Image[]> {
+		var queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('teamId', '==', teamId));
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -32,8 +32,8 @@ export class ImageService {
 			}))
 	}
 
-	fetchThumbnailReferences(gameId: string, groupId: string): Observable<Image[]>{
-		var queryStr = (ref => ref.where('gameId', '==', gameId).where('groupId', '==', groupId));
+	fetchThumbnailReferences(gameId: string, teamId: string): Observable<Image[]>{
+		var queryStr = (ref => ref.where('gameId', '==', gameId).where('teamId', '==', teamId));
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {

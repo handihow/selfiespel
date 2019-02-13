@@ -1,28 +1,22 @@
-<mat-card class="full-width" *ngIf="game?.status==0">
+<mat-card class="full-width" *ngIf="game?.status<status.assigned">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Kies niveau en aantal opdrachten</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<mat-radio-group [(ngModel)]="selectedLevel" (ngModelChange)="onChangeLevel()">
+		<mat-radio-group [(ngModel)]="selectedLevel">
 		  <mat-radio-button class="radio-button" *ngFor="let level of levels" [value]="level.level">
 		  	{{level.label}}
 		  </mat-radio-button>
 		</mat-radio-group>
 		<mat-slider min="5" max="20" step="1" [value]="12" (change)="onChangeQuantity($event)" thumbLabel></mat-slider>
-		<p>Maak een selfie met ....</p>
-		<mat-list cdkDropList (cdkDropListDropped)="dropUnsaved($event)" class="list">
-		  <mat-list-item *ngFor="let assignment of assignments" cdkDrag class="list-item">
-		    {{assignment.assignment}}
-		  </mat-list-item>
-		</mat-list>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onSave()">Bewaar opdrachten!</button>
+		<button mat-raised-button color="accent" (click)="onSave()">Maak opdrachten!</button>
 	</mat-card-actions>
 </mat-card>
 
-<mat-card class="full-width" *ngIf="game?.status!==0 && isVisible">
+<mat-card class="full-width" *ngIf="game?.status===status.assigned && isVisible">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Dit zijn de opdrachten</mat-card-subtitle>
@@ -30,20 +24,20 @@
 	<mat-card-content>
 		<p>Maak een selfie met ....</p>
 		<mat-list cdkDropList (cdkDropListDropped)="drop($event)" class="list">
-		  <mat-list-item *ngFor="let assignment of game?.assignments" cdkDrag class="list-item">
-		    {{assignment.assignment}}
-		  </mat-list-item>
+		  <div *ngFor="let assignment of assignments" cdkDrag class="list-item">
+		    <app-assignment-list-item [assignment]="assignment"></app-assignment-list-item>
+		  </div>
 		</mat-list>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="warn" (click)="onNewAssignments()">Opnieuw instellen!</button>
+		<button mat-raised-button color="accent" (click)="onNewAssignments()">Opnieuw!</button>
 		<button mat-icon-button (click)="toggleVisibility()" matTooltip="Klap in">
 			<mat-icon>visibility_off</mat-icon>
 		</button>
 	</mat-card-actions>
 </mat-card>
 
-<mat-card class="full-width" *ngIf="game?.status!==0 && !isVisible">
+<mat-card class="full-width" *ngIf="game?.status===status.assigned && !isVisible">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Klaar met opdrachten!</mat-card-subtitle>
