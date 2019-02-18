@@ -20,7 +20,7 @@ export class ImageService {
 				 private storage: AngularFireStorage, ){}
 
 	fetchImageReference(assignmentId: string, gameId: string, teamId: string): Observable<Image[]> {
-		var queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('teamId', '==', teamId));
+		let queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('teamId', '==', teamId));
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -32,8 +32,11 @@ export class ImageService {
 			}))
 	}
 
-	fetchThumbnailReferences(gameId: string, teamId: string): Observable<Image[]>{
-		var queryStr = (ref => ref.where('gameId', '==', gameId).where('teamId', '==', teamId));
+	fetchImageReferences(gameId: string, teamId?: string): Observable<Image[]>{
+		let queryStr = (ref => ref.where('gameId', '==', gameId));
+		if(teamId){
+			queryStr = (ref => ref.where('gameId', '==', gameId).where('teamId', '==', teamId));	
+		}
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -57,7 +60,6 @@ export class ImageService {
 	}
 
 	async removeImagesFromStorage(image: Image){
-		console.log(image);
 		//first, remove all images from storage
 		await this.storage.ref(image.path).delete();
 		await this.storage.ref(image.pathOriginal).delete();

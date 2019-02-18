@@ -9,7 +9,7 @@ export interface Game {
   owner: string;
   created: any;
   date?: any;
-  judges?: any;
+  judges?: Participants;
   participants?: Participants;
   status?: Status,
   thumbnails?: any;

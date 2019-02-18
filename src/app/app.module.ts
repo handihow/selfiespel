@@ -34,6 +34,8 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { NotifierModule } from 'angular-notifier';
+import { Settings } from './shared/settings';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     FlexLayoutModule,
     AuthModule,
     SharedModule,
+    NotifierModule.withConfig( Settings.notifierOptions ),
     StoreModule.forRoot(reducers),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

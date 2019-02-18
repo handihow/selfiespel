@@ -47,7 +47,7 @@ export const generateThumbs = functions.storage
 	//resize images and define array of upload promises
 	const sizes = [128, 512];
 
-	let filePaths : string[] = [];
+	const filePaths : string[] = [];
 	const uploadPromises = sizes.map(async size => {
 		const thumbName = `thumb@${size}_${fileName}`;
 		const thumbPath = join(workingDir, thumbName);
@@ -71,7 +71,7 @@ export const generateThumbs = functions.storage
 	//cleanup remove the tmp/thumbs from the filesystem
 	await fs.remove(workingDir);
 
-	let imageRef = db.collection('images').doc()
+	const imageRef = db.collection('images').doc()
 	return imageRef.set({
 		pathOriginal: filePath,
 		path: filePaths[1],
@@ -79,7 +79,20 @@ export const generateThumbs = functions.storage
 		assignmentId: metaData ? metaData.assignmentId : null,
 		gameId: metaData ? metaData.gameId : null,
 		teamId: metaData ? metaData.teamId: null,
-		userId: metaData ? metaData.userId : null
+		userId: metaData ? metaData.userId : null,
+		teamName: metaData ? metaData.teamName : null,
+		assignment: metaData ? metaData.assignment : null
+	}).then( _ => {
+		const timestamp = new Date().toISOString();
+		const messageRef = db.collection('messages').doc()
+		return messageRef.set({
+			content: metaData ? metaData.teamName + ' heeft een nieuwe foto geupload voor selfie met ' 
+										+ metaData.assignment + '!' : 'Nieuwe foto geupload!',
+			style: 'info',
+			gameId: metaData ? metaData.gameId : null,
+			timestamp: timestamp,
+			dismissed: false
+		})
 	});
 	
 });

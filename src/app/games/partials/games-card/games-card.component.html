@@ -1,4 +1,4 @@
-<mat-card  *ngIf="game?.date">
+<mat-card  *ngIf="game?.date" class="full-width">
 	<mat-card-header>
 		<mat-card-title>
 			{{game?.name}}
@@ -11,7 +11,7 @@
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
 		<h4 *ngIf="game.status<status.playing && !isOwner">Spel is nog niet begonnen...</h4>
-		<h4 *ngIf="game.status===status.waiting && isOwner">Wachten op spelers...</h4>
+		<h4 *ngIf="game.status<status.assigned && isOwner">Wachten op spelers...</h4>
 	</mat-card-content>
 	<mat-card-actions>
 		<a mat-raised-button color="primary" routerLink="/games/{{game.id}}/admin" 

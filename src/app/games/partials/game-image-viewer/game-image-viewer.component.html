@@ -1,0 +1,7 @@
+<mat-grid-list [cols]="columns" rowHeight="1:1">
+  <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
+  	<mat-grid-tile-header>{{imageRef.assignment}}</mat-grid-tile-header>
+  	<img [src]="images$[i] | async" class="tile-image">
+  	<mat-grid-tile-footer>{{imageRef.teamName}}</mat-grid-tile-footer>
+  </mat-grid-tile>
+</mat-grid-list>

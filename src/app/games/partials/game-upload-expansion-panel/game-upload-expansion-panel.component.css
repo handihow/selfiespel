@@ -1,0 +1,24 @@
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-section{
+	margin-bottom: 10px;
+}
+
+.image-handler {
+	max-width: 300px;
+	margin: auto;
+}
+
+mat-spinner {
+	width: 50px;
+	margin: auto;
+}
+
+.avatar {
+	width: 45px;
+}

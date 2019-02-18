@@ -8,6 +8,9 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
 import { UIService } from '../../shared/ui.service';
 import { Game } from '../../games/games.model';
+import { Team } from '../../teams/team.model';
+import { Message } from '../../shared/messages.model';
+import { Assignment } from '../../assignments/assignment.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -17,8 +20,8 @@ import { Game } from '../../games/games.model';
 export class FileUploadComponent implements OnInit {
 
   isUploading: boolean;
-  @Input() teamId: string;
-  @Input() assignmentId: string;
+  @Input() team: Team;
+  @Input() assignment: Assignment;
   @Input() userId: string; 
   @Input() gameId: string;
   screenType$: Observable<string>;
@@ -74,10 +77,12 @@ export class FileUploadComponent implements OnInit {
 
     // Totally optional metadata
     const customMetadata = { 
-       teamId: this.teamId, 
-       assignmentId: this.assignmentId,
+       teamId: this.team.id, 
+       assignmentId: this.assignment.id,
        userId: this.userId,
        gameId: this.gameId,
+       teamName: this.team.name,
+       assignment: this.assignment.assignment
      };
 
     // The main task

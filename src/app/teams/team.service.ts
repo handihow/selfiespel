@@ -53,14 +53,16 @@ export class TeamService {
 	}	
 
 	//fetch the team Id for a game / user 
-	fetchTeamId(gameId: string, userId: string): Observable<string>{
+	fetchTeam(gameId: string, userId: string): Observable<Team>{
 		let str = 'members.' + userId;
 		var queryStr = (ref => ref.where('gameId', '==', gameId).where(str, '==', true));
 		return this.db.collection('teams', queryStr)
 		.snapshotChanges().pipe(
 		map(docArray => {
 			return docArray.map(doc => {
-					return doc.payload.doc.id;
+					const data = doc.payload.doc.data() as Team;
+					const id = doc.payload.doc.id;
+					return { id, ...data };
 				})[0] || null;
 		}));
 	}

@@ -1,0 +1,29 @@
+<section fxLayout="row" fxLayoutAlign="center center">
+	<h3>Neem een selfie met....</h3>
+</section>
+
+<mat-accordion class="headers-align">
+	<mat-expansion-panel *ngFor="let assignment of assignments; let i=index"
+				(opened)="onOpenPanel(assignment)"
+                (closed)="onClosePanel()">
+	  <mat-expansion-panel-header>
+	    <mat-panel-title>
+		    {{assignment.assignment}}
+		</mat-panel-title>
+	    <mat-panel-description *ngIf="thumbnails$[i] | async as url">
+		    	<mat-icon>check</mat-icon>
+	    		<img class="avatar" [src]="url">
+  	    </mat-panel-description>
+	  </mat-expansion-panel-header>
+	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
+		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [team]="team" 
+		  					[assignment]="assignment" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
+		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [teamId]="team.id" [hidden]="!containsImage"
+		  					[assignmentId]="assignmentId" (containsImage)="retrieveImageState($event)"></app-image-viewer>
+	  </div>
+	   <mat-action-row *ngIf="containsImage">
+	    <button mat-button (click)="onRotate()">Roteren</button>
+	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
+	  </mat-action-row>
+	</mat-expansion-panel>
+</mat-accordion>

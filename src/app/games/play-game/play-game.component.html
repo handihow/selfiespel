@@ -1,47 +1,11 @@
-<section fxLayout="row" fxLayoutAlign="space-around stretch" 
-			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center stretch" fxLayoutGap="10px" class="header-section">
-	<mat-card>
-		<mat-card-header>
-			<mat-card-title>
-				{{game?.name}}
-			</mat-card-title>
-			<mat-card-subtitle>
-				{{game?.date.toDate() | date:'dd-MM-yyyy'}}
-			</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-actions>
-			<a mat-button matTooltip="Terug" routerLink="/games">TERUG</a>
-		</mat-card-actions>
-	</mat-card>
-	<app-actions-card *ngIf="isOwner"></app-actions-card>
-</section>
-
-<section fxLayout="row" fxLayoutAlign="center center">
-	<h3>Neem een selfie met....</h3>
-</section>
-
-<mat-accordion class="headers-align">
-	<mat-expansion-panel *ngFor="let assignment of assignments; let i=index"
-				(opened)="onOpenPanel(assignment)"
-                (closed)="onClosePanel()">
-	  <mat-expansion-panel-header>
-	    <mat-panel-title>
-		    {{assignment.assignment}}
-		</mat-panel-title>
-	    <mat-panel-description *ngIf="thumbnails$[i] | async as url">
-		    	<mat-icon>check</mat-icon>
-	    		<img class="avatar" [src]="url">
-  	    </mat-panel-description>
-	  </mat-expansion-panel-header>
-	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
-		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [teamId]="teamId" 
-		  					[assignmentId]="assignmentId" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
-		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [teamId]="teamId" [hidden]="!containsImage"
-		  					[assignmentId]="assignmentId" (containsImage)="retrieveImageState($event)"></app-image-viewer>
-	  </div>
-	   <mat-action-row *ngIf="containsImage">
-	    <button mat-button (click)="onRotate()">Roteren</button>
-	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
-	  </mat-action-row>
-	</mat-expansion-panel>
-</mat-accordion>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Spel">
+    <app-game-upload-expansion-panel></app-game-upload-expansion-panel>
+  </mat-tab>
+  <mat-tab label="Foto's">
+    <app-game-image-viewer></app-game-image-viewer>
+  </mat-tab>
+  <mat-tab label="Beheer" *ngIf="isOwner">
+    <app-actions-card></app-actions-card>
+  </mat-tab>
+</mat-tab-group>

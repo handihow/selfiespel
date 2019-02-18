@@ -9,4 +9,5 @@ export interface Image {
 	size?: number;
 	userId?: string;
   	imageState?: string;
+  	teamName?: string;
 }
