@@ -170,5 +170,8 @@ export class GameImageViewerComponent implements OnInit {
     });
   }
 
+  onOpenImage(image: Image){
+    console.log(image);
+  }
 
 }

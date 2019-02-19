@@ -6,7 +6,7 @@
 <mat-grid-list [cols]="columns" rowHeight="1:1">
   <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
   	<mat-grid-tile-header>{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
-  	<img [src]="images$[i] | async" class="tile-image">
+  	<img [src]="images$[i] | async" class="tile-image" (click)="onOpenImage(imageRef)">
   	<mat-grid-tile-footer  fxLayout="row" fxLayoutAlign="space-between center">
   		<span>
         <button mat-icon-button 
