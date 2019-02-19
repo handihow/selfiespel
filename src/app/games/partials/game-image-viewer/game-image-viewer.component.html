@@ -1,7 +1,32 @@
 <mat-grid-list [cols]="columns" rowHeight="1:1">
   <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
-  	<mat-grid-tile-header>{{imageRef.assignment}}</mat-grid-tile-header>
+  	<mat-grid-tile-header>{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
   	<img [src]="images$[i] | async" class="tile-image">
-  	<mat-grid-tile-footer>{{imageRef.teamName}}</mat-grid-tile-footer>
+  	<mat-grid-tile-footer  fxLayout="row" fxLayoutAlign="space-between center">
+  		<span>
+        <button mat-icon-button 
+                  matTooltip="Like" 
+                  (click)="likeImage(imageRef)" 
+                  [color]="imageRef.userLikeId ? 'primary' : null">
+    			<mat-icon [matBadge]="imageRef.likes" 
+                    matBadgePosition="before" 
+                    matBadgeColor="accent">thumb_up_alt</mat-icon>
+    		</button>
+    		<button mat-icon-button 
+                  matTooltip="Commentaar"
+                  (click)="openCommentDialog(imageRef)">
+    			<mat-icon [matBadge]="imageRef.comments" matBadgeColor="accent">insert_comment</mat-icon>
+    		</button>
+      </span>
+      <span>
+        <button mat-icon-button>
+          <mat-icon>remove</mat-icon>
+        </button>
+        3
+        <button mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
+      </span>
+  	</mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>

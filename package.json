@@ -29,6 +29,7 @@
     "@angular/service-worker": "^7.2.2",
     "@ngrx/store": "^7.1.0",
     "angular-notifier": "^4.1.1",
+    "angularx-qrcode": "^1.5.3",
     "core-js": "^2.5.4",
     "firebase": "^5.8.1",
     "hammerjs": "^2.0.8",

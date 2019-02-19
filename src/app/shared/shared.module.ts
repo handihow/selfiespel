@@ -7,6 +7,7 @@ import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
 	imports: [
@@ -16,6 +17,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 		MaterialModule,
 		FlexLayoutModule,
 		RouterModule,
+		QRCodeModule,
 		DragDropModule
 	],
 	exports: [
@@ -24,6 +26,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 		ReactiveFormsModule,
 		MaterialModule,
 		FlexLayoutModule,
+		QRCodeModule,
 		DragDropModule
 	],
 	entryComponents: []

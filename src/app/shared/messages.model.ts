@@ -2,9 +2,9 @@ export interface Message {
   
   content: string;
   style:  string;
-  dismissed: boolean;
+  isShow: boolean;
   gameId: string;
   id?: string;
-  timestamp?: string;
+  timestamp: string;
 
 }

@@ -109,11 +109,11 @@ export class Settings {
 		public static notifierOptions: NotifierOptions = {
 		  position: {
 		    horizontal: {
-		      position: 'right',
+		      position: 'left',
 		      distance: 12
 		    },
 		    vertical: {
-		      position: 'top',
+		      position: 'bottom',
 		      distance: 12,
 		      gap: 10
 		    }
@@ -157,4 +157,9 @@ export enum Status  {
     playing,    //game is ongoing
     pauzed,     //game is pauzed
     finished    //game is finished
+}
+
+export enum ReactionType {
+	like, 		//user likes the image
+	comment		//user commented on the image
 }

@@ -19,6 +19,7 @@ import { PlayersCardComponent } from './partials/players-card/players-card.compo
 import { ActionsCardComponent } from './partials/actions-card/actions-card.component';
 import { GameUploadExpansionPanelComponent } from './partials/game-upload-expansion-panel/game-upload-expansion-panel.component';
 import { GameImageViewerComponent } from './partials/game-image-viewer/game-image-viewer.component';
+import { CommentDialogComponent } from './partials/comment-dialog/comment-dialog.component';
 
 
 @NgModule({
@@ -32,7 +33,10 @@ import { GameImageViewerComponent } from './partials/game-image-viewer/game-imag
   	PlayGameComponent, 
   	JudgesCardComponent, 
   	PlayersCardComponent, 
-  	ActionsCardComponent, GameUploadExpansionPanelComponent, GameImageViewerComponent
+  	ActionsCardComponent, 
+    GameUploadExpansionPanelComponent, 
+    GameImageViewerComponent, 
+    CommentDialogComponent
   ],
   imports: [
     CommonModule,
@@ -41,6 +45,9 @@ import { GameImageViewerComponent } from './partials/game-image-viewer/game-imag
     AssignmentsModule,
     TeamsModule,
     ImagesModule
+  ],
+  entryComponents: [ 
+    CommentDialogComponent 
   ]
 })
 export class GamesModule { }

@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer'; 
 import { Subscription, Observable, of } from 'rxjs';
 
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
 import { GameService } from '../../game.service';
 import { Game } from '../../games.model';
 import { User } from '../../../auth/user.model';
@@ -13,6 +15,11 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Image } from '../../../images/image.model';
 import { ImageService } from '../../../images/image.service';
+import { Reaction } from '../../../shared/reaction.model';
+import { ReactionType } from '../../../shared/settings';
+
+import { DialogCommentData } from '../../../shared/dialogCommentData.model';
+import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
 @Component({
   selector: 'app-game-image-viewer',
@@ -33,9 +40,10 @@ export class GameImageViewerComponent implements OnInit {
 
   constructor(private storage: AngularFireStorage,
               private route: ActivatedRoute,
-			  private router: Router,
-			  private store: Store<fromRoot.State>,
+			        private router: Router,
+			        private store: Store<fromRoot.State>,
               private gameService: GameService,
+              private dialog: MatDialog,
               private imageService: ImageService) { }
 
   ngOnInit() {
@@ -61,7 +69,28 @@ export class GameImageViewerComponent implements OnInit {
   fetchImages(){
     this.subs.push(this.imageService.fetchImageReferences(this.game.id).subscribe(imageReferences =>{
       this.imageReferences = imageReferences;
+      this.fetchImageLikes();
       this.createImageArray();
+    }))
+  }
+
+  fetchImageLikes(){
+    this.subs.push(this.imageService.getGameReactions(this.game.id).subscribe(reactions =>{
+      this.imageReferences.forEach(imageRef => {
+        let filteredLikes = reactions.filter(reaction => 
+                                      reaction.imageId === imageRef.id && 
+                                      reaction.reactionType === ReactionType.like);
+        imageRef.likes = filteredLikes.length > 0 ? filteredLikes.length : null;
+        let filteredComments = reactions.filter(reaction => 
+                                      reaction.imageId === imageRef.id && 
+                                      reaction.reactionType === ReactionType.comment);
+        imageRef.comments = filteredComments.length > 0 ? filteredComments.length : null;
+        let userLikeIndex = reactions.findIndex(reaction => 
+                                      reaction.imageId === imageRef.id && 
+                                      reaction.userId === this.user.uid && 
+                                      reaction.reactionType === ReactionType.like);
+        imageRef.userLikeId = userLikeIndex > -1 ? reactions[userLikeIndex].id : null;
+      })
     }))
   }
 
@@ -76,11 +105,11 @@ export class GameImageViewerComponent implements OnInit {
 
   setColumns(screentype){
     if(screentype === 'desktop'){
-      this.columns = 6;
-    } else if (screentype === 'tablet'){
       this.columns = 4;
-    } else {
+    } else if (screentype === 'tablet'){
       this.columns = 2;
+    } else {
+      this.columns = 1;
     }
   }
 
@@ -94,5 +123,27 @@ export class GameImageViewerComponent implements OnInit {
         }
       }));
   }
+
+  likeImage(image: Image){
+    if(image.userLikeId){
+      this.imageService.removeReactionFromImage(image.userLikeId);
+    } else {
+      this.imageService.reactOnImage(image, this.user, ReactionType.like);
+    }
+  }
+
+  openCommentDialog(image: Image){
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      width: '350px',
+      data: {teamName: image.teamName, assignment: image.assignment, comment: '' }
+    });
+
+    dialogRef.afterClosed().subscribe(comment => {
+      if(comment){
+        this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment); 
+      }
+    });
+  }
+
 
 }

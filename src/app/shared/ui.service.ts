@@ -33,14 +33,18 @@ export class UIService {
 			}));
 	}
 
-	sendMessage(content, style, gameId) {
+	sendMessage(content, style, gameId, uniqueId?) {
 	   const timestamp = new Date().toISOString();
-	   const message : Message = {content, style, gameId, dismissed: false, timestamp: timestamp}
-	   this.db.collection('messages').add(message);
+	   let message : Message = {content, style, gameId, isShow: false, timestamp: timestamp};
+	   if(uniqueId){
+	   	this.db.collection('messages').doc(uniqueId).set(message);
+	   } else {
+	   	this.db.collection('messages').add(message);
+	   }
 	}
 
-	dismissMessage(message: Message) {
-	  this.db.collection('messages').doc(message.id).update({'dismissed': true})
+	updateMessage(messageId: string) {
+	  this.db.collection('messages').doc(messageId).update({'isShow': true})
 	}
 
 }

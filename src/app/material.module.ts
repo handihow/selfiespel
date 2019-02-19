@@ -30,7 +30,8 @@ import {
 	MatSlideToggleModule,
 	MatButtonToggleModule,
 	MatTooltipModule,
-	MatSliderModule
+	MatSliderModule,
+	MatBadgeModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -66,7 +67,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatSlideToggleModule,
 		MatButtonToggleModule,
 		MatTooltipModule,
-		MatSliderModule],
+		MatSliderModule,
+		MatBadgeModule],
 	exports: [
 		MatButtonModule, 
 		MatIconModule, 
@@ -98,7 +100,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatSlideToggleModule,
 		MatButtonToggleModule,
 		MatTooltipModule,
-		MatSliderModule]
+		MatSliderModule,
+		MatBadgeModule]
 })
 
 export class MaterialModule{}

@@ -10,7 +10,7 @@
         <ngx-auth-firebaseui (onSuccess)="printUser($event)"
                              (onError)="printError($event)"
                              [providers]="['google', 'facebook', 'twitter']"
-                             [guestEnabled]='false'>
+                             [guestEnabled]='true'>
         </ngx-auth-firebaseui>
       </mat-card-content>
     </mat-card>

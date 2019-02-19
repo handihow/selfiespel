@@ -7,11 +7,12 @@
 			{{isOwner ? 'Beheerder' : 'Speler'}}
 		</mat-card-subtitle>
 	</mat-card-header>
+	<qrcode mat-card-image [qrdata]="game?.code" [size]="128" [level]="'M'"></qrcode>
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
 		<h4 *ngIf="game.status<status.playing && !isOwner">Spel is nog niet begonnen...</h4>
-		<h4 *ngIf="game.status<status.assigned && isOwner">Wachten op spelers...</h4>
+		<h4 *ngIf="game.status<status.hasPlayers && isOwner">Wachten op spelers...</h4>
 	</mat-card-content>
 	<mat-card-actions>
 		<a mat-raised-button color="primary" routerLink="/games/{{game.id}}/admin" 

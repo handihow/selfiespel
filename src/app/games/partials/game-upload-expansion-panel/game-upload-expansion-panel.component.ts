@@ -51,8 +51,8 @@ export class GameUploadExpansionPanelComponent implements OnInit {
 
   constructor(private storage: AngularFireStorage,
               private route: ActivatedRoute,
-			  private router: Router,
-			  private store: Store<fromRoot.State>,
+			        private router: Router,
+			        private store: Store<fromRoot.State>,
               private gameService: GameService,
               private imageService: ImageService,
               private assignmentService: AssignmentService,
@@ -104,7 +104,10 @@ export class GameUploadExpansionPanelComponent implements OnInit {
   fetchMessages(){
     this.subs.push(this.uiService.fetchMessages(this.gameId).subscribe(messages => {
       messages.forEach(message => {
-        this.notifier.notify( message.style, message.content );
+        if(!message.isShow){
+          this.notifier.notify( message.style, message.content );  
+        }
+        this.uiService.updateMessage(message.id);
       })
     }));
   }
