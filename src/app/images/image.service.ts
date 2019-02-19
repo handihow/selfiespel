@@ -13,6 +13,7 @@ import { User } from '../auth/user.model';
 import { Image } from './image.model';
 import { Reaction } from '../shared/reaction.model';
 import { ReactionType } from '../shared/settings';
+import { Rating } from '../shared/settings';
 
 @Injectable()
 export class ImageService {
@@ -61,44 +62,20 @@ export class ImageService {
 			})
 	}
 
-	reactOnImage(image: Image, user: User, reactionType: ReactionType, comment?: string){
-		//create the like in the db
-		const timestamp = new Date().toISOString();
-		const reaction : Reaction = {
-			userDisplayName: user.displayName,
-			userId: user.uid,
-			imageId: image.id,
-			timestamp: timestamp,
-			gameId: image.gameId,
-			reactionType: reactionType
-		}
-		if(reactionType === ReactionType.comment ){
-			reaction.comment = comment;
-		}
-		return this.db.collection('reactions').add(reaction).then(reaction => {
-			let content : string;
-			switch (reactionType) {
-				case ReactionType.like:
-					content = user.displayName + ' heeft de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' geliked!';
-					break;
-				case ReactionType.comment:
-					content = user.displayName + ' heeft commentaar gegeven op de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' !';
-					break;
-				default:
-					content = user.displayName + ' heeft gereageerd op de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' !';
+	async removeImagesFromStorage(image: Image){
+		//first, remove all images from storage
+		await this.storage.ref(image.path).delete();
+		await this.storage.ref(image.pathOriginal).delete();
+		await this.storage.ref(image.pathTN).delete();
+		//then delete the image record and corresponding message from the database
+		await this.db.collection('images').doc(image.id).delete();
+		await this.db.collection('messages').doc(image.id).delete();
+		//delete any reactions that have been given to the image
+		this.getImageReactions(image.id).subscribe(async reactions => {
+			for (const reaction of reactions) {
+				await this.removeReactionFromImage(reaction.id);    
 			}
-			this.uiService.sendMessage(content, 'info', image.gameId, reaction.id);
-		}).catch(error => {
-			this.uiService.showSnackbar(error.message, null, 3000);
 		})
-	}
-
-	removeReactionFromImage(reactionId: string){
-		this.db.collection('messages').doc(reactionId).delete();
-		return this.db.collection('reactions').doc(reactionId).delete();
 	}
 
 	getGameReactions(gameId: string, reactionType?: ReactionType){
@@ -133,20 +110,57 @@ export class ImageService {
 			}));
 	}
 
-	async removeImagesFromStorage(image: Image){
-		//first, remove all images from storage
-		await this.storage.ref(image.path).delete();
-		await this.storage.ref(image.pathOriginal).delete();
-		await this.storage.ref(image.pathTN).delete();
-		//then delete the image record and corresponding message from the database
-		await this.db.collection('images').doc(image.id).delete();
-		await this.db.collection('messages').doc(image.id).delete();
-		//delete any reactions that have been given to the image
-		this.getImageReactions(image.id).subscribe(async reactions => {
-			for (const reaction of reactions) {
-				await this.removeReactionFromImage(reaction.id);    
+	reactOnImage(image: Image, user: User, reactionType: ReactionType, comment?: string, rating?: Rating){
+		//create the like in the db
+		const timestamp = new Date().toISOString();
+		const reaction : Reaction = {
+			userDisplayName: user.displayName,
+			userId: user.uid,
+			imageId: image.id,
+			timestamp: timestamp,
+			gameId: image.gameId,
+			reactionType: reactionType
+		}
+		if(reactionType === ReactionType.comment ){
+			reaction.comment = comment;
+		}
+		if(reactionType === ReactionType.rating){
+			reaction.rating = rating;
+		}
+		return this.db.collection('reactions').add(reaction).then(reaction => {
+			let content : string;
+			switch (reactionType) {
+				case ReactionType.like:
+					content = user.displayName + ' heeft de selfie met ' 
+								+ image.assignment + ' van ' + image.teamName + ' geliked!';
+					break;
+				case ReactionType.comment:
+					content = user.displayName + ' heeft commentaar gegeven op de selfie met ' 
+								+ image.assignment + ' van ' + image.teamName + ' !';
+					break;
+				case ReactionType.rating:
+					content = user.displayName + ' heeft ' + rating + ' punt(en) gegeven aan de selfie met ' 
+								+ image.assignment + ' van ' + image.teamName + ' !';
+					break;
+				default:
+					content = user.displayName + ' heeft gereageerd op de selfie met ' 
+								+ image.assignment + ' van ' + image.teamName + ' !';
 			}
+			this.uiService.sendMessage(content, 'info', image.gameId, reaction.id);
+		}).catch(error => {
+			this.uiService.showSnackbar(error.message, null, 3000);
 		})
 	}
+
+	updateAwardedPoints(reactionId: string, newValue: number){
+		this.db.collection('reactions').doc(reactionId).update({rating: newValue});
+	}
+
+	removeReactionFromImage(reactionId: string){
+		this.db.collection('messages').doc(reactionId).delete();
+		return this.db.collection('reactions').doc(reactionId).delete();
+	}
+
+	
 
 }

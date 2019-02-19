@@ -21,6 +21,8 @@ import { ReactionType } from '../../../shared/settings';
 import { DialogCommentData } from '../../../shared/dialogCommentData.model';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
+import { Rating } from '../../../shared/settings';
+
 @Component({
   selector: 'app-game-image-viewer',
   templateUrl: './game-image-viewer.component.html',
@@ -34,9 +36,11 @@ export class GameImageViewerComponent implements OnInit {
   user: User;
   subs: Subscription[] = [];
   isOwner: boolean;
+  isJudge: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
   columns: number;
+  get rating() { return Rating; }
 
   constructor(private storage: AngularFireStorage,
               private route: ActivatedRoute,
@@ -77,19 +81,29 @@ export class GameImageViewerComponent implements OnInit {
   fetchImageLikes(){
     this.subs.push(this.imageService.getGameReactions(this.game.id).subscribe(reactions =>{
       this.imageReferences.forEach(imageRef => {
+        //calculate number of likes on the image
         let filteredLikes = reactions.filter(reaction => 
                                       reaction.imageId === imageRef.id && 
                                       reaction.reactionType === ReactionType.like);
         imageRef.likes = filteredLikes.length > 0 ? filteredLikes.length : null;
+        //calculate the number of comments on the image
         let filteredComments = reactions.filter(reaction => 
                                       reaction.imageId === imageRef.id && 
                                       reaction.reactionType === ReactionType.comment);
         imageRef.comments = filteredComments.length > 0 ? filteredComments.length : null;
+        //calculate the ID of the like from this particular user
         let userLikeIndex = reactions.findIndex(reaction => 
                                       reaction.imageId === imageRef.id && 
                                       reaction.userId === this.user.uid && 
                                       reaction.reactionType === ReactionType.like);
         imageRef.userLikeId = userLikeIndex > -1 ? reactions[userLikeIndex].id : null;
+        //calculate the ID and the rating that this user has given to the image
+        let userRatingIndex = reactions.findIndex(reaction => 
+                                      reaction.imageId === imageRef.id && 
+                                      reaction.userId === this.user.uid && 
+                                      reaction.reactionType === ReactionType.rating);
+        imageRef.userAwardedPoints = userRatingIndex > -1 ? reactions[userRatingIndex].rating : null;
+        imageRef.userRatingId = userRatingIndex > -1 ? reactions[userRatingIndex].id : null;
       })
     }))
   }
@@ -120,6 +134,9 @@ export class GameImageViewerComponent implements OnInit {
           if(this.game.owner===this.user.uid){
             this.isOwner = true;
           }
+          if(this.game.judges[this.user.uid]){
+            this.isJudge = true;
+          }
         }
       }));
   }
@@ -129,6 +146,14 @@ export class GameImageViewerComponent implements OnInit {
       this.imageService.removeReactionFromImage(image.userLikeId);
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.like);
+    }
+  }
+
+  onAwardPoints(event, image: Image){
+    if(image.userRatingId){
+      this.imageService.updateAwardedPoints(image.userRatingId, event.value);
+    } else {
+      this.imageService.reactOnImage(image, this.user, ReactionType.rating, null, event.value);
     }
   }
 

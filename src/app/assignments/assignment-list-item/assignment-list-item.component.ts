@@ -3,6 +3,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Assignment } from '../assignment.model';
 import { AssignmentService } from '../assignment.service';
 
+import { UIService } from '../../shared/ui.service';
+import { Rating } from '../../shared/settings';
+
 @Component({
   selector: 'app-assignment-list-item',
   templateUrl: './assignment-list-item.component.html',
@@ -13,8 +16,9 @@ export class AssignmentListItemComponent implements OnInit {
   @Input() assignment: Assignment;
   editMode: boolean;
   assignmentValue: string;
+  get rating() { return Rating; }
 
-  constructor(private assignmentService: AssignmentService) { }
+  constructor(private assignmentService: AssignmentService, private uiService: UIService) { }
 
   ngOnInit() {
   }
@@ -32,6 +36,11 @@ export class AssignmentListItemComponent implements OnInit {
 
   onRemove(){
   	this.assignmentService.deleteAssignment(this.assignment);
+  }
+
+  onChangePoints(event){
+    this.assignment.maxPoints = event.value;
+    this.assignmentService.updateAssignment(this.assignment);
   }
 
 }

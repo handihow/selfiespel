@@ -10,9 +10,11 @@
 	    <mat-panel-title>
 		    {{assignment.assignment}}
 		</mat-panel-title>
-	    <mat-panel-description *ngIf="thumbnails$[i] | async as url">
-		    	<mat-icon>check</mat-icon>
-	    		<img class="avatar" [src]="url">
+	    <mat-panel-description>
+		    	max. {{assignment.maxPoints}} punten
+		    	<span *ngIf="thumbnails$[i] | async as url">
+		    		<img class="avatar" [src]="url">
+		    	</span>
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
 	  <div *ngIf="assignment.id===assignmentId" class="image-handler">

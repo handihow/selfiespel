@@ -1,3 +1,5 @@
+import { Rating } from '../shared/settings';
+
 export interface Image {
 	id?: string;
 	pathOriginal?: string;
@@ -11,7 +13,11 @@ export interface Image {
 	userId?: string;
 	imageState?: string;
 	teamName?: string;
-	likes?: number;
-	userLikeId?: string;
-	comments?: number;
+	maxPoints?: Rating;				//the maximum points coming from the assignment
+	likes?: number;					//the number of likes on the image (calculated)
+	userLikeId?: string;			//the like ID of the user (calculated)
+	comments?: number;				//the number of comments on the image (calculated)
+	userAwardedPoints?: Rating;		//the awarded number of points of the user (calculated)
+	userRatingId?: string;			//the rating ID of the user (calculated)
+
 }

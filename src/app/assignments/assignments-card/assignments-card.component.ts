@@ -17,11 +17,12 @@ import { AssignmentService } from '../assignment.service';
 })
 export class AssignmentsCardComponent implements OnInit, OnDestroy {
   
-  selectedLevel: number = 1;
+  selectedLevel: number = 0;
   levels: any[] = [
-  	{label: "Level 1", level: 1},
+  	{label: "Mix", level: 0},
+    {label: "Level 1", level: 1},
   	{label: "Level 2", level: 2},
-  	{label: "Level 3", level: 3}
+  	{label: "Level 3", level: 3},
   ];
 
   game: Game;
@@ -59,7 +60,10 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   }
 
   onRandomAssignments(level: number, quantity: number){
-  	let filteredAssignments = this.allAssignments.filter(o => o.level == level);
+    let filteredAssignments = this.allAssignments;
+    if(level){
+      filteredAssignments = this.allAssignments.filter(o => o.level == level);
+    }
   	let assignments = [];
     let randomIndeces = [];
   	for (var i = 0; i < quantity; i++){

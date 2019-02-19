@@ -1,10 +1,39 @@
 <mat-list-item *ngIf="!editMode">
 	<mat-icon matListIcon>drag_handle</mat-icon>
-	<p matLine>{{assignment.assignment}}</p>
-	<button mat-icon-button matTooltip="Opdracht bewerken"
-			(click)="onEdit()"><mat-icon>edit</mat-icon></button>
-	<button mat-icon-button matTooltip="Opdracht verwijderen"
-			(click)="onRemove()"><mat-icon>remove</mat-icon></button>
+	<p matLine fxLayout="row" fxLayoutAlign="space-between center">
+		<span>{{assignment.assignment}}</span>
+		<span fxLayout="row" fxLayoutAlign="space-between center">
+			<span>
+				<mat-button-toggle-group [value]="assignment.maxPoints" (change)="onChangePoints($event)">
+				  <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
+				    <mat-icon>check</mat-icon>
+				  </mat-button-toggle>
+				  <mat-button-toggle [value]="rating.medium" matTooltip="3 punten">
+				    <mat-icon>thumb_up_alt</mat-icon>
+				  </mat-button-toggle>
+				  <mat-button-toggle [value]="rating.hard" matTooltip="5 punten">
+				    <mat-icon>whatshot</mat-icon>
+				  </mat-button-toggle>
+				</mat-button-toggle-group>
+			</span>
+			<span>
+				<button mat-icon-button [matMenuTriggerFor]="menu">
+			  	<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #menu="matMenu">
+				  <button mat-menu-item (click)="onEdit()">
+					<mat-icon>edit</mat-icon>
+					<span>Opdracht bewerken</span>
+				  </button>
+				  <button mat-menu-item (click)="onRemove()">
+				  	<mat-icon>remove</mat-icon>
+				  	<span>Opdracht verwijderen</span>
+				  </button>
+				</mat-menu>
+			</span>
+		</span>
+	</p>
+	
 </mat-list-item>
 
 <mat-list-item *ngIf="editMode">

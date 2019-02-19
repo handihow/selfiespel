@@ -19,10 +19,9 @@
 <mat-card class="full-width" *ngIf="game?.status===status.assigned && isVisible">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
-		<mat-card-subtitle>Dit zijn de opdrachten</mat-card-subtitle>
+		<mat-card-subtitle>Maak een selfie met ....</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<p>Maak een selfie met ....</p>
 		<mat-list cdkDropList (cdkDropListDropped)="drop($event)" class="list">
 		  <div *ngFor="let assignment of assignments" cdkDrag class="list-item">
 		    <app-assignment-list-item [assignment]="assignment"></app-assignment-list-item>

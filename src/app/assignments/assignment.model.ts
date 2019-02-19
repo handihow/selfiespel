@@ -1,8 +1,12 @@
+import { Rating } from '../shared/settings';
+
 export interface Assignment {
   assignment: string;
-  order: number;
+  order?: number;
+  theme?: string;
   id?: string;
   isOutside?: boolean;
-  level?: number;
+  level: number;
   gameId?: string;
+  maxPoints: Rating;
 }

@@ -82,7 +82,8 @@ export class FileUploadComponent implements OnInit {
        userId: this.userId,
        gameId: this.gameId,
        teamName: this.team.name,
-       assignment: this.assignment.assignment
+       assignment: this.assignment.assignment,
+       maxPoints: this.assignment.maxPoints.toString()
      };
 
     // The main task

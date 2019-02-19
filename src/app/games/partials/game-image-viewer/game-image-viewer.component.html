@@ -1,3 +1,8 @@
+<section fxLayout="column" fxLayoutAlign="center center">
+  <mat-divider [inset]="true"></mat-divider>
+  <h2 *ngIf="imageReferences?.length===0">Nog geen foto's</h2>
+</section>
+
 <mat-grid-list [cols]="columns" rowHeight="1:1">
   <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
   	<mat-grid-tile-header>{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
@@ -18,14 +23,21 @@
     			<mat-icon [matBadge]="imageRef.comments" matBadgeColor="accent">insert_comment</mat-icon>
     		</button>
       </span>
-      <span>
-        <button mat-icon-button>
-          <mat-icon>remove</mat-icon>
-        </button>
-        3
-        <button mat-icon-button>
-          <mat-icon>add</mat-icon>
-        </button>
+      <span *ngIf="isJudge || isOwner">
+       <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
+          <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
+            <mat-icon>remove</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
+            <mat-icon>check</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="rating.medium" matTooltip="3 punten" [disabled]="imageRef.maxPoints < rating.medium">
+            <mat-icon>thumb_up_alt</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="rating.hard" matTooltip="5 punten" [disabled]="imageRef.maxPoints < rating.hard">
+            <mat-icon>whatshot</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
       </span>
   	</mat-grid-tile-footer>
   </mat-grid-tile>

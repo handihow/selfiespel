@@ -1,4 +1,5 @@
 import { ReactionType } from './settings';
+import { Rating } from './settings';
 
 export interface Reaction {
 	comment?: string;
@@ -8,5 +9,7 @@ export interface Reaction {
 	gameId: string;
 	id?: string;
 	timestamp: string;
-	reactionType: ReactionType
+	reactionType: ReactionType;
+	rating?: Rating;
+
 }

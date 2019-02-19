@@ -7,7 +7,7 @@
 	<mat-horizontal-stepper>
 		<mat-step>
 			<ng-template matStepLabel>Juryleden</ng-template>
-			<div fxLayout="row" fxLayoutAlign="space-around stretch">
+			<div fxLayout="row" fxLayoutAlign="space-around stretch" fxLayout.xs="column" fxLayoutGap="10px">
 				<app-judges-card  [user]="user"></app-judges-card>
 				<app-players-card [user]="user"></app-players-card>
 			</div>
@@ -39,7 +39,7 @@
 		</mat-step>
 
 		<mat-step>
-			<ng-template matStepLabel>Speel</ng-template>
+			<ng-template matStepLabel>Acties</ng-template>
 			<div class="stepper">
 				<app-actions-card></app-actions-card>
 			</div>

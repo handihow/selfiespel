@@ -82,7 +82,8 @@ export const generateThumbs = functions.storage
 		teamId: metaData ? metaData.teamId: null,
 		userId: metaData ? metaData.userId : null,
 		teamName: metaData ? metaData.teamName : null,
-		assignment: metaData ? metaData.assignment : null
+		assignment: metaData ? metaData.assignment : null,
+		maxPoints: metaData ? parseInt(metaData.maxPoints) : 1
 	}).then( _ => {
 		const timestamp = new Date().toISOString();
 		const messageRef = db.collection('messages').doc(uniqueIdentifier ? uniqueIdentifier : undefined)

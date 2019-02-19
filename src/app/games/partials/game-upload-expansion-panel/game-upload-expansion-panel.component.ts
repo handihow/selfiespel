@@ -23,7 +23,6 @@ import { TeamService } from '../../../teams/team.service';
 import { ImageViewerComponent } from '../../../images/image-viewer/image-viewer.component';
 
 import { UIService } from '../../../shared/ui.service';
-import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-game-upload-expansion-panel',
@@ -45,8 +44,6 @@ export class GameUploadExpansionPanelComponent implements OnInit {
   thumbnails$: Observable<string>[] = [];
   assignments: Assignment[];
 
-  private readonly notifier: NotifierService;
-
   @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
 
   constructor(private storage: AngularFireStorage,
@@ -57,8 +54,7 @@ export class GameUploadExpansionPanelComponent implements OnInit {
               private imageService: ImageService,
               private assignmentService: AssignmentService,
               private teamService: TeamService,
-              private uiService: UIService,
-              notifierService: NotifierService) { this.notifier = notifierService; }
+              private uiService: UIService) { }
 
   ngOnInit() {
   	this.gameId = this.route.snapshot.paramMap.get('id');
@@ -67,15 +63,6 @@ export class GameUploadExpansionPanelComponent implements OnInit {
   			this.game = game;
         this.setUser();
         this.fetchAssignments();
-        this.teamService.fetchTeam(this.gameId, this.user.uid).subscribe(team => {
-          if(!team){
-            this.uiService.showSnackbar("Je bent niet ingedeeld in een team voor dit spel", null, 3000);
-            return this.router.navigate(["/games"]);
-          }
-          this.team = team;
-          this.fetchImages();
-          this.fetchMessages();
-        });
   		}
   	}));
   }
@@ -90,26 +77,29 @@ export class GameUploadExpansionPanelComponent implements OnInit {
     this.subs.push(this.assignmentService.fetchAssignments(this.gameId).subscribe(assignments => {
        if(assignments){
          this.assignments = assignments;
+         this.fetchTeam();
        }
     }))
   }
 
-  fetchImages(){
-    this.subs.push(this.imageService.fetchImageReferences(this.game.id, this.team.id).subscribe(thumbnailReferences =>{
-        this.thumbnailReferences = thumbnailReferences;
-        this.createThumbnailArray();
-      }))
+  fetchTeam(){
+    this.subs.push(this.teamService.fetchTeam(this.gameId, this.user.uid).subscribe(team => {
+      if(!team){
+        this.uiService.showSnackbar("Je bent niet ingedeeld in een team voor dit spel", null, 3000);
+        return this.router.navigate(["/games"]);
+      }
+      this.team = team;
+      this.fetchImages();
+    }));
   }
 
-  fetchMessages(){
-    this.subs.push(this.uiService.fetchMessages(this.gameId).subscribe(messages => {
-      messages.forEach(message => {
-        if(!message.isShow){
-          this.notifier.notify( message.style, message.content );  
-        }
-        this.uiService.updateMessage(message.id);
-      })
-    }));
+  fetchImages(){
+    this.subs.push(this.imageService.fetchImageReferences(this.game.id, this.team.id).subscribe(thumbnailReferences =>{
+        if(thumbnailReferences){
+          this.thumbnailReferences = thumbnailReferences;
+          this.createThumbnailArray();
+        }  
+      }))
   }
 
   setUser(){

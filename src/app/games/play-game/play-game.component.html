@@ -1,11 +1,17 @@
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="Spel">
-    <app-game-upload-expansion-panel></app-game-upload-expansion-panel>
+  	<ng-template matTabContent>
+	    <app-game-upload-expansion-panel></app-game-upload-expansion-panel>
+	</ng-template>
   </mat-tab>
   <mat-tab label="Foto's">
-    <app-game-image-viewer></app-game-image-viewer>
+  	<ng-template matTabContent>
+	    <app-game-image-viewer></app-game-image-viewer>
+	</ng-template>
   </mat-tab>
   <mat-tab label="Beheer" *ngIf="isOwner">
-    <app-actions-card></app-actions-card>
+  	<ng-template matTabContent>
+	    <app-actions-card></app-actions-card>
+	</ng-template>
   </mat-tab>
 </mat-tab-group>
