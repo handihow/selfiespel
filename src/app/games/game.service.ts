@@ -10,6 +10,9 @@ import * as fromUI from '../shared/ui.reducer';
 
 import { Game } from './games.model';
 import { User } from '../auth/user.model';
+import { Progress } from '../shared/progress.model';
+import { ReactionType } from '../shared/settings';
+import { Reaction } from '../shared/reaction.model';
 
 @Injectable()
 export class GameService {
@@ -185,6 +188,34 @@ export class GameService {
 		.catch(error => {
 			this.uiService.showSnackbar(error.message, null, 3000);
 		})
+	}
+
+
+	fetchTeamProgress(teamId: string){
+ 		return this.db.collection('progress').doc(teamId).valueChanges();
+	}
+
+
+	fetchSummaryGameReactions(gameId: string, reactionType: ReactionType){
+		return this.db.collection(ReactionType[reactionType] + 's').doc(gameId)
+			.valueChanges()
+	}
+
+	fetchGameReactions(gameId: string, reactionType?: ReactionType){
+		let queryStr = (ref => ref.where('gameId', '==', gameId));
+		if(reactionType){
+			queryStr = (ref => ref.where('gameId', '==', gameId)
+				                  .where('reactionType', '==', reactionType));
+		}
+		return this.db.collection('reactions', queryStr)
+			.snapshotChanges().pipe(
+			map(docArray => {
+				return docArray.map(doc => {
+						const data = doc.payload.doc.data() as Reaction;
+						const id = doc.payload.doc.id;
+						return { id, ...data };
+					})
+			}));
 	}
 	
 		

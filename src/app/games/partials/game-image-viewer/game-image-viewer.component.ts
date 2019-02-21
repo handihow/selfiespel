@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
@@ -11,7 +11,6 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { GameService } from '../../game.service';
 import { Game } from '../../games.model';
 import { User } from '../../../auth/user.model';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Image } from '../../../images/image.model';
 import { ImageService } from '../../../images/image.service';
@@ -20,6 +19,8 @@ import { ReactionType } from '../../../shared/settings';
 
 import { DialogCommentData } from '../../../shared/dialogCommentData.model';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
+
+import { ImageDisplayDialogComponent } from '../../../images/image-display-dialog/image-display-dialog.component';
 
 import { Rating } from '../../../shared/settings';
 
@@ -37,13 +38,12 @@ export class GameImageViewerComponent implements OnInit {
   subs: Subscription[] = [];
   isOwner: boolean;
   isJudge: boolean;
-  imageReferences: Image[];
-  images$: Observable<string>[] = [];
+  @Input() imageReferences: Image[];
+  @Input() images$: Observable<string>[] = [];
   columns: number;
   get rating() { return Rating; }
 
-  constructor(private storage: AngularFireStorage,
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
 			        private router: Router,
 			        private store: Store<fromRoot.State>,
               private gameService: GameService,
@@ -56,7 +56,6 @@ export class GameImageViewerComponent implements OnInit {
   		if(game){
   			this.game = game;
         	this.setUser();
-          this.fetchImages();
   		}
   	}));
     this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
@@ -67,53 +66,6 @@ export class GameImageViewerComponent implements OnInit {
   ngOnDestroy(){
     this.subs.forEach(sub => {
     	sub.unsubscribe();
-    })
-  }
-
-  fetchImages(){
-    this.subs.push(this.imageService.fetchImageReferences(this.game.id).subscribe(imageReferences =>{
-      this.imageReferences = imageReferences;
-      this.fetchImageLikes();
-      this.createImageArray();
-    }))
-  }
-
-  fetchImageLikes(){
-    this.subs.push(this.imageService.getGameReactions(this.game.id).subscribe(reactions =>{
-      this.imageReferences.forEach(imageRef => {
-        //calculate number of likes on the image
-        let filteredLikes = reactions.filter(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.reactionType === ReactionType.like);
-        imageRef.likes = filteredLikes.length > 0 ? filteredLikes.length : null;
-        //calculate the number of comments on the image
-        let filteredComments = reactions.filter(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.reactionType === ReactionType.comment);
-        imageRef.comments = filteredComments.length > 0 ? filteredComments.length : null;
-        //calculate the ID of the like from this particular user
-        let userLikeIndex = reactions.findIndex(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.userId === this.user.uid && 
-                                      reaction.reactionType === ReactionType.like);
-        imageRef.userLikeId = userLikeIndex > -1 ? reactions[userLikeIndex].id : null;
-        //calculate the ID and the rating that this user has given to the image
-        let userRatingIndex = reactions.findIndex(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.userId === this.user.uid && 
-                                      reaction.reactionType === ReactionType.rating);
-        imageRef.userAwardedPoints = userRatingIndex > -1 ? reactions[userRatingIndex].rating : null;
-        imageRef.userRatingId = userRatingIndex > -1 ? reactions[userRatingIndex].id : null;
-      })
-    }))
-  }
-
-  createImageArray(){
-    this.images$ = [];
-    this.imageReferences.forEach(imageRef => {
-      const ref = this.storage.ref(imageRef.path);
-      const downloadURL$ = ref.getDownloadURL();
-      this.images$.push(downloadURL$);
     })
   }
 
@@ -144,8 +96,10 @@ export class GameImageViewerComponent implements OnInit {
   likeImage(image: Image){
     if(image.userLikeId){
       this.imageService.removeReactionFromImage(image.userLikeId);
+      image.likes -= 1;
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.like);
+      image.likes += 1;
     }
   }
 
@@ -165,13 +119,19 @@ export class GameImageViewerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(comment => {
       if(comment){
-        this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment); 
+        this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment);
+        image.comments += 1; 
       }
     });
   }
 
   onOpenImage(image: Image){
-    console.log(image);
+    this.dialog.open(ImageDisplayDialogComponent, {
+      data: {
+        image: image,
+        user: this.user
+      }
+    });
   }
 
 }

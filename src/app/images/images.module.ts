@@ -7,13 +7,15 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileSizePipe } from './file-size.pipe';
 
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { ImageDisplayDialogComponent } from './image-display-dialog/image-display-dialog.component';
 
 @NgModule({
   declarations: [
 	  DropZoneDirective,
 	  FileUploadComponent,
 	  FileSizePipe,
-	  ImageViewerComponent
+	  ImageViewerComponent,
+	  ImageDisplayDialogComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,9 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
   exports: [
   	DropZoneDirective,
 	  FileUploadComponent,
-	  ImageViewerComponent
-  ]
+	  ImageViewerComponent,
+    ImageDisplayDialogComponent
+  ],
+  entryComponents: [ImageDisplayDialogComponent]
 })
 export class ImagesModule { }

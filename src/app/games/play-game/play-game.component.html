@@ -1,17 +1,34 @@
 <mat-tab-group mat-align-tabs="center">
   <mat-tab label="Spel">
   	<ng-template matTabContent>
-	    <app-game-upload-expansion-panel></app-game-upload-expansion-panel>
-	</ng-template>
+	    <app-game-upload-expansion-panel
+                  [thumbnailReferences]="thumbnailReferences"
+                  [thumbnails$]="thumbnails$"
+                  [assignments]="assignments"
+                  [game]="game"
+                  [team]="team"
+                  [user]="user"></app-game-upload-expansion-panel>
+	  </ng-template>
   </mat-tab>
-  <mat-tab label="Foto's">
+  <mat-tab label="Selfies">
   	<ng-template matTabContent>
-	    <app-game-image-viewer></app-game-image-viewer>
-	</ng-template>
+	    <app-game-image-viewer 
+                  [imageReferences]="imageReferences"
+                  [images$]="images$"></app-game-image-viewer>
+	  </ng-template>
   </mat-tab>
-  <mat-tab label="Beheer" *ngIf="isOwner">
+  <mat-tab label="Score">
   	<ng-template matTabContent>
-	    <app-actions-card></app-actions-card>
-	</ng-template>
+      <div class="score-display">
+        <app-score-board [game]="game"></app-score-board>
+      </div>
+	  </ng-template>
+  </mat-tab>
+  <mat-tab label="Acties" *ngIf="isOwner">
+    <ng-template matTabContent>
+      <div class="score-display">
+          <app-actions-card></app-actions-card>
+      </div>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>

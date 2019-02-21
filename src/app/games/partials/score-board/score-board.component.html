@@ -1,0 +1,28 @@
+<h3>Scoreboard</h3>
+<mat-list>
+   <div *ngFor="let team of teams">
+	   <h3 matSubheader>{{team?.name}}</h3>
+	   <mat-list-item>
+	      <mat-icon matListIcon>face</mat-icon>
+	      <h4 matLine>Deelnemers:</h4>
+	      <p matLine>
+	      	<span *ngFor="let participant of team?.participants; let i=index">
+	      		{{participant.displayName}}{{ i === team?.participants.length - 1 ? '' : ', '}}
+	      	</span>
+	      </p>
+	   </mat-list-item>
+	   <mat-divider></mat-divider>
+	   <mat-list-item>
+	      <mat-icon matListIcon>photo_camera</mat-icon>
+	      <h4 matLine>Opdrachten uitgevoerd:</h4>
+	      <p matLine>{{team?.progress}} opdrachten</p>
+	   </mat-list-item>
+	   <mat-divider></mat-divider>
+	   <mat-list-item>
+	      <mat-icon matListIcon>assessment</mat-icon>
+	      <h4 matLine>Totale score:</h4>
+	      <p matLine>32 punten</p>
+	   </mat-list-item>
+	   <mat-divider></mat-divider>
+	</div>
+</mat-list>

@@ -7,5 +7,9 @@ export interface Team {
   members?: Participants;
   id?: string;
   gameId?: string;
-  participants?: User[]; 
+  //dynamically set helper properties
+  participants?: User[];
+  progress?: number;
+  rating?: number;
+  
 }

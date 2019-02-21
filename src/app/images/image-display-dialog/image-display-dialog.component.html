@@ -1,0 +1,19 @@
+<h3 mat-dialog-title>{{image.teamName}} met {{image.assignment}}</h3>
+<div mat-dialog-content>
+ 	<app-image-viewer [userId]="user?.uid" [gameId]="image?.gameId" [teamId]="image.teamId"
+		  					[assignmentId]="image.assignmentId"></app-image-viewer>
+	Likes van <span *ngFor="let like of likes; let i = index">
+						{{like.userDisplayName}} {{ i === likes.length - 1 ? '' : ', '}}
+			  </span>
+	<mat-list>
+	  <mat-list-item *ngFor="let comment of comments">
+	    <h3 matLine> {{comment.userDisplayName}} </h3>
+	    <p matLine>
+	      {{comment.comment}}
+	    </p>
+	  </mat-list-item>
+	</mat-list>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Sluiten</button>
+</div>

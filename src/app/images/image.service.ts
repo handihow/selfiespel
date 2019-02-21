@@ -69,7 +69,6 @@ export class ImageService {
 		await this.storage.ref(image.pathTN).delete();
 		//then delete the image record and corresponding message from the database
 		await this.db.collection('images').doc(image.id).delete();
-		await this.db.collection('messages').doc(image.id).delete();
 		//delete any reactions that have been given to the image
 		this.getImageReactions(image.id).subscribe(async reactions => {
 			for (const reaction of reactions) {
@@ -78,11 +77,8 @@ export class ImageService {
 		})
 	}
 
-	getGameReactions(gameId: string, reactionType?: ReactionType){
-		let queryStr = (ref => ref.where('gameId', '==', gameId));
-		if(reactionType){
-			queryStr = (ref => ref.where('gameId', '==', gameId).where('reactionType', '==', reactionType));
-		}
+	getUserGameReactions(gameId: string, userId: string){
+		let queryStr = (ref => ref.where('gameId', '==', gameId).where('userId', '==', userId));
 		return this.db.collection('reactions', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -97,7 +93,8 @@ export class ImageService {
 	getImageReactions(imageId: string, reactionType?: ReactionType){
 		let queryStr = (ref => ref.where('imageId', '==', imageId));
 		if(reactionType){
-			queryStr = (ref => ref.where('imageId', '==', imageId).where('reactionType', '==', reactionType));
+			queryStr = (ref => ref.where('imageId', '==', imageId)
+				                  .where('reactionType', '==', reactionType));
 		}
 		return this.db.collection('reactions', queryStr)
 			.snapshotChanges().pipe(
@@ -119,7 +116,9 @@ export class ImageService {
 			imageId: image.id,
 			timestamp: timestamp,
 			gameId: image.gameId,
-			reactionType: reactionType
+			reactionType: reactionType,
+			assignment: image.assignment,
+			teamName: image.teamName
 		}
 		if(reactionType === ReactionType.comment ){
 			reaction.comment = comment;
@@ -127,40 +126,19 @@ export class ImageService {
 		if(reactionType === ReactionType.rating){
 			reaction.rating = rating;
 		}
-		return this.db.collection('reactions').add(reaction).then(reaction => {
-			let content : string;
-			switch (reactionType) {
-				case ReactionType.like:
-					content = user.displayName + ' heeft de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' geliked!';
-					break;
-				case ReactionType.comment:
-					content = user.displayName + ' heeft commentaar gegeven op de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' !';
-					break;
-				case ReactionType.rating:
-					content = user.displayName + ' heeft ' + rating + ' punt(en) gegeven aan de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' !';
-					break;
-				default:
-					content = user.displayName + ' heeft gereageerd op de selfie met ' 
-								+ image.assignment + ' van ' + image.teamName + ' !';
-			}
-			this.uiService.sendMessage(content, 'info', image.gameId, reaction.id);
-		}).catch(error => {
+		return this.db.collection('reactions').add(reaction)
+		.catch(error => {
 			this.uiService.showSnackbar(error.message, null, 3000);
 		})
 	}
 
 	updateAwardedPoints(reactionId: string, newValue: number){
-		this.db.collection('reactions').doc(reactionId).update({rating: newValue});
+		return this.db.collection('reactions').doc(reactionId).update({rating: newValue});
 	}
 
 	removeReactionFromImage(reactionId: string){
-		this.db.collection('messages').doc(reactionId).delete();
 		return this.db.collection('reactions').doc(reactionId).delete();
 	}
-
 	
 
 }
