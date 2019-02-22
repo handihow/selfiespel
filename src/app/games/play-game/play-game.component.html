@@ -12,9 +12,11 @@
   </mat-tab>
   <mat-tab label="Selfies">
   	<ng-template matTabContent>
-	    <app-game-image-viewer 
+	    <app-images-grid-view 
+                  [game]="game"
+                  [user]="user"
                   [imageReferences]="imageReferences"
-                  [images$]="images$"></app-game-image-viewer>
+                  [images$]="images$"></app-images-grid-view>
 	  </ng-template>
   </mat-tab>
   <mat-tab label="Score">

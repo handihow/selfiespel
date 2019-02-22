@@ -18,8 +18,6 @@ import { JudgesCardComponent } from './partials/judges-card/judges-card.componen
 import { PlayersCardComponent } from './partials/players-card/players-card.component';
 import { ActionsCardComponent } from './partials/actions-card/actions-card.component';
 import { GameUploadExpansionPanelComponent } from './partials/game-upload-expansion-panel/game-upload-expansion-panel.component';
-import { GameImageViewerComponent } from './partials/game-image-viewer/game-image-viewer.component';
-import { CommentDialogComponent } from './partials/comment-dialog/comment-dialog.component';
 import { ScoreBoardComponent } from './partials/score-board/score-board.component';
 
 
@@ -36,8 +34,7 @@ import { ScoreBoardComponent } from './partials/score-board/score-board.componen
   	PlayersCardComponent, 
   	ActionsCardComponent, 
     GameUploadExpansionPanelComponent, 
-    GameImageViewerComponent, 
-    CommentDialogComponent, ScoreBoardComponent
+    ScoreBoardComponent
   ],
   imports: [
     CommonModule,
@@ -46,9 +43,6 @@ import { ScoreBoardComponent } from './partials/score-board/score-board.componen
     AssignmentsModule,
     TeamsModule,
     ImagesModule
-  ],
-  entryComponents: [ 
-    CommentDialogComponent 
   ]
 })
 export class GamesModule { }

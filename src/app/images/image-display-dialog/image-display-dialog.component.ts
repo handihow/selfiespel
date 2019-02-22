@@ -1,10 +1,12 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Subscription } from 'rxjs';
 
 import { Image } from '../image.model';
 import { ImageService } from '../image.service';
 import { User } from '../../auth/user.model';
+
+import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
 import { Reaction } from '../../shared/reaction.model';
 import { ReactionType } from '../../shared/settings';
@@ -22,6 +24,8 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
   likes: Reaction[];
   ratings: Reaction[];
   sub: Subscription;
+
+  @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
 
   constructor(	private dialogRef: MatDialogRef<ImageDisplayDialogComponent>,
     			      @Inject(MAT_DIALOG_DATA) private data: any,
@@ -44,6 +48,18 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
   
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onRotate(){
+    this.child.rotate();
+  }
+
+  onDownload(){
+    this.child.download();
+  }
+
+  onRemoveImage(){
+    this.child.deleteImage();
   }
 
 }

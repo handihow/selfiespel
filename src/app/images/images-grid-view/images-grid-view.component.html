@@ -1,13 +1,13 @@
 <section fxLayout="column" fxLayoutAlign="center center">
   <mat-divider [inset]="true"></mat-divider>
-  <h2 *ngIf="imageReferences?.length===0">Nog geen foto's</h2>
+  <h2 *ngIf="imageReferences?.length===0">Nog geen selfies</h2>
 </section>
 
 <mat-grid-list [cols]="columns" rowHeight="1:1">
   <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
-  	<mat-grid-tile-header>{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
+  	<mat-grid-tile-header *ngIf="game">{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
   	<img [src]="images$[i] | async" class="tile-image" (click)="onOpenImage(imageRef)">
-  	<mat-grid-tile-footer  fxLayout="row" fxLayoutAlign="space-between center">
+  	<mat-grid-tile-footer  fxLayout="row" fxLayoutAlign="space-between center" *ngIf="game">
   		<span>
         <button mat-icon-button 
                   matTooltip="Like" 

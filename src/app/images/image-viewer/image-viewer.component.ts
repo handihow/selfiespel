@@ -48,13 +48,12 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   @Input() gameId: string;
   screenType$: Observable<string>;
   @Output() containsImage = new EventEmitter<boolean>();
-  sub: Subscription;
+  subs: Subscription[] =[];
   imageState: string = '';
   image: Image;
 
   // Download URL
-  downloadURL$: Observable<string>;
-
+  downloadURL: string;
 
   constructor(  private storage: AngularFireStorage, 
                 private db: AngularFirestore, 
@@ -69,24 +68,30 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
 
   ngOnChanges(){
   	if(typeof this.assignmentId !== 'undefined'){
-  		this.sub = this.imageService.fetchImageReference(this.assignmentId, this.gameId, this.teamId)
+  		this.subs.push(this.imageService.fetchImageReference(this.assignmentId, this.gameId, this.teamId)
       .subscribe(references => {
 	  		if(references && references[0]){
           this.image = references[0];
 	  			this.containsImage.emit(true);
 	  			const ref = this.storage.ref(this.image.path);
           this.imageState = this.image.imageState ? this.image.imageState : '';
-	  			this.downloadURL$ = ref.getDownloadURL();
+	  			this.subs.push(ref.getDownloadURL().subscribe(url => {
+            if(url){
+              this.downloadURL = url;  
+            }
+          }));
 	  		} else {
           this.containsImage.emit(false);
         }
-	  	});
+	  	}));
   	}
   	
   }
 
   ngOnDestroy(){
-  	this.sub.unsubscribe();
+  	this.subs.forEach(sub => {
+       sub.unsubscribe(); 
+    });
   }
 
   rotate() {
@@ -101,6 +106,10 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
     }
     this.image.imageState = this.imageState;
     this.imageService.updateImageReference(this.image);
+  }
+
+  download(){
+    window.open(this.downloadURL,'_blank')
   }
 
   deleteImage(){

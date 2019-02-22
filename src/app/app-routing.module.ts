@@ -7,6 +7,10 @@ const routes: Routes = [
 	{
 	  path: 'games',
 	  loadChildren: './games/games.module#GamesModule'
+	},
+	{
+	  path: 'selfies',
+	  loadChildren: './selfies/selfies.module#SelfiesModule'
 	}
 ];
 

@@ -6,6 +6,7 @@
       [opened]="!(isHandset$ | async)">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
       <a mat-list-item routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
       <a mat-list-item routerLink="/profile" *ngIf="isAuth$ | async">Account</a>
       <a mat-list-item routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
@@ -25,10 +26,18 @@
       <span><img src="/assets/selfieTheGame.png" class="selfieTheGame"></span>
       <span class="spacer"></span>
       <div [ngClass]="{hidden: isHandset$ | async}">
+        <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
-        <a routerLinkActive="active" routerLink="/profile" *ngIf="isAuth$ | async">Account</a>
         <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
       </div>
+      <button mat-mini-fab [matMenuTriggerFor]="profile" *ngIf="isAuth$ | async">
+        {{(user$ | async)?.displayName.charAt(0)}}
+      </button>
+      <mat-menu #profile="matMenu">
+        <button mat-menu-item disabled="true" id="displayName">{{(user$ | async)?.displayName}}</button>
+        <button routerLink="/profile" mat-menu-item>Profiel</button>
+        <button style="cursor: pointer" (click)="onLogout()" mat-menu-item>Log uit</button>
+      </mat-menu>
     </mat-toolbar>
     <ng-content></ng-content>
     <!-- Add Content Here -->

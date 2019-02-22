@@ -1,63 +1,51 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../app.reducer'; 
+import * as fromRoot from '../../app.reducer'; 
 import { Subscription, Observable, of } from 'rxjs';
 
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-import { GameService } from '../../game.service';
-import { Game } from '../../games.model';
-import { User } from '../../../auth/user.model';
+import { Game } from '../../games/games.model';
+import { User } from '../../auth/user.model';
 
-import { Image } from '../../../images/image.model';
-import { ImageService } from '../../../images/image.service';
-import { Reaction } from '../../../shared/reaction.model';
-import { ReactionType } from '../../../shared/settings';
+import { Image } from '../image.model';
+import { ImageService } from '../image.service';
+import { Reaction } from '../../shared/reaction.model';
+import { ReactionType } from '../../shared/settings';
 
-import { DialogCommentData } from '../../../shared/dialogCommentData.model';
+import { DialogCommentData } from '../../shared/dialogCommentData.model';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
-import { ImageDisplayDialogComponent } from '../../../images/image-display-dialog/image-display-dialog.component';
+import { ImageDisplayDialogComponent } from '../image-display-dialog/image-display-dialog.component';
 
-import { Rating } from '../../../shared/settings';
+import { Rating } from '../../shared/settings';
 
 @Component({
-  selector: 'app-game-image-viewer',
-  templateUrl: './game-image-viewer.component.html',
-  styleUrls: ['./game-image-viewer.component.css']
+  selector: 'app-images-grid-view',
+  templateUrl: './images-grid-view.component.html',
+  styleUrls: ['./images-grid-view.component.css']
 })
-export class GameImageViewerComponent implements OnInit {
+export class ImagesGridViewComponent implements OnInit {
 
-  gameId: string;
-  assignmentId: string;
-  game: Game;
-  user: User;
+
+  @Input() game: Game;
+  @Input() user: User;
+  @Input() imageReferences: Image[];
+  @Input() images$: Observable<string>[] = [];
+  
   subs: Subscription[] = [];
   isOwner: boolean;
   isJudge: boolean;
-  @Input() imageReferences: Image[];
-  @Input() images$: Observable<string>[] = [];
+  
   columns: number;
   get rating() { return Rating; }
 
-  constructor(private route: ActivatedRoute,
-			        private router: Router,
-			        private store: Store<fromRoot.State>,
-              private gameService: GameService,
+  constructor(private store: Store<fromRoot.State>,
               private dialog: MatDialog,
               private imageService: ImageService) { }
 
   ngOnInit() {
-  	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game=> {
-  		if(game){
-  			this.game = game;
-        	this.setUser();
-  		}
-  	}));
     this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
       this.setColumns(screentype);
     }))
@@ -67,6 +55,12 @@ export class GameImageViewerComponent implements OnInit {
     this.subs.forEach(sub => {
     	sub.unsubscribe();
     })
+  }
+
+  ngOnChanges(){
+    if(this.game && this.user){
+      this.setUser();
+    }
   }
 
   setColumns(screentype){
@@ -80,17 +74,12 @@ export class GameImageViewerComponent implements OnInit {
   }
 
   setUser(){
-      this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
-        if(user){
-          this.user = user;
-          if(this.game.owner===this.user.uid){
-            this.isOwner = true;
-          }
-          if(this.game.judges[this.user.uid]){
-            this.isJudge = true;
-          }
-        }
-      }));
+      if(this.game.owner===this.user.uid){
+        this.isOwner = true;
+      }
+      if(this.game.judges[this.user.uid]){
+        this.isJudge = true;
+      }
   }
 
   likeImage(image: Image){

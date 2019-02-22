@@ -81,6 +81,7 @@ export class PlayGameComponent implements OnInit {
           if(this.game.owner===this.user.uid){
             this.isOwner = true;
           }
+          this.fetchTeam();
         }
       }));
   }

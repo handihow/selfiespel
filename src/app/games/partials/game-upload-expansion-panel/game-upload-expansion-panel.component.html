@@ -18,13 +18,20 @@
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
 	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
-		  <app-file-upload [userId]="user?.uid" [gameId]="game?.id" [team]="team" 
+		  <app-file-upload 	[userId]="user?.uid" 
+		  					[gameId]="game?.id" 
+		  					[team]="team" 
 		  					[assignment]="assignment" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
-		  <app-image-viewer [userId]="user?.uid" [gameId]="game?.id" [teamId]="team.id" [hidden]="!containsImage"
-		  					[assignmentId]="assignmentId" (containsImage)="retrieveImageState($event)"></app-image-viewer>
+		  <app-image-viewer 
+		  					[userId]="user?.uid" 
+		  					[gameId]="game?.id" 
+		  					[teamId]="team?.id" 
+		  					[hidden]="!containsImage"
+		  					[assignmentId]="assignmentId" 
+		  					(containsImage)="retrieveImageState($event)"></app-image-viewer>
 	  </div>
 	   <mat-action-row *ngIf="containsImage">
-	    <button mat-button (click)="onRotate()">Roteren</button>
+	    <!-- <button mat-button (click)="onRotate()">Roteren</button> -->
 	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
 	  </mat-action-row>
 	</mat-expansion-panel>

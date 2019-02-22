@@ -51,6 +51,19 @@ export class ImageService {
 			}))
 	}
 
+	fetchUserImageReferences(userId: string): Observable<Image[]>{
+		let queryStr = (ref => ref.where('userId', '==', userId));
+		return this.db.collection('images', queryStr)
+			.snapshotChanges().pipe(
+			map(docArray => {
+				return docArray.map(doc => {
+						const data = doc.payload.doc.data() as Image;
+						const id = doc.payload.doc.id;
+						return { id, ...data };
+					})
+			}))
+	}
+
 	updateImageReference(image: Image){
 		return this.db.collection('images').doc(image.id).set(image, {merge: true})
 			.then( _ => {
