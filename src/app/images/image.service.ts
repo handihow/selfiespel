@@ -129,6 +129,8 @@ export class ImageService {
 			imageId: image.id,
 			timestamp: timestamp,
 			gameId: image.gameId,
+			teamId: image.teamId,
+			assignmentId: image.assignmentId,
 			reactionType: reactionType,
 			assignment: image.assignment,
 			teamName: image.teamName

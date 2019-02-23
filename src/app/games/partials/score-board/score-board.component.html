@@ -21,7 +21,7 @@
 	   <mat-list-item>
 	      <mat-icon matListIcon>assessment</mat-icon>
 	      <h4 matLine>Totale score:</h4>
-	      <p matLine>32 punten</p>
+	      <p matLine>{{score ? score[team?.id] ? score[team?.id]['total'] : 0 : 0}}</p>
 	   </mat-list-item>
 	   <mat-divider></mat-divider>
 	</div>

@@ -82,6 +82,7 @@ export const generateThumbs = functions.storage
 		userId: metaData ? metaData.userId : '',
 		teamName: metaData ? metaData.teamName : '',
 		assignment: metaData ? metaData.assignment : '',
+		timestamp: new Date().toISOString(),
 		maxPoints: metaData ? parseInt(metaData.maxPoints) : 1
 	}
 	return db.collection('images').add(image).then(async doc => {

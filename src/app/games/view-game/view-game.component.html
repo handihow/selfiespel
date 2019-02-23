@@ -1,17 +1,25 @@
-<section fxLayout="row" fxLayoutAlign="space-around stretch" 
-			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center stretch" fxLayoutGap="10px" class="header-section">
-	<mat-card>
-		<mat-card-header>
-			<mat-card-title>
-				{{game?.name}}
-			</mat-card-title>
-			<mat-card-subtitle>
-				{{game?.date.toDate() | date:'dd-MM-yyyy'}}
-			</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-actions>
-			<a mat-button matTooltip="Terug" routerLink="/games">TERUG</a>
-		</mat-card-actions>
-	</mat-card>
-	<app-actions-card *ngIf="isOwner"></app-actions-card>
-</section>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Selfies">
+  	<ng-template matTabContent>
+	    <app-images-grid-view 
+                  [game]="game"
+                  [user]="user"
+                  [imageReferences]="imageReferences"
+                  [images$]="images$"></app-images-grid-view>
+	  </ng-template>
+  </mat-tab>
+  <mat-tab label="Score">
+  	<ng-template matTabContent>
+      <div class="score-display">
+        <app-score-board [game]="game"></app-score-board>
+      </div>
+	  </ng-template>
+  </mat-tab>
+  <mat-tab label="Acties" *ngIf="isOwner">
+    <ng-template matTabContent>
+      <div class="score-display">
+          <app-actions-card></app-actions-card>
+      </div>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

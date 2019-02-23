@@ -22,7 +22,10 @@
   <mat-tab label="Score">
   	<ng-template matTabContent>
       <div class="score-display">
-        <app-score-board [game]="game"></app-score-board>
+        <app-score-board 
+                  [game]="game" 
+                  [assignments]="assignments"
+                  [imageReferences]="imageReferences"></app-score-board>
       </div>
 	  </ng-template>
   </mat-tab>

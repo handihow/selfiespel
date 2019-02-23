@@ -58,10 +58,10 @@ export class PlayGameComponent implements OnInit {
 
   ngOnInit() {
   	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game=> {
+  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game=> {
   		if(game){
   			this.game = game;
-        this.setUser();
+        await this.setUser();
         this.fetchMessages();
         this.fetchImages();
   		}
@@ -75,21 +75,31 @@ export class PlayGameComponent implements OnInit {
   }
 
   setUser(){
-      this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
-        if(user){
-          this.user = user;
-          if(this.game.owner===this.user.uid){
-            this.isOwner = true;
+      return new Promise((resolve, reject) => {
+        this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(async user => {
+          if(user){
+            this.user = user;
+            if(this.game.owner===this.user.uid){
+              this.isOwner = true;
+            }
+            await this.fetchTeam();
+            resolve(true);
           }
-          this.fetchTeam();
-        }
-      }));
+        }));
+      });
   }
 
   fetchTeam(){
-    this.subs.push(this.teamService.fetchTeam(this.gameId, this.user.uid).subscribe(team => {
-      this.team = team;
-    }));
+    return new Promise((resolve, reject) => {
+      this.subs.push(this.teamService.fetchTeam(this.gameId, this.user.uid).subscribe(team => {
+        if(team){
+          this.team = team;
+          resolve(true);  
+        } else {
+          reject(false);
+        }
+      }));
+    })  
   }
 
   fetchMessages(){
@@ -142,18 +152,22 @@ export class PlayGameComponent implements OnInit {
 
   fetchImageReactions(){
     this.subs.push(this.gameService.fetchSummaryGameReactions(this.game.id, ReactionType.like).subscribe(likesPerImage => {
-      this.imageReferences.forEach(imageRef => {
-        if(likesPerImage[imageRef.id] || likesPerImage[imageRef.id] === 0){
-          imageRef.likes = likesPerImage[imageRef.id]
-        }
-      });
+      if(likesPerImage){
+        this.imageReferences.forEach(imageRef => {
+          if(likesPerImage[imageRef.id] || likesPerImage[imageRef.id] === 0){
+            imageRef.likes = likesPerImage[imageRef.id]
+          }
+        });
+      }
     }));
     this.subs.push(this.gameService.fetchSummaryGameReactions(this.game.id, ReactionType.comment).subscribe(commentsPerImage => {
-      this.imageReferences.forEach(imageRef => {
-        if(commentsPerImage[imageRef.id]){
-          imageRef.comments = commentsPerImage[imageRef.id]
-        }
-      });
+      if(commentsPerImage){
+        this.imageReferences.forEach(imageRef => {
+          if(commentsPerImage[imageRef.id]){
+            imageRef.comments = commentsPerImage[imageRef.id]
+          }
+        });
+      }
     }));
   }
 
@@ -169,7 +183,8 @@ export class PlayGameComponent implements OnInit {
   createThumbnailArray(){
     this.thumbnails$ = [];
     this.assignments.forEach(assignment => {
-      const refTN : Image = this.imageReferences.find(ref => ref.assignmentId === assignment.id);
+      const refTN : Image = this.imageReferences.find(ref => 
+                               ref.assignmentId === assignment.id && ref.teamId === this.team.id);
       if(refTN && refTN.pathTN){
         const ref = this.storage.ref(refTN.pathTN);
         const downloadURL$ = ref.getDownloadURL();
