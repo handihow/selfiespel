@@ -98,7 +98,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
 
   async onNewAssignments(){
     await this.assignmentService.deleteAssignments(this.gameId, this.assignments);
-    this.game.status = Status.hasPlayers;
+    this.game.status = Status.teamsCreated;
     this.gameService.updateGameToDatabase(this.game);
   }
 

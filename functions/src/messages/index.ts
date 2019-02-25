@@ -9,14 +9,13 @@ import { Reaction } from '../../../src/app/shared/reaction.model';
 // function sends a message when a new image is uploaded
 export const newImageMessage = (image: Image) => {
 
-		const timestamp = new Date().toISOString();
 		const message : Message = {
 			content: image.teamName + ' heeft een nieuwe selfie gemaakt met '
 										+ image.assignment + '!',
 			style: 'info',
 			gameId: image.gameId || '',
 			imageId: image.id || '',
-			timestamp: timestamp,
+			created: admin.firestore.FieldValue.serverTimestamp(),
 			isShow: false,
 		}
 		return db.collection('messages').add(message)
@@ -26,14 +25,13 @@ export const newImageMessage = (image: Image) => {
 // function updates the team progress when an image is deleted
 export const deletedImageMessage = (image: Image) => {
 
-		const timestamp = new Date().toISOString();
 		const message: Message = {
 			content: image.teamName + ' heeft de selfie met '
 										+ image.assignment + ' verwijderd!',
 			style: 'warning',
 			gameId: image.gameId || '',
 			imageId: image.id || '',
-			timestamp: timestamp,
+			created: admin.firestore.FieldValue.serverTimestamp(),
 			isShow: false,
 		}
 		return db.collection('messages').add(message)
@@ -43,13 +41,12 @@ export const deletedImageMessage = (image: Image) => {
 // function sends a message when a new image is uploaded
 export const reactionMessage = (reaction: Reaction, content: string, style: string) => {
 
-		const timestamp = new Date().toISOString();
 		const message : Message = {
 			content: content,
 			style: style,
 			gameId: reaction.gameId || '',
 			imageId: reaction.imageId || '',
-			timestamp: timestamp,
+			created: admin.firestore.FieldValue.serverTimestamp(),
 			isShow: false,
 		}
 		return db.collection('messages').add(message)

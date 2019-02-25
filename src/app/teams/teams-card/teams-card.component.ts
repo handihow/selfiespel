@@ -19,7 +19,6 @@ import { TeamService } from '../team.service';
 })
 export class TeamsCardComponent implements OnInit, OnDestroy {
   
-  groupNames = Settings.groupNames;
   game: Game;
   gameId: string;
   players: User[];
@@ -48,7 +47,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
 
   fetchParticipants(){
     return new Promise((resolve, reject) => {
-      this.subs.push(this.gameService.fetchGameParticipants(this.gameId).subscribe(players => {
+      this.subs.push(this.gameService.fetchGameParticipants(this.gameId, 'participants').subscribe(players => {
         if(players){
           this.players = players;
           resolve(true);
@@ -79,13 +78,14 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     //create the groups
     for (var i = 0; i < players.length; i+=this.playersPerGroup){
       //generate random name
-      let randomIndex = this.pickRandomIndex(this.groupNames, randomIndeces);
+      let randomIndex = this.pickRandomIndex(Settings.teamNames, randomIndeces);
       randomIndeces.push(randomIndex);
       let members = players.slice(i, i+this.playersPerGroup);
       let newTeam : Team = {
-        name: this.groupNames[randomIndex],
+        name: Settings.teamNames[randomIndex],
         order: i,
-        members: {}
+        members: {},
+        color: Settings.teamColors[randomIndex].color
       }
       members.forEach(member => {
         newTeam.members[member.uid] = true;

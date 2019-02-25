@@ -11,7 +11,8 @@ gameId: string;
 userId: string;
 teamId: string;
 teamName: string;
-timestamp: string;
+created?: any;
+updated?: any;
 size?: number;
 imageState?: string;
 maxPoints?: Rating;				// the maximum points coming from the assignment

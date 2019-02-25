@@ -1,7 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Store } from '@ngrx/store';
+import * as fromGame from '../../game.reducer'; 
+import * as GameAction from '../../game.actions';
+
 import { Game } from '../../games.model';
 import { User } from '../../../auth/user.model'; 
-
 import { Status } from '../../../shared/settings';
 
 @Component({
@@ -13,15 +18,17 @@ export class GamesCardComponent implements OnInit {
   
   @Input() game: Game;
   @Input() user: User;
-  isOwner: boolean;
+  isAdmin: boolean;
   gameDate: string;
   get status() { return Status; }
 
-  constructor() { }
+  buttonText: string[] = ["Naar wachtkamer", "Juryleden instellen"]
+
+  constructor(private store: Store<fromGame.State>, private router: Router) { }
 
   ngOnInit() {
-    if(this.game.owner === this.user.uid){
-      this.isOwner = true;
+    if(this.game.administrator === this.user.uid){
+      this.isAdmin = true;
     }
     this.checkDate();
   }
@@ -38,6 +45,37 @@ export class GamesCardComponent implements OnInit {
 
   ngOnChange(){
     this.checkDate();
+  }
+
+  onOpen(status: Status){
+    this.store.dispatch(new GameAction.StartGame(this.game));
+    switch (status) {
+      case Status.created:
+        this.router.navigate(['games/invite']);
+        break;
+      case Status.invited:
+        this.router.navigate(['games/judges']);
+        break;
+      default:
+        // code...
+        break;
+    }
+    
+  }
+
+  onAdminister(){
+    this.store.dispatch(new GameAction.StartGame(this.game));
+    this.router.navigate(['games/admin']);
+  }
+
+  onView(){
+    this.store.dispatch(new GameAction.StartGame(this.game));
+    this.router.navigate(['games/view']);
+  }
+
+  onPlay(){
+    this.store.dispatch(new GameAction.StartGame(this.game));
+    this.router.navigate(['games/play']);
   }
 
 }

@@ -26,7 +26,7 @@ export class ViewGameComponent implements OnInit {
   game: Game;
   user: User;
   subs: Subscription[] = [];
-  isOwner: boolean;
+  isAdmin: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
   
@@ -45,8 +45,8 @@ export class ViewGameComponent implements OnInit {
   			this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
 		      if(user){
 		        this.user = user;
-		        if(this.game.owner===this.user.uid){
-		        	this.isOwner = true;
+		        if(this.game.administrator===this.user.uid){
+		        	this.isAdmin = true;
 		        }
             this.fetchImages();
 		      }

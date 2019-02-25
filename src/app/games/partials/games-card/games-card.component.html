@@ -4,25 +4,28 @@
 			{{game?.name}}
 		</mat-card-title>
 		<mat-card-subtitle>
-			{{isOwner ? 'Beheerder' : 'Speler'}}
+			{{isAdmin ? 'Beheerder' : 'Speler'}}
 		</mat-card-subtitle>
 	</mat-card-header>
-	<qrcode mat-card-image [qrdata]="game?.code" [size]="128" [level]="'M'"></qrcode>
+	<qrcode mat-card-image [qrdata]="game?.code" [size]="128" [level]="'M'" *ngIf="isAdmin"></qrcode>
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
-		<h4 *ngIf="game.status<status.playing && !isOwner">Spel is nog niet begonnen...</h4>
-		<h4 *ngIf="game.status<status.hasPlayers && isOwner">Wachten op spelers...</h4>
+		<h4 *ngIf="game.status<status.playing && !isAdmin">Spel is nog niet begonnen...</h4>
 	</mat-card-content>
 	<mat-card-actions>
-		<a mat-raised-button color="primary" routerLink="/games/{{game.id}}/admin" 
-					*ngIf="(game.status===status.hasPlayers || game.status===status.assigned) && isOwner">
-			Beheer</a>
-		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/view" 
+		<button mat-raised-button color="accent" (click)="onOpen(status.created)"
+					*ngIf="(game.status===status.created) && isAdmin">
+			Naar wachtkamer</button>
+		<button mat-raised-button color="accent" (click)="onOpen(status.invited)"
+					*ngIf="(game.status===status.invited) && isAdmin">
+			Juryleden instellen</button>
+		
+		<button mat-raised-button color="accent" (click)="onView()"
 					*ngIf="game.status==status.pauzed || game.status==status.finished">
-			Bekijk</a>
-		<a mat-raised-button color="accent" routerLink="/games/{{game.id}}/play" 
+			Bekijk</button>
+		<button mat-raised-button color="accent" (click)="onPlay()"
 					*ngIf="game.status===status.playing">
-			Speel</a>
+			Speel</button>
 	</mat-card-actions>
 </mat-card>

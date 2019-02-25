@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-
+import {firestore} from 'firebase/app';
 import { MatSnackBar } from '@angular/material';
 
 import {map,  take } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class UIService {
 
 	//retrieve game messages
 	fetchMessages(gameId: string): Observable<Message[]>{
-		var queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('timestamp', 'desc').limit(3));
+		var queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('created', 'desc').limit(3));
 		return this.db.collection('messages', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -35,7 +35,7 @@ export class UIService {
 
 	sendMessage(content, style, gameId, uniqueId?) {
 	   const timestamp = new Date().toISOString();
-	   let message : Message = {content, style, gameId, isShow: false, timestamp: timestamp};
+	   let message : Message = {content, style, gameId, isShow: false, created: firestore.FieldValue.serverTimestamp(),};
 	   if(uniqueId){
 	   	this.db.collection('messages').doc(uniqueId).set(message);
 	   } else {

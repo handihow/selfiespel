@@ -9,4 +9,6 @@ export interface Assignment {
   level: number;
   gameId?: string;
   maxPoints: Rating;
+  created?: any;
+  updated?: any;
 }

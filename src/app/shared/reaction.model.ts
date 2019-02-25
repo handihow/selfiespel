@@ -10,9 +10,10 @@ gameId: string;
 teamId: string;
 assignmentId: string;
 id?: string;
-timestamp: string;
 reactionType: ReactionType;
 rating?: Rating;
 assignment: string;
 teamName: string;
+created?: any;
+updated?: any;
 }

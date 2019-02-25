@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
+import * as GameAction from '../game.actions';
+
 import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -55,14 +57,14 @@ export class NewGameComponent implements OnInit {
     let newGame : Game = {
       name: this.gameForm.value.name,
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
-      owner: this.user.uid,
-      created: new Date(),
+      administrator: this.user.uid,
       status: Status.created
     }
     try{
       newGame.date = new Date(this.gameForm.value.date);
-      this.gameService.addGame(this.user, newGame).then( _ => {
-         this.router.navigate(['/games']);
+      this.gameService.addGame(this.user, newGame).then(game => {
+        this.store.dispatch(new GameAction.StartGame(game));
+        this.router.navigate(['/games/invite']);
       });
     } catch {
       this.uiService.showSnackbar("Er ging iets mis met het bewaren van het spel", null, 3000);

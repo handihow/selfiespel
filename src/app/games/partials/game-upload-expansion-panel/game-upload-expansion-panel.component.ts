@@ -35,7 +35,7 @@ export class GameUploadExpansionPanelComponent {
   constructor() { }
 
   ngOnChanges() {
-    if(this.game && this.game.owner===this.user.uid){
+    if(this.game && this.game.administrator===this.user.uid){
       this.isOwner = true;
     }
   }

@@ -12,6 +12,8 @@ import { Game } from '../games/games.model';
 import { User } from '../auth/user.model';
 import { Assignment } from './assignment.model';
 
+import {firestore} from 'firebase/app';
+
 @Injectable()
 export class AssignmentService {
    
@@ -25,7 +27,12 @@ export class AssignmentService {
 		let batch = this.db.firestore.batch();
 		assignments.forEach((assignment, index) => {
 			const assignmentRef = this.db.collection('assignments').doc(gameId + index.toString()).ref;
-			batch.set(assignmentRef, {gameId: gameId, order: index, ...assignment})
+			batch.set(assignmentRef, {
+				gameId: gameId, 
+				order: index,
+				created: firestore.FieldValue.serverTimestamp(),
+				updated: firestore.FieldValue.serverTimestamp(),
+				...assignment})
 		})
 		return batch.commit()
 			.then(doc => {
@@ -54,6 +61,7 @@ export class AssignmentService {
 
 	//update single assignment
 	updateAssignment(assignment: Assignment){
+		assignment.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('assignments').doc(assignment.id)
 			.set(assignment, {merge: true})
 			.then( _ => {
@@ -69,7 +77,7 @@ export class AssignmentService {
 		let batch = this.db.firestore.batch();
 		assignments.forEach((assignment) => {
 			const assignmentRef = this.db.collection('assignments').doc(assignment.id).ref;
-			batch.update(assignmentRef, {order: assignment.order})
+			batch.update(assignmentRef, {updated: firestore.FieldValue.serverTimestamp(), order: assignment.order})
 		})
 		return batch.commit()
 			.catch(error => {

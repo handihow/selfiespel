@@ -3,8 +3,9 @@ import { Assignment } from '../assignments/assignment.model';
 
 export enum Status  {
 created,    	// game has been created
-waiting,    	// waiting for players to join
-hasPlayers, 	// players have joined the game, ready for assignments to be set
+invited,    	// finished inviting players to join
+judgesAssigned, // judges are set for the game
+teamsCreated,	// teams with players have been created
 assigned,   	// assignments are created and game is ready to be started
 playing,    	// game is ongoing
 pauzed,     	// game is pauzed
@@ -115,7 +116,7 @@ public static gameNames = [
 'Always look on the selfie side of life'
 ];
 
-public static groupNames = [
+public static teamNames = [
 'TeamSelfie',
 'Selfie4Life',
 'I<3Selfie',
@@ -173,26 +174,46 @@ overlap: 150
 
 public static teamColors =
 [
-{color: "#F44336", colorLabel: "Rood"},
-{color: "#E91E63", colorLabel: "Roze"},
-{color: "#9C27B0", colorLabel: "Paars"},
-{color: "#673AB7", colorLabel: "Donkerpaars"},
-{color: "#3F51B5", colorLabel: "Indigo"},
-{color: "#2196F3", colorLabel: "Blauw"},
-{color: "#03A9F4", colorLabel: "Lichtblauw"},
-{color: "#00BCD4", colorLabel: "Cyaan"},
-{color: "#009688", colorLabel: "Blauwgroen"},
-{color: "#4CAF50", colorLabel: "Groen"},
-{color: "#8BC34A", colorLabel: "Lichtgroen"},
-{color: "#CDDC39", colorLabel: "Limoen"},
-{color: "#FFEB3B", colorLabel: "Geel"},
-{color: "#FFC107", colorLabel: "Amber"},
-{color: "#FF9800", colorLabel: "Oranje"},
-{color: "#FF5722", colorLabel: "Oranjerood"},
-{color: "#795548", colorLabel: "Bruin"},
-{color: "#9E9E9E", colorLabel: "Grijs"},
-{color: "#607D8B", colorLabel: "Blauwgrijs"}
-]
+{color: '#F44336', colorLabel: 'Rood'},
+{color: '#E91E63', colorLabel: 'Roze'},
+{color: '#9C27B0', colorLabel: 'Paars'},
+{color: '#FFC107', colorLabel: 'Amber'},
+{color: '#FF9800', colorLabel: 'Oranje'},
+{color: '#3F51B5', colorLabel: 'Indigo'},
+{color: '#2196F3', colorLabel: 'Blauw'},
+{color: '#00BCD4', colorLabel: 'Cyaan'},
+{color: '#4CAF50', colorLabel: 'Groen'},
+{color: '#8BC34A', colorLabel: 'Lichtgroen'},
+{color: '#CDDC39', colorLabel: 'Limoen'},
+{color: '#FFEB3B', colorLabel: 'Geel'}
+];
+
+public static userLevels = {
+	participant : {
+		level: 'deelnemer',
+		gameVariable: 'participants',
+		gameQueryCondition: 'array-contains',
+		userVariable: 'participating'
+	},
+	player: {
+		level: 'speler',
+		gameVariable: 'players',
+		gameQueryCondition: 'array-contains',
+		userVariable: 'playing'
+	},
+	judge: {
+		level: 'jurylid',
+		gameVariable: 'judges',
+		gameQueryCondition: 'array-contains',
+		userVariable: 'judging'
+	},
+	administrator: {
+		level: 'beheerder',
+		gameVariable: 'administrator',
+		gameQueryCondition: '==',
+		userVariable: 'administrating'
+	}
+}
 
 }
 

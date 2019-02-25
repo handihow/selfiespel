@@ -1,28 +1,31 @@
-<h3>Scoreboard</h3>
-<mat-list>
-   <div *ngFor="let team of teams">
-	   <h3 matSubheader>{{team?.name}}</h3>
-	   <mat-list-item>
-	      <mat-icon matListIcon>face</mat-icon>
-	      <h4 matLine>Deelnemers:</h4>
-	      <p matLine>
-	      	<span *ngFor="let participant of team?.participants; let i=index">
-	      		{{participant.displayName}}{{ i === team?.participants.length - 1 ? '' : ', '}}
-	      	</span>
-	      </p>
-	   </mat-list-item>
-	   <mat-divider></mat-divider>
-	   <mat-list-item>
-	      <mat-icon matListIcon>photo_camera</mat-icon>
-	      <h4 matLine>Opdrachten uitgevoerd:</h4>
-	      <p matLine>{{team?.progress}} opdrachten</p>
-	   </mat-list-item>
-	   <mat-divider></mat-divider>
-	   <mat-list-item>
-	      <mat-icon matListIcon>assessment</mat-icon>
-	      <h4 matLine>Totale score:</h4>
-	      <p matLine>{{score ? score[team?.id] ? score[team?.id]['total'] : 0 : 0}}</p>
-	   </mat-list-item>
-	   <mat-divider></mat-divider>
-	</div>
-</mat-list>
+<mat-grid-list [cols]="columns" rowHeight="1:1">
+
+	<mat-grid-tile *ngFor="let team of teams" [style.background]="team?.color">
+	   <mat-grid-tile-header>{{team?.name}}</mat-grid-tile-header>
+	   <mat-list>
+		   <mat-list-item>
+		      <mat-icon matListIcon>face</mat-icon>
+		      <h4 matLine>Deelnemers:</h4>
+		      <p matLine>
+		      	<span *ngFor="let participant of team?.participants; let i=index">
+		      		{{participant.displayName}}{{ i === team?.participants.length - 1 ? '' : ', '}}
+		      	</span>
+		      </p>
+		   </mat-list-item>
+		   <mat-divider></mat-divider>
+		   <mat-list-item>
+		      <mat-icon matListIcon>photo_camera</mat-icon>
+		      <h4 matLine>Opdrachten uitgevoerd:</h4>
+		      <p matLine>{{team?.progress}} opdrachten</p>
+		   </mat-list-item>
+		   <mat-divider></mat-divider>
+		   <mat-list-item>
+		      <mat-icon matListIcon>assessment</mat-icon>
+		      <h4 matLine>Totale score:</h4>
+		      <p matLine>{{score ? score[team?.id] ? score[team?.id]['total'] : 0 : 0}}</p>
+		   </mat-list-item>
+		   <mat-divider></mat-divider>
+	   </mat-list>
+	</mat-grid-tile>
+
+</mat-grid-list>

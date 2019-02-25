@@ -32,7 +32,7 @@ export class GamesComponent implements OnInit, OnDestroy {
     this.sub = this.store.select(fromRoot.getCurrentUser).subscribe(user => {
       if(user){
         this.user = user;
-        this.games$ = this.gameService.fetchParticipantGames(user);
+        this.games$ = this.gameService.fetchGames(user, 'participant');
       }
     })
   }

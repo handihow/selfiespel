@@ -1,22 +1,17 @@
 <section fxLayout="row" fxLayoutAlign="space-around center">
 	<h1>Selfie Spellen</h1>
-	<span>
-		<a routerLink="/games/register" matTooltip="Registreer met een code" 
-			mat-fab color="accent"><mat-icon>code</mat-icon></a>		
-		<a routerLink="/games/new" matTooltip="Maak een nieuw spel aan"
-			mat-fab color="primary"><mat-icon>add</mat-icon></a>
-	</span>
+	<a routerLink="/games/choose" matTooltip="Nieuw spel!"
+					mat-fab color="accent"><mat-icon>add</mat-icon></a>
 </section>
 <section fxLayout="column" fxLayoutAlign="center center">
-	<mat-divider [inset]="true"></mat-divider>
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
-	<h2 *ngIf="(games$ | async)?.length===0">Nog geen spellen</h2>
+	<h3 *ngIf="(games$ | async)?.length===0">Nog geen spellen</h3>
 </section>
-<section fxLayout="row wrap" fxLayoutAlign="space-around stretch" 
-			fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center" >
-
-	<div class="games-card" fxFlex.gt-xs="30" *ngFor="let game of games$ | async">
-		<app-games-card [game]="game" [user]="user"></app-games-card>
+<section fxLayout="row wrap" fxLayoutAlign="space-around stretch"
+				fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
+	<div *ngFor="let game of games$ | async" class="games-card">
+		<app-games-card
+			[game]="game"
+			[user]="user"></app-games-card>
 	</div>
-
 </section>

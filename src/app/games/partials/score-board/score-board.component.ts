@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../app.reducer'; 
 
 import { Subscription } from 'rxjs';
 
@@ -15,8 +17,6 @@ import { Image} from '../../../images/image.model';
 import { Assignment } from '../../../assignments/assignment.model';
 import { ReactionType } from '../../../shared/settings';
 
-import * as _ from "lodash";
-
 @Component({
   selector: 'app-score-board',
   templateUrl: './score-board.component.html',
@@ -31,13 +31,22 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
   players: User[];
   subs: Subscription[] = [];
   score: any;
+  columns: number;
 
-  constructor(  private teamService: TeamService,
+  constructor(  private store: Store<fromRoot.State>,
+                private teamService: TeamService,
                 private gameService: GameService) { }
 
-  async ngOnInit() {
-    await this.fetchParticipants();
-    this.fetchTeams();
+  ngOnInit() {
+    this.subs.push(this.gameService.fetchGameParticipants(this.game.id, 'participant').subscribe(players => {
+      if(players){
+        this.players = players;
+        this.fetchTeams();
+      }
+    }));
+    this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
+      this.setColumns(screentype);
+    }))
   }
 
   ngOnDestroy(){
@@ -56,17 +65,6 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     }));      
   }
 
-  fetchParticipants(){
-    return new Promise((resolve, reject) => {
-      this.subs.push(this.gameService.fetchGameParticipants(this.game.id).subscribe(players => {
-        if(players){
-          this.players = players;
-          resolve(true);
-        }
-      }));
-    })
-  }
-
   formTeams(teams: Team[]){
     teams.forEach(team => {
       let participants: User[] = [];
@@ -80,46 +78,53 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     this.teams = teams;
   }
 
-  async teamProgress(teams: Team[]){
-    for (let team of teams){
-      await new Promise((resolve, reject) => {
-        this.subs.push(this.gameService.fetchTeamProgress(team.id).subscribe((progress : Progress) => {
-          if(progress){
-            team.progress = progress.imagesSubmitted;
-            resolve(true); 
-          } else {
-            team.progress = 0;
-            reject(false);
-          }
-        }));
-      })
-    }
+  teamProgress(teams: Team[]){
+    teams.forEach(team => {
+      this.subs.push(this.gameService.fetchTeamProgress(team.id).subscribe((progress : Progress) => {
+        if(progress){
+          team.progress = progress.imagesSubmitted;
+        } else {
+          team.progress = 0;
+        }
+      }));
+    });  
   }
 
   teamRating(teams: Team[]){
     this.score = {};
     this.subs.push(this.gameService.fetchGameReactions(this.game.id, ReactionType.rating).subscribe(ratings => {
-       teams.forEach(team => {
-         let totalOfRatingsTeam = 0;
-         this.score[team.id]={};
-         this.assignments.forEach(assignment => {
-           this.score[team.id][assignment.id] = 0;
-           const filteredRatings = ratings.filter(rating => rating.teamId === team.id && rating.assignmentId == assignment.id);
-           if(filteredRatings && filteredRatings.length>0){
-             const numberOfRatings = filteredRatings.length;
-             let totalOfRatingsAssignment = 0;
-             filteredRatings.forEach(filteredRating => {
-               totalOfRatingsAssignment += filteredRating.rating;
-             });
-             const averageRating = Math.round(totalOfRatingsAssignment * 10 / numberOfRatings) / 10;
-             this.score[team.id][assignment.id] = averageRating;
-             totalOfRatingsTeam += averageRating;
-           }
-         })
-         this.score[team.id]['total'] = totalOfRatingsTeam;
-       });
-       console.log(this.score);      
+      if(ratings){
+        teams.forEach(team => {
+          let totalOfRatingsTeam = 0;
+          this.score[team.id]={};
+          this.assignments.forEach(assignment => {
+            this.score[team.id][assignment.id] = 0;
+            const filteredRatings = ratings.filter(rating => rating.teamId === team.id && rating.assignmentId == assignment.id);
+            if(filteredRatings && filteredRatings.length>0){
+              const numberOfRatings = filteredRatings.length;
+              let totalOfRatingsAssignment = 0;
+              filteredRatings.forEach(filteredRating => {
+                totalOfRatingsAssignment += filteredRating.rating;
+              });
+              const averageRating = Math.round(totalOfRatingsAssignment * 10 / numberOfRatings) / 10;
+              this.score[team.id][assignment.id] = averageRating;
+              totalOfRatingsTeam += averageRating;
+            }
+          })
+          this.score[team.id]['total'] = totalOfRatingsTeam;
+        });
+      }    
     }))
+  }
+
+  setColumns(screentype){
+    if(screentype === 'desktop'){
+      this.columns = 4;
+    } else if (screentype === 'tablet'){
+      this.columns = 2;
+    } else {
+      this.columns = 1;
+    }
   }
 
 }

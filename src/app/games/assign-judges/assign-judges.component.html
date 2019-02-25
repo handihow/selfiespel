@@ -1,0 +1,25 @@
+<section fxLayout="row" fxLayoutAlign="space-around center">
+  <button mat-fab color="accent" (click)="onPrevious()" matTooltip="Vorige stap">
+  	<mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Juryleden</h1>
+  <button mat-fab color="accent" (click)="onNext()" matTooltip="Volgende stap">
+  	<mat-icon>arrow_forward</mat-icon>
+  </button>
+</section>
+<section fxLayout="column" fxLayoutAlign="center center" class="explanation">
+	Druk op de plus naast de naam van de deelnemer om hem/haar jurylid te maken!
+</section>
+<section fxLayout="row" fxLayoutAlign="space-around stretch" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
+	<div class="judge-card">
+		<app-participants-card 	[participants$]="participants$" 
+								[game]="game"
+								[administrator]="administrator"></app-participants-card>
+	</div>
+	<div class="judge-card">
+		<app-judges-card  		[judges$]="judges$" 
+								[game]="game" 
+								[administrator]="administrator"></app-judges-card>
+	</div>
+	
+</section>

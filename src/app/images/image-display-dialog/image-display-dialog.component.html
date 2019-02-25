@@ -2,17 +2,19 @@
 <div mat-dialog-content>
  	<app-image-viewer [userId]="user?.uid" [gameId]="image?.gameId" [teamId]="image.teamId"
 		  					[assignmentId]="image.assignmentId"></app-image-viewer>
-	Likes van <span *ngFor="let like of likes; let i = index">
-						{{like.userDisplayName}} {{ i === likes.length - 1 ? '' : ', '}}
-			  </span>
+
 	<mat-list>
-	  <mat-list-item *ngFor="let comment of comments">
-	    <h3 matLine> {{comment.userDisplayName}} </h3>
-	    <p matLine>
-	      {{comment.comment}}
+	  <mat-list-item *ngFor="let reaction of reactions">
+	  	<mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.like">thumb_up_alt</mat-icon>
+	    <mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.comment">insert_comment</mat-icon>
+	    <mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.rating">assessment</mat-icon>
+	    <h3 matLine>{{reaction.userDisplayName}}</h3>
+	    <p matLine *ngIf="reaction.reactionType > reactionType.like">
+	      {{reaction.reactionType === reactionType.comment? reaction.comment : reaction.rating}}
 	    </p>
 	  </mat-list-item>
 	</mat-list>
+	
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()" cdkFocusInitial>Sluiten</button>

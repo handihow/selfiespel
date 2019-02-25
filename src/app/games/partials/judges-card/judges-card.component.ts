@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { GameService } from '../../game.service';
@@ -12,24 +10,16 @@ import { User } from '../../../auth/user.model';
   templateUrl: './judges-card.component.html',
   styleUrls: ['./judges-card.component.css']
 })
-export class JudgesCardComponent implements OnInit {
+export class JudgesCardComponent {
 
-  @Input() user: User;
-  game$: Observable<Game>;
-  gameId: string;
-  users$: Observable<User[]>;
+  @Input() game: Game;
+  @Input() judges$: Observable<User[]>;
+  @Input() administrator: User;
 
-  constructor(private route: ActivatedRoute,
-			  private router: Router,
-			  private gameService: GameService) { }
-
-  ngOnInit() {
-  	this.gameId = this.route.snapshot.paramMap.get('id');
-    this.game$ = this.gameService.fetchGame(this.gameId);
-    this.users$ = this.gameService.fetchGameJudges(this.gameId);
-  }
+  constructor(private gameService: GameService) { }
 
   onRemoveJudge(user){
-  	this.gameService.manageGameJudges(user, this.gameId, false);
+  	this.gameService.manageGameParticipants(user, this.game, 'judge', false);
   }
+
 }

@@ -23,7 +23,7 @@
     			<mat-icon [matBadge]="imageRef.comments" matBadgeColor="accent">insert_comment</mat-icon>
     		</button>
       </span>
-      <span *ngIf="isJudge || isOwner">
+      <span *ngIf="isJudge || isAdmin">
        <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
           <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
             <mat-icon>remove</mat-icon>

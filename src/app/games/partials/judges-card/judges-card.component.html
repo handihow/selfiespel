@@ -8,10 +8,10 @@
 		<mat-list>
 			<mat-list-item>
 				<mat-icon matListIcon matTooltip="Beheerder" color="primary">stars</mat-icon>
-				<h3 matLine>{{user?.displayName}}</h3>
+				<h3 matLine>{{administrator?.displayName}}</h3>
 				<p matLine>Beheerder</p>
 			</mat-list-item>
-			<mat-list-item *ngFor="let judge of users$ | async">
+			<mat-list-item *ngFor="let judge of judges$ | async">
 				<mat-icon matListIcon matTooltip="Jurylid" color="primary">supervisor_account</mat-icon>
 				<h3 matLine>{{judge?.displayName}}</h3>
 				<p matLine>Jurylid</p>
@@ -20,7 +20,6 @@
 				</button>
 			</mat-list-item>
 		</mat-list>
-		
 	</mat-card-content>
 </mat-card>
 

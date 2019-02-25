@@ -3,4 +3,9 @@ export interface User {
   email?: string;
   photoURL?: string;
   displayName?: string;
+  
+  participating?: string[];
+  playing?: string[];
+  judging?: string[];
+
 }

@@ -35,7 +35,7 @@ export class ImagesGridViewComponent implements OnInit {
   @Input() images$: Observable<string>[] = [];
   
   subs: Subscription[] = [];
-  isOwner: boolean;
+  isAdmin: boolean;
   isJudge: boolean;
   
   columns: number;
@@ -74,10 +74,10 @@ export class ImagesGridViewComponent implements OnInit {
   }
 
   setUser(){
-      if(this.game.owner===this.user.uid){
-        this.isOwner = true;
+      if(this.game.administrator===this.user.uid){
+        this.isAdmin = true;
       }
-      if(this.game.judges[this.user.uid]){
+      if(this.game.judges.includes(this.user.uid)){
         this.isJudge = true;
       }
   }
@@ -85,10 +85,8 @@ export class ImagesGridViewComponent implements OnInit {
   likeImage(image: Image){
     if(image.userLikeId){
       this.imageService.removeReactionFromImage(image.userLikeId);
-      image.likes -= 1;
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.like);
-      image.likes += 1;
     }
   }
 
@@ -109,7 +107,6 @@ export class ImagesGridViewComponent implements OnInit {
     dialogRef.afterClosed().subscribe(comment => {
       if(comment){
         this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment);
-        image.comments += 1; 
       }
     });
   }

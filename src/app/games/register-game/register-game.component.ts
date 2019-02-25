@@ -3,6 +3,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
+import * as GameAction from '../game.actions';
+
 import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -63,21 +65,21 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
     	.subscribe(async games => {
     		if(games && games[0]){
     			let gameFound = games[0];
-    			if(gameFound.owner === this.user.uid) {
+    			if(gameFound.administrator === this.user.uid) {
     				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
+            this.router.navigate(['/games']);
     			} else if(gameFound.status>Status.assigned) {
             this.uiService.showSnackbar("Dit spel is al begonnen. Je kunt niet meer meedoen.", null, 3000);
+            this.router.navigate(['/games']);
           } else {
-    				await this.gameService.manageGameParticipants(this.user, gameFound.id, true)
-            if(gameFound.status < Status.hasPlayers) {
-               gameFound.status = Status.hasPlayers;
-               await this.gameService.updateGameToDatabase(gameFound)
-            }
+    				await this.gameService.manageGameParticipants(this.user, gameFound, 'participant', true)
+            this.store.dispatch(new GameAction.StartGame(gameFound));
+            this.router.navigate(['/games/invite']);
     			}
     		} else {
     			this.uiService.showSnackbar("Geen spel gevonden met deze code", null, 3000);
+          this.router.navigate(['/games']);
     		}
-        this.router.navigate(['/games']);
     	});
   }
 

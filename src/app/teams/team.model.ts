@@ -4,9 +4,10 @@ import { User } from '../auth/user.model';
 export interface Team {
   name: string;
   order: number;
+  color: string;
   members?: Participants;
-  id?: string;
   gameId?: string;
+  id?: string;
   //dynamically set helper properties
   participants?: User[];
   progress?: number;

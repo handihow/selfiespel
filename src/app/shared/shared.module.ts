@@ -9,7 +9,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QRCodeModule } from 'angularx-qrcode';
 
+import { WarningDialogComponent } from './warning-dialog.component';
+
 @NgModule({
+	declarations: [ 
+		WarningDialogComponent 
+	],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -27,8 +32,11 @@ import { QRCodeModule } from 'angularx-qrcode';
 		MaterialModule,
 		FlexLayoutModule,
 		QRCodeModule,
-		DragDropModule
+		DragDropModule,
+		WarningDialogComponent
 	],
-	entryComponents: []
+	entryComponents: [ 
+		WarningDialogComponent 
+	]
 })
 export class SharedModule {}

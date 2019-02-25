@@ -1,0 +1,43 @@
+<section fxLayout="column" fxLayoutAlign="center center">
+	<h1>Nieuw Selfiespel</h1>
+</section>
+<section fxLayout="row" fxLayoutAlign="space-around stretch" 
+				fxLayout.lt-md="column" fxLayoutAlign.lt-md="center" >
+	<mat-card class="games-card">
+		<mat-card-header>
+			<mat-card-title>
+				Beheren
+			</mat-card-title>
+			<mat-card-subtitle>
+				Spellen waar jij de beheerder bent
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p>Kies deze optie als je een nieuw spel beginnen als beheerder.</p>
+			<p>Andere spelers kunnen zich aanmelden voor het spel met de code die wordt gegenereerd.</p>
+		</mat-card-content>
+		<mat-card-actions>
+			<a routerLink="/games/new" matTooltip="Maak een nieuw spel aan"
+				mat-raised-button color="primary">Spel toevoegen</a>
+		</mat-card-actions>
+	</mat-card>
+	
+	<mat-card class="games-card">
+		<mat-card-header>
+			<mat-card-title>
+				Spelen
+			</mat-card-title>
+			<mat-card-subtitle>
+				Meespelen met een spel
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p>Kies deze optie als je mee wilt doen aan een spel.</p>
+			<p>Je kunt je dan aanmelden voor het spel met de code die je hebt ontvangen.</p>
+		</mat-card-content>
+		<mat-card-actions>
+			<a routerLink="/games/register" matTooltip="Registreer met een code" 
+				mat-raised-button color="accent">Registreer met code</a>
+		</mat-card-actions>
+	</mat-card>
+</section>

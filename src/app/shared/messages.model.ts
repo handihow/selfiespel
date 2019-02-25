@@ -5,5 +5,5 @@ isShow: boolean;
 gameId: string;
 imageId?: string;
 id?: string;
-timestamp: string;
+created: any;
 }

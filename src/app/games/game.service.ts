@@ -13,6 +13,10 @@ import { User } from '../auth/user.model';
 import { Progress } from '../shared/progress.model';
 import { ReactionType } from '../shared/settings';
 import { Reaction } from '../shared/reaction.model';
+import { Status } from '../shared/settings';
+import { Settings } from '../shared/settings';
+
+import {firestore} from 'firebase/app';
 
 @Injectable()
 export class GameService {
@@ -22,19 +26,24 @@ export class GameService {
 				 private store: Store<fromUI.State> ){}
 
 
-	addGame(owner: User, game: Game){
+	addGame(user: User, game: Game){
+		game.created = firestore.FieldValue.serverTimestamp();
+		game.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('games').add(game)
-			.then(doc => {
-				this.manageGameParticipants(owner, doc.id, true);
+			.then(async doc => {
+				game.id = doc.id;
+				await this.manageGameParticipants(user, game, 'participant', true);
+				return game;
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
+				return null;
 			});
 	}
 
 	fetchGameWithCode(code: string): Observable<Game[]>{
 		this.store.dispatch(new UI.StartLoading());
-		var queryStr = (ref => ref.where('code', '==', code));
+		var queryStr = (ref => ref.where('code', '==', code).where('status', '<', Status.finished));
 		return this.db.collection('games', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -51,21 +60,14 @@ export class GameService {
 		return this.db.collection('games').doc(gameId).valueChanges() as Observable<Game>;
 	}
 
-	updateGameToDatabase(game: Game): Promise<boolean>{
-		return this.db.collection('games').doc(game.id).set(game, {merge: true})
-			.then( _ => {
-				return true;
-			})
-			.catch(error => {
-				this.uiService.showSnackbar(error.message, null, 3000);
-				return false;
-			})
-	}
-
-	fetchParticipantGames(user: User): Observable<Game[]> {
+	fetchGames(user: User, userLevel: string, limit?: number): Observable<Game[]> {
 		this.store.dispatch(new UI.StartLoading());
-		let str = 'participants.' + user.uid;
-		var queryStr = (ref => ref.where(str, '==', true));
+		let variable : string = Settings.userLevels[userLevel].gameVariable; 
+		let condition: string = Settings.userLevels[userLevel].gameQueryCondition; 
+		let queryStr = (ref => ref.where(variable, condition, user.uid).orderBy('created', 'desc'));
+		if(limit){
+			queryStr = (ref => ref.where(variable, condition, user.uid).orderBy('created', 'desc').limit(limit))
+		}
 		return this.db.collection('games', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -74,23 +76,17 @@ export class GameService {
 						const data = doc.payload.doc.data() as Game;
 						const id = doc.payload.doc.id;
 						return { id, ...data };
-					}).sort(this.compareDates)
+					})
 			}))
 	}
 
-	private compareDates(a, b) {
-	  if(a && b && a.date && b.date){
-	  	var dateA = a.date.toDate().getTime();
-	  	var dateB = b.date.toDate().getTime();
-	  	return dateB - dateA;
-	  } else {
-	  	return a.name - b.name;
-	  }	  
-	};
-
-	fetchGameParticipants(gameId: string) : Observable<User[]> {
-		let str = 'games.' + gameId;
-		var queryStr = (ref => ref.where(str, '==', true));
+	fetchGameParticipants(gameId: string, userLevel: string, limit?: number) : Observable<User[]> {
+		this.store.dispatch(new UI.StartLoading());
+		let variable : string = Settings.userLevels[userLevel].userVariable;
+		let queryStr = (ref => ref.where(variable, 'array-contains', gameId).orderBy('displayName', 'asc'));
+		if(limit){
+			queryStr = (ref => ref.where(variable, 'array-contains', gameId).orderBy('displayName', 'asc').limit(limit))
+		}
 		return this.db.collection('users', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -99,84 +95,48 @@ export class GameService {
 						const data = doc.payload.doc.data() as User;
 						const id = doc.payload.doc.id;
 						return { id, ...data };
-					}).sort(this.compare)
+					})
 			}))
 	}
 
-	private compare(a,b) {
-	  if (a.displayName < b.displayName)
-	    return -1;
-	  if (a.displayName > b.displayName)
-	    return 1;
-	  return 0;
+	async manageGameParticipants(user: User, game: Game, userLevel: string, add: boolean){
+		this.store.dispatch(new UI.StartLoading());
+		let userVariable: string = Settings.userLevels[userLevel].userVariable;
+		let gameVariable: string = Settings.userLevels[userLevel].gameVariable;
+		if(add){
+			user[userVariable] = [game.id].concat(user[userVariable] || []);
+			game[gameVariable] = [user.uid].concat(game[gameVariable] || []);
+		} else {
+			const gameIndex = user[userVariable].indexOf(game.id);
+			if (gameIndex > -1) {
+			  user[userVariable].splice(gameIndex, 1);
+			}
+			const userIndex = game[gameVariable].indexOf(user.uid);
+			if(userIndex > -1){
+				game[gameVariable].splice(userIndex, 1);
+			}
+		}
+		await this.db.collection('users').doc(user.uid).set(user, {merge: true});
+		await this.db.collection('games').doc(game.id).set(game, {merge: true});
+		let message: string;
+		if(add){
+			message = user.displayName + " doet mee aan het spel als " + Settings.userLevels[userLevel].level + " !";	
+		} else {
+			message = user.displayName + " is verwijderd van het spel als " + Settings.userLevels[userLevel].level + " !"
+		}
+		this.store.dispatch(new UI.StopLoading());
+		return this.uiService.showSnackbar(message, null, 3000);			
 	}
 
-	fetchGameJudges(gameId: string) : Observable<User[]> {
-		let str = 'gamesJudged.' + gameId;
-		var queryStr = (ref => ref.where(str, '==', true));
-		return this.db.collection('users', queryStr)
-			.snapshotChanges().pipe(
-			map(docArray => {
-				this.store.dispatch(new UI.StopLoading());
-				return docArray.map(doc => {
-						const data = doc.payload.doc.data() as User;
-						const id = doc.payload.doc.id;
-						return { id, ...data };
-					}).sort(this.compare)
-			}))
-	}
-
-	manageGameParticipants(participant: User, gameId: string, add: boolean){
-		//if add is true, participants will be added to game, otherwise, removed from game
-		let str = '{"games":{"' + gameId + '":' + add + '}}';
-		let gameOfParticipant = JSON.parse(str);
-		let str2 = '{"participants":{"' + participant.uid + '":' + add + '}}';
-		let participantOfGame = JSON.parse(str2);
-		return this.db.collection('users').doc(participant.uid)
-			.set(gameOfParticipant, {merge: true})
+	updateGameToDatabase(game: Game): Promise<boolean>{
+		game.updated = firestore.FieldValue.serverTimestamp();
+		return this.db.collection('games').doc(game.id).set(game, {merge: true})
 			.then( _ => {
-				return this.db.collection('games').doc(gameId)
-				.set(participantOfGame, {merge: true})
-				.then( _ => {
-					if(add){
-						return this.uiService.showSnackbar("Je doet mee aan het spel!", null, 3000);	
-					} else {
-						return this.uiService.showSnackbar("Je bent verwijderd van het spel!", null, 3000);	
-					}
-				})
-				.catch(error => {
-					return this.uiService.showSnackbar(error.message, null, 3000);
-				})
+				return true;
 			})
 			.catch(error => {
-				return this.uiService.showSnackbar(error.message, null, 3000);
-			})
-	}
-
-	manageGameJudges(judge: User, gameId: string, add: boolean){
-		//if add is true, judges will be added to game, otherwise, removed from game
-		let str = '{"gamesJudged":{"' + gameId + '":' + add + '}}';
-		let gameOfJudge = JSON.parse(str);
-		let str2 = '{"judges":{"' + judge.uid + '":' + add + '}}';
-		let judgeOfGame = JSON.parse(str2);
-		return this.db.collection('users').doc(judge.uid)
-			.set(gameOfJudge, {merge: true})
-			.then( _ => {
-				return this.db.collection('games').doc(gameId)
-				.set(judgeOfGame, {merge: true})
-				.then( _ => {
-					if(add){
-						return this.uiService.showSnackbar("Je bent jurylid van het spel!", null, 3000);
-					} else {
-						return this.uiService.showSnackbar("Je bent verwijderd als jurylid!", null, 3000);
-					}
-				})
-				.catch(error => {
-					return this.uiService.showSnackbar(error.message, null, 3000);
-				})
-			})
-			.catch(error => {
-				return this.uiService.showSnackbar(error.message, null, 3000);
+				this.uiService.showSnackbar(error.message, null, 3000);
+				return false;
 			})
 	}
 
@@ -190,11 +150,9 @@ export class GameService {
 		})
 	}
 
-
 	fetchTeamProgress(teamId: string){
- 		return this.db.collection('progress').doc(teamId).valueChanges();
+ 		return this.db.collection('progress').doc(teamId).valueChanges() as Observable<Progress>;
 	}
-
 
 	fetchSummaryGameReactions(gameId: string, reactionType: ReactionType){
 		return this.db.collection(ReactionType[reactionType] + 's').doc(gameId)

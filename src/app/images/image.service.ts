@@ -15,6 +15,8 @@ import { Reaction } from '../shared/reaction.model';
 import { ReactionType } from '../shared/settings';
 import { Rating } from '../shared/settings';
 
+import {firestore} from 'firebase/app';
+
 @Injectable()
 export class ImageService {
 
@@ -36,9 +38,9 @@ export class ImageService {
 	}
 
 	fetchImageReferences(gameId: string, teamId?: string): Observable<Image[]>{
-		let queryStr = (ref => ref.where('gameId', '==', gameId));
+		let queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('created', 'desc'));
 		if(teamId){
-			queryStr = (ref => ref.where('gameId', '==', gameId).where('teamId', '==', teamId));	
+			queryStr = (ref => ref.where('gameId', '==', gameId).where('teamId', '==', teamId).orderBy('created', 'desc'));	
 		}
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
@@ -52,7 +54,7 @@ export class ImageService {
 	}
 
 	fetchUserImageReferences(userId: string): Observable<Image[]>{
-		let queryStr = (ref => ref.where('userId', '==', userId));
+		let queryStr = (ref => ref.where('userId', '==', userId).orderBy('created', 'desc'));
 		return this.db.collection('images', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -65,6 +67,7 @@ export class ImageService {
 	}
 
 	updateImageReference(image: Image){
+		image.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('images').doc(image.id).set(image, {merge: true})
 			.then( _ => {
 				return true;
@@ -91,7 +94,7 @@ export class ImageService {
 	}
 
 	getUserGameReactions(gameId: string, userId: string){
-		let queryStr = (ref => ref.where('gameId', '==', gameId).where('userId', '==', userId));
+		let queryStr = (ref => ref.where('gameId', '==', gameId).where('userId', '==', userId).orderBy('created', 'asc'));
 		return this.db.collection('reactions', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -104,10 +107,11 @@ export class ImageService {
 	}
 
 	getImageReactions(imageId: string, reactionType?: ReactionType){
-		let queryStr = (ref => ref.where('imageId', '==', imageId));
+		let queryStr = (ref => ref.where('imageId', '==', imageId).orderBy('created', 'asc'));
 		if(reactionType){
 			queryStr = (ref => ref.where('imageId', '==', imageId)
-				                  .where('reactionType', '==', reactionType));
+				                  .where('reactionType', '==', reactionType)
+				                  .orderBy('created', 'asc'));
 		}
 		return this.db.collection('reactions', queryStr)
 			.snapshotChanges().pipe(
@@ -127,7 +131,8 @@ export class ImageService {
 			userDisplayName: user.displayName,
 			userId: user.uid,
 			imageId: image.id,
-			timestamp: timestamp,
+			created: firestore.FieldValue.serverTimestamp(),
+			updated: firestore.FieldValue.serverTimestamp(),
 			gameId: image.gameId,
 			teamId: image.teamId,
 			assignmentId: image.assignmentId,
@@ -148,7 +153,10 @@ export class ImageService {
 	}
 
 	updateAwardedPoints(reactionId: string, newValue: number){
-		return this.db.collection('reactions').doc(reactionId).update({rating: newValue});
+		return this.db.collection('reactions').doc(reactionId).update({
+			rating: newValue,
+			updated: firestore.FieldValue.serverTimestamp()
+		});
 	}
 
 	removeReactionFromImage(reactionId: string){

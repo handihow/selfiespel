@@ -20,10 +20,9 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
 
   image: Image;
   user: User;
-  comments: Reaction[];
-  likes: Reaction[];
-  ratings: Reaction[];
+  reactions: Reaction[];
   sub: Subscription;
+  get reactionType() { return ReactionType; }
 
   @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
 
@@ -36,9 +35,7 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
     this.user = this.data.user;
     this.image = this.data.image;
     this.sub = this.imageService.getImageReactions(this.image.id).subscribe(reactions => {
-      this.comments = reactions.filter(reaction => reaction.reactionType === ReactionType.comment);
-      this.likes = reactions.filter(reaction => reaction.reactionType === ReactionType.like);
-      this.ratings = reactions.filter(reaction => reaction.reactionType === ReactionType.rating);
+      this.reactions = reactions;
     });
   }
 

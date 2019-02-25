@@ -35,7 +35,7 @@ export class PlayGameComponent implements OnInit {
   team: Team;
   user: User;
   subs: Subscription[] = [];
-  isOwner: boolean;
+  isAdmin: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
   thumbnailReferences: Image[];
@@ -61,8 +61,9 @@ export class PlayGameComponent implements OnInit {
   	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game=> {
   		if(game){
   			this.game = game;
-        await this.setUser();
         this.fetchMessages();
+        await this.setUser();
+        await this.fetchTeam();
         this.fetchImages();
   		}
   	}));
@@ -79,10 +80,9 @@ export class PlayGameComponent implements OnInit {
         this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(async user => {
           if(user){
             this.user = user;
-            if(this.game.owner===this.user.uid){
-              this.isOwner = true;
+            if(this.game.administrator===this.user.uid){
+              this.isAdmin = true;
             }
-            await this.fetchTeam();
             resolve(true);
           }
         }));
@@ -95,8 +95,6 @@ export class PlayGameComponent implements OnInit {
         if(team){
           this.team = team;
           resolve(true);  
-        } else {
-          reject(false);
         }
       }));
     })  
