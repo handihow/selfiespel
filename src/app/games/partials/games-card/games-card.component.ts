@@ -22,8 +22,6 @@ export class GamesCardComponent implements OnInit {
   gameDate: string;
   get status() { return Status; }
 
-  buttonText: string[] = ["Naar wachtkamer", "Juryleden instellen"]
-
   constructor(private store: Store<fromGame.State>, private router: Router) { }
 
   ngOnInit() {
@@ -56,26 +54,23 @@ export class GamesCardComponent implements OnInit {
       case Status.invited:
         this.router.navigate(['games/judges']);
         break;
+      case Status.judgesAssigned:
+        this.router.navigate(['games/teams']);
+        break;
+      case Status.teamsCreated:
+        this.router.navigate(['games/assignments']);
+        break;
+      case Status.assigned:
+        this.router.navigate(['games/ready']);
+        break;
+      case Status.playing:
+        this.router.navigate(['games/play']);
+        break;
       default:
-        // code...
+        this.router.navigate(['games/view']);
         break;
     }
     
-  }
-
-  onAdminister(){
-    this.store.dispatch(new GameAction.StartGame(this.game));
-    this.router.navigate(['games/admin']);
-  }
-
-  onView(){
-    this.store.dispatch(new GameAction.StartGame(this.game));
-    this.router.navigate(['games/view']);
-  }
-
-  onPlay(){
-    this.store.dispatch(new GameAction.StartGame(this.game));
-    this.router.navigate(['games/play']);
   }
 
 }

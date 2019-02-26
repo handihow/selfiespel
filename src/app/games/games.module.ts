@@ -24,6 +24,9 @@ import { gameReducer } from './game.reducer';
 import { ChooseNewGameTypeComponent } from './choose-new-game-type/choose-new-game-type.component';
 import { InvitePlayersComponent } from './invite-players/invite-players.component';
 import { AssignJudgesComponent } from './assign-judges/assign-judges.component';
+import { CreateTeamsComponent } from './create-teams/create-teams.component';
+import { CreateAssignmentsComponent } from './create-assignments/create-assignments.component';
+import { FinishedSetupComponent } from './finished-setup/finished-setup.component';
 
 
 @NgModule({
@@ -38,7 +41,7 @@ import { AssignJudgesComponent } from './assign-judges/assign-judges.component';
   	ParticipantsCardComponent, 
   	ActionsCardComponent, 
     GameUploadExpansionPanelComponent, 
-    ScoreBoardComponent, ChooseNewGameTypeComponent, InvitePlayersComponent, AssignJudgesComponent
+    ScoreBoardComponent, ChooseNewGameTypeComponent, InvitePlayersComponent, AssignJudgesComponent, CreateTeamsComponent, CreateAssignmentsComponent, FinishedSetupComponent
   ],
   imports: [
     CommonModule,

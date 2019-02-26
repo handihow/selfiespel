@@ -48,7 +48,8 @@ export class NewGameComponent implements OnInit {
     //create the course form
     this.gameForm = new FormGroup({
       name: new FormControl(this.gameNames[Math.floor(Math.random() * this.gameNames.length)], Validators.required),
-      date: new FormControl(null, Validators.required)
+      date: new FormControl(null, Validators.required),
+      playing: new FormControl("Ja", Validators.required)
     });
     this.gameForm.get('date').setValue((new Date()).toISOString());
   }
@@ -62,7 +63,8 @@ export class NewGameComponent implements OnInit {
     }
     try{
       newGame.date = new Date(this.gameForm.value.date);
-      this.gameService.addGame(this.user, newGame).then(game => {
+      let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
+      this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
         this.store.dispatch(new GameAction.StartGame(game));
         this.router.navigate(['/games/invite']);
       });

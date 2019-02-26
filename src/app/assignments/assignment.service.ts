@@ -43,6 +43,18 @@ export class AssignmentService {
 			});
 	}
 
+	addAssignment(assignment: Assignment){
+		assignment.created = firestore.FieldValue.serverTimestamp();
+		assignment.updated = firestore.FieldValue.serverTimestamp();
+		return this.db.collection('assignments').add(assignment)
+			.then(doc => {
+				this.uiService.showSnackbar("Opdracht bewaard", null, 3000);
+			})
+			.catch(error => {
+				this.uiService.showSnackbar(error.message, null, 3000);
+			});
+	}
+
 	//retrieve game assignments
 	fetchAssignments(gameId: string): Observable<Assignment[]>{
 		this.store.dispatch(new UI.StartLoading());

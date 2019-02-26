@@ -4,6 +4,7 @@
 }
 
 .explanation {
-	padding-left: 10px;
-	padding-right: 10px;
+	width: 95%;
+	max-width: 800px;
+	margin: auto;
 }

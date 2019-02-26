@@ -1,41 +1,59 @@
 <mat-card class="full-width">
 	<mat-card-header>
 		<mat-card-title>
-			Groepeer
+			Maak teams
 		</mat-card-title>
 		<mat-card-subtitle>
-			Voeg groepen toe en deel de spelers in!
+			Met de schuif kun je teams van 2, 3 of 4 maken
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-slider min="2" max="4" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
 	<mat-card-content cdkDropListGroup>
 		<div *ngFor="let team of teams">
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id!==teamId">
-				<h3>{{team?.name}}</h3>
-				<button mat-icon-button matTooltip="Wijzig groepsnaam" (click)="onEdit(team)">
-					<mat-icon>edit</mat-icon>
-				</button>
+				<h3>Team {{team?.name}}</h3>
+				<span>
+					<button mat-icon-button matTooltip="Wijzig teamnaam" (click)="onEdit(team)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button matTooltip="Verwijder team" (click)="onRemove(team)">
+						<mat-icon>clear</mat-icon>
+					</button>
+				</span>
 			</div>
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id===teamId">
 				<mat-form-field>
-					<input matInput placeholder="Groepsnaam" [(ngModel)]="teamName">
+					<input matInput placeholder="Naam van het team" [(ngModel)]="teamName">
 				</mat-form-field>
-				<button mat-icon-button matTooltip="Bewaar groepsnaam" (click)="onSave(team)">
+				<button mat-icon-button matTooltip="Bewaar naam van het team" (click)="onSave(team)">
 					<mat-icon>save</mat-icon>
 				</button>
 			</div>
 			
 			<mat-list cdkDropList class="list"
 						[cdkDropListData]="team?.participants" 
-						(cdkDropListDropped)="drop($event)">
+						(cdkDropListDropped)="drop($event, false)">
 				
 				<mat-list-item *ngFor="let player of team?.participants" cdkDrag [cdkDragData]="player" class="list-item">			<mat-icon matListIcon>drag_handle</mat-icon>
 					<p matLine>{{player.displayName}}</p>
 				</mat-list-item>
 			</mat-list>
 		</div>
+		<div>
+			<h3>Speelt niet mee</h3>
+			<mat-list cdkDropList class="list"
+						[cdkDropListData]="notPlaying" 
+						(cdkDropListDropped)="drop($event, true)">
+				
+				<mat-list-item *ngFor="let participant of notPlaying" cdkDrag [cdkDragData]="participant" class="list-item">			
+					<mat-icon matListIcon>drag_handle</mat-icon>
+					<p matLine>{{participant.displayName}}</p>
+				</mat-list-item>
+			</mat-list>
+		</div>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onShuffle()">Opnieuw!</button>
+		<button mat-button (click)="onShuffle()">Shuffle!</button>
+		<button mat-raised-button color="accent" (click)="onNew()">Nieuw team</button>
 	</mat-card-actions>
 </mat-card>

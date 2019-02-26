@@ -50,7 +50,7 @@ export class AuthService {
 	    	if(user){
 	    		//dispatch the current user to the app state
 	    		this.store.dispatch(new Auth.SetAuthenticated(user));
-	    		this.router.navigate(['/games'])
+	    		this.router.navigate(['/games']);
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
 	    		this.router.navigate(['/']);

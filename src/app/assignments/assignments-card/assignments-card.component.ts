@@ -1,9 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Game } from '../../games/games.model';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
+import * as fromGame from '../../games/game.reducer'; 
 
 import { Settings } from '../../shared/settings';
 import { Status } from '../../shared/settings';
@@ -26,10 +30,9 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   ];
 
   game: Game;
-  gameId: string;
   subs: Subscription[] = []; 
-  isVisible: boolean = true;
   assignments: Assignment[];
+  hasAssignments: boolean;
 
   allAssignments = Settings.assignments;
 
@@ -37,20 +40,23 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   get status() { return Status; }
 
   constructor(private route: ActivatedRoute,
+              private store: Store<fromGame.State>,
               private router: Router,
               private gameService: GameService,
               private assignmentService: AssignmentService) { }
 
   ngOnInit() {
-    this.gameId = this.route.snapshot.paramMap.get('id');
-    this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game => {
-      if(game){
-        this.game = {id: this.gameId, ...game};
-      }
-    }))
-    this.subs.push(this.assignmentService.fetchAssignments(this.gameId).subscribe(assignments => {
-      this.assignments = assignments.sort((a,b) => a.order - b.order);
-    }));
+    this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game => {
+        if(game){
+          this.game = game;
+          this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
+            if(assignments && assignments.length > 0){
+              this.assignments = assignments.sort((a,b) => a.order - b.order);
+              this.hasAssignments = true;
+            }
+          }));
+        }
+      }));
   }
 
   ngOnDestroy() {
@@ -72,7 +78,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   		var random = filteredAssignments[randomIndex];
   		assignments.push(random);
   	}
-  	return this.assignmentService.addAssignments(this.gameId, assignments);
+  	return this.assignmentService.addAssignments(this.game.id, assignments);
   }
 
   private pickRandomIndex(array, randomIndices){
@@ -90,20 +96,25 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     this.quantity = quantity.value;
   }
 
-  async onSave(){
-    await this.onRandomAssignments(this.selectedLevel, this.quantity);
-    this.game.status = Status.assigned;
-    this.gameService.updateGameToDatabase(this.game);
+  onSave(){
+    this.onRandomAssignments(this.selectedLevel, this.quantity);
   }
 
-  async onNewAssignments(){
-    await this.assignmentService.deleteAssignments(this.gameId, this.assignments);
-    this.game.status = Status.teamsCreated;
-    this.gameService.updateGameToDatabase(this.game);
+  onNewAssignments(){
+    this.assignmentService.deleteAssignments(this.game.id, this.assignments);
+    this.assignments = [];
+    this.hasAssignments = false;
   }
 
-  toggleVisibility(){
-    this.isVisible = !this.isVisible;
+  onNew(){
+    const assignment: Assignment = {
+      assignment: 'Nieuwe opdracht',
+      level: 1,
+      maxPoints: 3,
+      order: this.assignments.length,
+      gameId: this.game.id
+    }
+    this.assignmentService.addAssignment(assignment);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -111,7 +122,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     this.assignments.forEach((assignment, index) => {
       assignment.order = index;
     });
-    this.assignmentService.updateAssignments(this.gameId, this.assignments);
+    this.assignmentService.updateAssignments(this.game.id, this.assignments);
   }
 
   dropUnsaved(event: CdkDragDrop<string[]>) {

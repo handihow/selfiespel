@@ -36,6 +36,16 @@ export class TeamService {
 			});
 	}
 
+	addTeam(team: Team){
+		return this.db.collection('teams').add(team)
+			.then(doc => {
+				this.uiService.showSnackbar("Team bewaard", null, 3000);
+			})
+			.catch(error => {
+				this.uiService.showSnackbar(error.message, null, 3000);
+			});
+	}
+
 	//retrieve game teams
 	fetchTeams(gameId: string): Observable<Team[]>{
 		this.store.dispatch(new UI.StartLoading());
@@ -109,6 +119,17 @@ export class TeamService {
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
 			});
+	}
+
+	deleteTeam(team: Team){
+		return this.db.collection('teams').doc(team.id)
+			.delete()
+			.then( _ => {
+				this.uiService.showSnackbar("Team is verwijderd", null, 3000);
+			})
+			.catch(error => {
+				this.uiService.showSnackbar(error.message, null, 3000);
+			});;
 	}
 	
 		

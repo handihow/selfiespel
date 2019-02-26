@@ -1,4 +1,4 @@
-<mat-card class="full-width" *ngIf="game?.status<status.assigned">
+<mat-card class="full-width" *ngIf="!hasAssignments">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Kies niveau en aantal opdrachten</mat-card-subtitle>
@@ -16,7 +16,7 @@
 	</mat-card-actions>
 </mat-card>
 
-<mat-card class="full-width" *ngIf="game?.status===status.assigned && isVisible">
+<mat-card class="full-width" *ngIf="hasAssignments">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Maak een selfie met ....</mat-card-subtitle>
@@ -29,21 +29,9 @@
 		</mat-list>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onNewAssignments()">Opnieuw!</button>
-		<button mat-icon-button (click)="toggleVisibility()" matTooltip="Klap in">
-			<mat-icon>visibility_off</mat-icon>
-		</button>
-	</mat-card-actions>
-</mat-card>
-
-<mat-card class="full-width" *ngIf="game?.status===status.assigned && !isVisible">
-	<mat-card-header>
-		<mat-card-title>Opdrachten</mat-card-title>
-		<mat-card-subtitle>Klaar met opdrachten!</mat-card-subtitle>
-	</mat-card-header>
-	<mat-card-actions>
-		<button mat-icon-button (click)="toggleVisibility()" matTooltip="Bekijk opdrachten">
-			<mat-icon>visibility</mat-icon>
+		<button mat-button (click)="onNewAssignments()">Opnieuw!</button>
+		<button mat-raised-button color="accent" (click)="onNew()">
+			Nieuwe opdracht
 		</button>
 	</mat-card-actions>
 </mat-card>

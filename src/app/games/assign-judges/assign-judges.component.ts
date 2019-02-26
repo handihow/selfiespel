@@ -32,9 +32,9 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
   subs: Subscription[] = [];
 
   constructor(	private store: Store<fromGame.State>,
-  				private gameService: GameService,
-  				private dialog: MatDialog,
-  				private router: Router) { }
+  				      private gameService: GameService,
+  				      private dialog: MatDialog,
+  				      private router: Router) { }
 
   ngOnInit() {
   	this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(administrator => {
@@ -57,7 +57,7 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
   	})
   }
 
-  async onPrevious(){
+  onPrevious(){
   	 const dialogRef = this.dialog.open(WarningDialogComponent, {
       data: {
         title: 'Terug naar wachtkamer',
@@ -78,15 +78,15 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
     const dialogRef = this.dialog.open(WarningDialogComponent, {
       data: {
         title: 'Controleer juryleden',
-        content: 'Check voordat je doorgaat of je de juiste juryleden hebt geselecteerd. Wil je doorgaan?'
+        content: 'Check of je de juiste deelnemers jurylid hebt gemaakt. Wil je doorgaan?'
       }
     });
 
     dialogRef.afterClosed().subscribe(async result => {
       if(result){
-        this.game.status = Status.invited;
+        this.game.status = Status.judgesAssigned;
         await this.gameService.updateGameToDatabase(this.game);
-        this.router.navigate(['/games/judge'])
+        this.router.navigate(['/games/teams'])
       }
     });
   }

@@ -1,5 +1,9 @@
 <section fxLayout="row" fxLayoutAlign="space-around center">
-  <h1>Wachtkamer</h1>
+  <div>
+  	<h1>Wachtkamer</h1>
+  	Wacht hier totdat alle spelers zich hebben aangemeld bij het spel.
+  </div>
+
   <button mat-fab color="accent" (click)="onNext()" matTooltip="Volgende stap"
   			[disabled]="(participants$ | async)?.length<=1">
   	<mat-icon>arrow_forward</mat-icon>

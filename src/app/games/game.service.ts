@@ -26,13 +26,16 @@ export class GameService {
 				 private store: Store<fromUI.State> ){}
 
 
-	addGame(user: User, game: Game){
+	addGame(user: User, game: Game, playing: boolean){
 		game.created = firestore.FieldValue.serverTimestamp();
 		game.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('games').add(game)
 			.then(async doc => {
 				game.id = doc.id;
 				await this.manageGameParticipants(user, game, 'participant', true);
+				if(playing){
+					await this.manageGameParticipants(user, game, 'player', true);
+				}
 				return game;
 			})
 			.catch(error => {

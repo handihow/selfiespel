@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../app.reducer';
+import * as fromGame from '../../games/game.reducer'; 
+import * as GameAction from '../../games/game.actions';
 
 import { GameService } from '../../games/game.service';
 import { Game } from '../../games/games.model';
@@ -12,6 +18,8 @@ import { User } from '../../auth/user.model';
 import { Team } from '../team.model';
 import { TeamService } from '../team.service';
 
+import { UIService } from '../../shared/ui.service';
+
 @Component({
   selector: 'app-teams-card',
   templateUrl: './teams-card.component.html',
@@ -20,25 +28,24 @@ import { TeamService } from '../team.service';
 export class TeamsCardComponent implements OnInit, OnDestroy {
   
   game: Game;
-  gameId: string;
-  players: User[];
+  players: User[] = [];
   subs: Subscription[] = [];
   playersPerGroup: number = 2;
   teams: Team[];
   teamName: string;
   teamId: string;
+  notPlaying: User[] = [];
 
-  constructor(private route: ActivatedRoute,
-			  private router: Router,
-			  private gameService: GameService,
-        private teamService: TeamService ) { }
+  constructor(private store: Store<fromGame.State>,
+              private router: Router,
+			        private gameService: GameService,
+              private teamService: TeamService,
+              private uiService: UIService ) { }
 
   ngOnInit() {
-  	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game => {
+  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(async game => {
       if(game){
         this.game = game;
-        this.game.id = this.gameId;
         await this.fetchParticipants();
         this.fetchTeams();
       }
@@ -47,9 +54,10 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
 
   fetchParticipants(){
     return new Promise((resolve, reject) => {
-      this.subs.push(this.gameService.fetchGameParticipants(this.gameId, 'participants').subscribe(players => {
-        if(players){
-          this.players = players;
+      this.subs.push(this.gameService.fetchGameParticipants(this.game.id, 'participant').subscribe(participants => {
+        if(participants){
+          this.players = participants.filter(p => p.playing && p.playing.includes(this.game.id));
+          this.notPlaying = participants.filter(p => !p.playing || !p.playing.includes(this.game.id));
           resolve(true);
         }
       }));
@@ -57,7 +65,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   }
 
   fetchTeams(){
-    this.subs.push(this.teamService.fetchTeams(this.gameId).subscribe(teams => {
+    this.subs.push(this.teamService.fetchTeams(this.game.id).subscribe(teams => {
       if(teams && teams.length===0){
         this.makeNewGroups();  
       } else {
@@ -69,8 +77,9 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   async makeNewGroups(){
     //first make sure that all teams in database are deleted
     if(this.teams){
-      await this.teamService.deleteTeams(this.gameId, this.teams);
+      await this.teamService.deleteTeams(this.game.id, this.teams);
     }
+    this.notPlaying = [];
   	//first calculate how many groups you need
   	let randomIndeces = [];
     let teams : Team[] = [];
@@ -92,7 +101,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
       })
       teams.push(newTeam);
     }
-    this.teamService.addTeams(this.gameId,teams);
+    this.teamService.addTeams(this.game.id,teams);
   }
 
   private pickRandomIndex(array, randomIndices){
@@ -129,13 +138,13 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     teams.forEach(team => {
       let participants: User[] = [];
       this.players.forEach(player => {
-        if(team.members[player.uid]){
+        if(team.members && team.members[player.uid]){
           participants.push(player);
         }
       });
       team.participants = participants
     });
-    this.teams = teams;
+    this.teams = teams.sort((a,b) => a.order - b.order);
   }
 
 
@@ -154,7 +163,15 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     this.makeNewGroups();
   }
 
-  drop(event: CdkDragDrop<User[]>) {
+  drop(event: CdkDragDrop<User[]>, notPlaying: boolean) {
+    const movedUser : User = event.item.data;
+    if(notPlaying && movedUser.playing.includes(this.game.id)){
+      //player is moved to not-playing
+      this.gameService.manageGameParticipants(movedUser, this.game, 'player', false);
+    } else if(!notPlaying && !movedUser.playing.includes(this.game.id)) {
+      //playing is moved from not playing to playing
+      this.gameService.manageGameParticipants(movedUser, this.game, 'player', true);
+    }
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -166,6 +183,16 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     this.teamService.updateTeams(this.teams);
   }
 
+  onNew(){
+    const team: Team = {
+      name: 'Nieuw team',
+      order: this.teams.length,
+      color: Settings.teamColors[this.teams.length].color,
+      gameId: this.game.id
+    }
+    this.teamService.addTeam(team);
+  }
+
   onEdit(team: Team){
     this.teamName = team.name;
     this.teamId = team.id;
@@ -175,5 +202,12 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     team.name = this.teamName;
     this.teamService.updateTeam(team);
     this.teamId = null;
+  }
+
+  onRemove(team: Team){
+    if(team.participants.length>0){
+      return this.uiService.showSnackbar("Dit team heeft teamleden. Sleep de spelers eerst naar een ander team voordat je het team verwijdert.", null, 3000);
+    }
+    this.teamService.deleteTeam(team);
   }
 }

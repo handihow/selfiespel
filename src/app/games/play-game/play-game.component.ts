@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
+import * as fromGame from '../game.reducer'; 
 import { Subscription, Observable, of } from 'rxjs';
 
 import { GameService } from '../game.service';
@@ -30,7 +31,6 @@ import { AssignmentService } from '../../assignments/assignment.service';
 })
 export class PlayGameComponent implements OnInit {
 
-  gameId: string;
   game: Game;
   team: Team;
   user: User;
@@ -44,10 +44,9 @@ export class PlayGameComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private store: Store<fromGame.State>,
               private storage: AngularFireStorage,
 			        private router: Router,
-			        private store: Store<fromRoot.State>,
               private gameService: GameService,
               private teamService: TeamService,
               private uiService: UIService,
@@ -57,8 +56,7 @@ export class PlayGameComponent implements OnInit {
               ) { this.notifier = notifierService; }
 
   ngOnInit() {
-  	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game=> {
+  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(async game=> {
   		if(game){
   			this.game = game;
         this.fetchMessages();
@@ -91,7 +89,7 @@ export class PlayGameComponent implements OnInit {
 
   fetchTeam(){
     return new Promise((resolve, reject) => {
-      this.subs.push(this.teamService.fetchTeam(this.gameId, this.user.uid).subscribe(team => {
+      this.subs.push(this.teamService.fetchTeam(this.game.id, this.user.uid).subscribe(team => {
         if(team){
           this.team = team;
           resolve(true);  
@@ -101,7 +99,7 @@ export class PlayGameComponent implements OnInit {
   }
 
   fetchMessages(){
-    this.subs.push(this.uiService.fetchMessages(this.gameId).subscribe(messages => {
+    this.subs.push(this.uiService.fetchMessages(this.game.id).subscribe(messages => {
       messages.forEach(message => {
         if(!message.isShow){
           this.notifier.notify( message.style, message.content );  
@@ -122,7 +120,7 @@ export class PlayGameComponent implements OnInit {
   }
 
   fetchAssignments(){
-    this.subs.push(this.assignmentService.fetchAssignments(this.gameId).subscribe(assignments => {
+    this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
        if(assignments){
          this.assignments = assignments;
          this.createThumbnailArray();

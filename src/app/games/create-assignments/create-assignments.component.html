@@ -1,0 +1,15 @@
+<section fxLayout="row" fxLayoutAlign="space-around center">
+  <button mat-fab color="accent" (click)="onPrevious()" matTooltip="Vorige stap">
+  	<mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Opdrachten</h1>
+  <button mat-fab color="accent" (click)="onNext()" matTooltip="Volgende stap">
+  	<mat-icon>arrow_forward</mat-icon>
+  </button>
+</section>
+<section fxLayout="column" fxLayoutAlign="center center" class="explanation">
+	Maak hier de opdrachten voor het spel. Stel het maximum punten in dat je voor iedere opdracht kunt behalen.
+</section>
+<section class="assignments-card">
+	<app-assignments-card></app-assignments-card>
+</section>
