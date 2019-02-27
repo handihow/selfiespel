@@ -65,7 +65,7 @@ export class ImagesGridViewComponent implements OnInit {
 
   setColumns(screentype){
     if(screentype === 'desktop'){
-      this.columns = 4;
+      this.columns = 3;
     } else if (screentype === 'tablet'){
       this.columns = 2;
     } else {
@@ -77,7 +77,7 @@ export class ImagesGridViewComponent implements OnInit {
       if(this.game.administrator===this.user.uid){
         this.isAdmin = true;
       }
-      if(this.game.judges.includes(this.user.uid)){
+      if(this.game.judges && this.game.judges.includes(this.user.uid)){
         this.isJudge = true;
       }
   }

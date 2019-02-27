@@ -189,31 +189,31 @@ public static teamColors =
 ];
 
 public static userLevels = {
-	participant : {
-		level: 'deelnemer',
-		gameVariable: 'participants',
-		gameQueryCondition: 'array-contains',
-		userVariable: 'participating'
-	},
-	player: {
-		level: 'speler',
-		gameVariable: 'players',
-		gameQueryCondition: 'array-contains',
-		userVariable: 'playing'
-	},
-	judge: {
-		level: 'jurylid',
-		gameVariable: 'judges',
-		gameQueryCondition: 'array-contains',
-		userVariable: 'judging'
-	},
-	administrator: {
-		level: 'beheerder',
-		gameVariable: 'administrator',
-		gameQueryCondition: '==',
-		userVariable: 'administrating'
-	}
+participant : {
+level: 'deelnemer',
+gameVariable: 'participants',
+gameQueryCondition: 'array-contains',
+userVariable: 'participating'
+},
+player: {
+level: 'speler',
+gameVariable: 'players',
+gameQueryCondition: 'array-contains',
+userVariable: 'playing'
+},
+judge: {
+level: 'jurylid',
+gameVariable: 'judges',
+gameQueryCondition: 'array-contains',
+userVariable: 'judging'
+},
+administrator: {
+level: 'beheerder',
+gameVariable: 'administrator',
+gameQueryCondition: '==',
+userVariable: 'administrating'
 }
+};
 
 }
 

@@ -10,14 +10,17 @@
   </mat-tab>
   <mat-tab label="Score">
   	<ng-template matTabContent>
-      <div class="score-display">
-        <app-score-board [game]="game"></app-score-board>
+      <div class="score-board">
+        <app-score-board 
+                  [game]="game" 
+                  [assignments]="assignments"
+                  [imageReferences]="imageReferences"></app-score-board>
       </div>
 	  </ng-template>
   </mat-tab>
   <mat-tab label="Acties" *ngIf="isAdmin">
     <ng-template matTabContent>
-      <div class="score-display">
+      <div class="action-card">
           <app-actions-card></app-actions-card>
       </div>
     </ng-template>

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
+import * as fromGame from '../game.reducer'; 
 import { Subscription, Observable } from 'rxjs';
 
 import { GameService } from '../game.service';
@@ -15,6 +16,9 @@ import { ReactionType } from '../../shared/settings';
 import { Image } from '../../images/image.model';
 import { ImageService } from '../../images/image.service';
 
+import { Assignment } from '../../assignments/assignment.model';
+import { AssignmentService } from '../../assignments/assignment.service';
+
 @Component({
   selector: 'app-view-game',
   templateUrl: './view-game.component.html',
@@ -22,24 +26,23 @@ import { ImageService } from '../../images/image.service';
 })
 export class ViewGameComponent implements OnInit {
 
-  gameId: string;
   game: Game;
   user: User;
   subs: Subscription[] = [];
   isAdmin: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
+  assignments: Assignment[];
   
-  constructor(private route: ActivatedRoute,
+  constructor(private store: Store<fromGame.State>,
 			        private router: Router,
               private storage: AngularFireStorage,
-			        private store: Store<fromRoot.State>,
               private gameService: GameService,
+              private assignmentService: AssignmentService,
               private imageService: ImageService) { }
 
   ngOnInit() {
-  	this.gameId = this.route.snapshot.paramMap.get('id');
-  	this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(game=> {
+  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game=> {
   		if(game){
   			this.game = game;
   			this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
@@ -68,6 +71,7 @@ export class ViewGameComponent implements OnInit {
       this.createImageArray();
       this.fetchUserReactionIds();
       this.fetchImageReactions();
+      this.fetchAssignments();
     }))
   }
 
@@ -113,6 +117,14 @@ export class ViewGameComponent implements OnInit {
         }
       });
     }));
+  }
+
+  fetchAssignments(){
+    this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
+       if(assignments){
+         this.assignments = assignments;
+       }
+    }))
   }
 
 }
