@@ -65,7 +65,7 @@ export class ImagesGridViewComponent implements OnInit {
 
   setColumns(screentype){
     if(screentype === 'desktop'){
-      this.columns = 3;
+      this.columns = 4;
     } else if (screentype === 'tablet'){
       this.columns = 2;
     } else {
