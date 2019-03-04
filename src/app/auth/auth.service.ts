@@ -49,6 +49,10 @@ export class AuthService {
 	    this.user$.subscribe(async user => {
 	    	if(user){
 	    		//dispatch the current user to the app state
+	    		if(!user.displayName){
+	    			//set the user display name to Anonimous if not available
+	    			user.displayName = "Anoniem"
+	    		}
 	    		this.store.dispatch(new Auth.SetAuthenticated(user));
 	    		this.router.navigate(['/games']);
 	    	} else {
