@@ -6,20 +6,20 @@ import { Subscription, Observable, of } from 'rxjs';
 
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-import { Game } from '../../games/games.model';
-import { User } from '../../auth/user.model';
+import { Game } from '../../models/games.model';
+import { User } from '../../models/user.model';
 
-import { Image } from '../image.model';
+import { Image } from '../../models/image.model';
 import { ImageService } from '../image.service';
-import { Reaction } from '../../shared/reaction.model';
-import { ReactionType } from '../../shared/settings';
+import { Reaction } from '../../models/reaction.model';
+import { ReactionType } from '../../models/reactionType.model';
 
-import { DialogCommentData } from '../../shared/dialogCommentData.model';
+import { DialogCommentData } from '../../models/dialogCommentData.model';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
 import { ImageDisplayDialogComponent } from '../image-display-dialog/image-display-dialog.component';
 
-import { Rating } from '../../shared/settings';
+import { Rating } from '../../models/rating.model';
 
 @Component({
   selector: 'app-images-grid-view',

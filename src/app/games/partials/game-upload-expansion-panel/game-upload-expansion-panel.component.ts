@@ -1,11 +1,11 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Game } from '../../games.model';
-import { User } from '../../../auth/user.model';
-import { Image } from '../../../images/image.model';
-import { Assignment } from '../../../assignments/assignment.model';
-import { Team } from '../../../teams/team.model';
+import { Game } from '../../../models/games.model';
+import { User } from '../../../models/user.model';
+import { Image } from '../../../models/image.model';
+import { Assignment } from '../../../models/assignment.model';
+import { Team } from '../../../models/team.model';
 
 import { ImageViewerComponent } from '../../../images/image-viewer/image-viewer.component';
 

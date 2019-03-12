@@ -9,11 +9,11 @@ import { UIService } from '../shared/ui.service';
 import * as UI from '../shared/ui.actions';
 import * as fromUI from '../shared/ui.reducer';
 
-import { User } from '../auth/user.model';
-import { Image } from './image.model';
-import { Reaction } from '../shared/reaction.model';
-import { ReactionType } from '../shared/settings';
-import { Rating } from '../shared/settings';
+import { User } from '../models/user.model';
+import { Image } from '../models/image.model';
+import { Reaction } from '../models/reaction.model';
+import { ReactionType } from '../models/reactionType.model';
+import { Rating } from '../models/rating.model';
 
 import {firestore} from 'firebase/app';
 

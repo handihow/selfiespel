@@ -2,9 +2,9 @@ import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
 
-import { Message } from '../../../src/app/shared/messages.model';
-import { Image } from '../../../src/app/images/image.model';
-import { Reaction } from '../../../src/app/shared/reaction.model';
+import { Message } from '../../../src/app/models/messages.model';
+import { Image } from '../../../src/app/models/image.model';
+import { Reaction } from '../../../src/app/models/reaction.model';
 
 // function sends a message when a new image is uploaded
 export const newImageMessage = (image: Image) => {

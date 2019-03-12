@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Assignment } from '../assignment.model';
+import { Assignment } from '../../models/assignment.model';
 import { AssignmentService } from '../assignment.service';
 
 import { UIService } from '../../shared/ui.service';
-import { Rating } from '../../shared/settings';
+import { Rating } from '../../models/rating.model';
 
 @Component({
   selector: 'app-assignment-list-item',

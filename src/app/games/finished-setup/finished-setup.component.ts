@@ -8,11 +8,11 @@ import * as fromGame from '../game.reducer';
 
 import { Subscription, Observable } from 'rxjs';
 
-import { Game } from '../games.model';
+import { Game } from '../../models/games.model';
 import { GameService } from '../game.service';
 
 import { WarningDialogComponent } from '../../shared/warning-dialog.component';
-import { Status } from '../../shared/settings';
+// import { Status } from '../../shared/settings';
 
 
 @Component({
@@ -44,22 +44,29 @@ export class FinishedSetupComponent implements OnInit, OnDestroy {
 	  		sub.unsubscribe();
 	  	})
 	}
+  
+  onChange(){
+  	this.gameService.updateGameToDatabase(this.game);
+  }
 
-  onPrevious(){
-	  	 const dialogRef = this.dialog.open(WarningDialogComponent, {
-	      data: {
-	        title: 'Terug naar opdrachten',
-	        content: 'Je wilt terug naar het maken van opdrachten. Wil je doorgaan?'
-	      }
-	    });
+  onCloseAdmin(){
+	const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: 'Waarschuwing',
+        content: 'Je bevestigt dat je klaar bent met instellen van het spel. Hierna kun je geen instellingen meer wijzigen en kunnen nieuwe spelers zich niet meer aanmelden. Wil je doorgaan?'
+      }
+    });
 
-	    dialogRef.afterClosed().subscribe(async result => {
-	      if(result){
-	        this.game.status = Status.teamsCreated;
-	        await this.gameService.updateGameToDatabase(this.game);
-	        this.router.navigate(['/games/assignments'])
-	      }
-	    });
-	}
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+        this.game.status.closedAdmin = true;
+        await this.gameService.updateGameToDatabase(this.game);
+      }
+    });
+
+  }
+
+ //  onPrevious(){
+	
 
 }

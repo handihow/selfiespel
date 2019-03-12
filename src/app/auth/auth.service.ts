@@ -11,8 +11,8 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { UIService } from '../shared/ui.service';
 import { Store } from '@ngrx/store';
 
-import { User } from './user.model';
-import { AuthData } from './auth-data.model'; 
+import { User } from '../models/user.model';
+import { AuthData } from '../models/auth-data.model'; 
 import * as fromRoot from '../app.reducer';
 import * as UI from '../shared/ui.actions';
 import * as Auth from './auth.actions';
@@ -43,7 +43,7 @@ export class AuthService {
 				this.store.dispatch(new Auth.SetUnauthenticated());
 				return of(null)
 			}
-		}))
+		}));
 	    //subscribe to changes in the user (triggered by changes in the auth state)
 	    //and set the custom user object as current user in the NgRx State Management
 	    this.user$.subscribe(async user => {

@@ -1,5 +1,5 @@
-import { Participants } from '../shared/participants.model';
-import { User } from '../auth/user.model';
+import { Participants } from './participants.model';
+import { User } from './user.model';
 
 export interface Team {
   name: string;

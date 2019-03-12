@@ -1,5 +1,5 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store'
-import { Game } from './games.model';
+import { Game } from '../models/games.model';
 
 import { GameActions, START_GAME, STOP_GAME } from './game.actions';
 import * as fromRoot from '../app.reducer';

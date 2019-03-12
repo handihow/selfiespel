@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store'; 
-import { Game } from './games.model';
+import { Game } from '../models/games.model';
 
 export const START_GAME = '[Game] Start Game';
 export const STOP_GAME = '[Game] Stop Game';

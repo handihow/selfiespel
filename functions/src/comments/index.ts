@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import { Reaction } from '../../../src/app/shared/reaction.model';
+import { Reaction } from '../../../src/app/models/reaction.model';
 
 const db = admin.firestore();
 

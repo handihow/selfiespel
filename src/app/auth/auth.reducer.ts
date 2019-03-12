@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store'
-import { User } from './user.model';
+import { User } from '../models/user.model';
 
 import { AuthActions, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './auth.actions';
 

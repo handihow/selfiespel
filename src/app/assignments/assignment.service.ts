@@ -8,9 +8,9 @@ import { UIService } from '../shared/ui.service';
 import * as UI from '../shared/ui.actions';
 import * as fromUI from '../shared/ui.reducer';
 
-import { Game } from '../games/games.model';
-import { User } from '../auth/user.model';
-import { Assignment } from './assignment.model';
+import { Game } from '../models/games.model';
+import { User } from '../models/user.model';
+import { Assignment } from '../models/assignment.model';
 
 import {firestore} from 'firebase/app';
 

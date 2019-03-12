@@ -5,9 +5,8 @@ import { Store } from '@ngrx/store';
 import * as fromGame from '../../game.reducer'; 
 import * as GameAction from '../../game.actions';
 
-import { Game } from '../../games.model';
-import { User } from '../../../auth/user.model'; 
-import { Status } from '../../../shared/settings';
+import { Game } from '../../../models/games.model';
+import { User } from '../../../models/user.model'; 
 
 @Component({
   selector: 'app-games-card',
@@ -20,7 +19,6 @@ export class GamesCardComponent implements OnInit {
   @Input() user: User;
   isAdmin: boolean;
   gameDate: string;
-  get status() { return Status; }
 
   constructor(private store: Store<fromGame.State>, private router: Router) { }
 
@@ -45,32 +43,14 @@ export class GamesCardComponent implements OnInit {
     this.checkDate();
   }
 
-  onOpen(status: Status){
+  onOpen(){
     this.store.dispatch(new GameAction.StartGame(this.game));
-    switch (status) {
-      case Status.created:
-        this.router.navigate(['games/invite']);
-        break;
-      case Status.invited:
-        this.router.navigate(['games/judges']);
-        break;
-      case Status.judgesAssigned:
-        this.router.navigate(['games/teams']);
-        break;
-      case Status.teamsCreated:
-        this.router.navigate(['games/assignments']);
-        break;
-      case Status.assigned:
-        this.router.navigate(['games/ready']);
-        break;
-      case Status.playing:
-        this.router.navigate(['games/play']);
-        break;
-      default:
-        this.router.navigate(['games/view']);
-        break;
-    }
-    
+    this.router.navigate(['games/view']);
   }
-
+   
+  onAdmin(){
+    this.store.dispatch(new GameAction.StartGame(this.game));
+    this.router.navigate(['games/admin']);
+  } 
+  
 }

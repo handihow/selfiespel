@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { GameService } from '../../game.service';
-import { Game } from '../../games.model';
-import { User } from '../../../auth/user.model';
+import { Game } from '../../../models/games.model';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-judges-card',

@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
 import { UIService } from '../../shared/ui.service';
 
-import { Image } from '../image.model';
+import { Image } from '../../models/image.model';
 import { ImageService } from '../image.service';
 
 import {

@@ -2,8 +2,8 @@ import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
 
-import { Image } from '../../../src/app/images/image.model';
-import { Progress } from '../../../src/app/shared/progress.model';
+import { Image } from '../../../src/app/models/image.model';
+import { Progress } from '../../../src/app/models/progress.model';
 
 // function updates the progress results of the user
 export const newImageProgress = async (image: Image) => {

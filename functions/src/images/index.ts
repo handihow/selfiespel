@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { Image } from '../../../src/app/images/image.model';
+import { Image } from '../../../src/app/models/image.model';
 
 import * as messages from '../messages';
 import * as progress from '../progress';

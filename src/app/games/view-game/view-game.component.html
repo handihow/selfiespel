@@ -1,4 +1,15 @@
-<mat-tab-group mat-align-tabs="center">
+<mat-tab-group mat-align-tabs="center" *ngIf="game">
+  <mat-tab label="Spel" *ngIf="game.status.playing">
+  	<ng-template matTabContent>
+	    <app-game-upload-expansion-panel
+                  [thumbnailReferences]="thumbnailReferences"
+                  [thumbnails$]="thumbnails$"
+                  [assignments]="assignments"
+                  [game]="game"
+                  [team]="team"
+                  [user]="user"></app-game-upload-expansion-panel>
+	  </ng-template>
+  </mat-tab>
   <mat-tab label="Selfies">
   	<ng-template matTabContent>
 	    <app-images-grid-view 

@@ -7,13 +7,13 @@ import { Store } from '@ngrx/store';
 import { UIService } from '../shared/ui.service';
 import * as UI from '../shared/ui.actions';
 import * as fromUI from '../shared/ui.reducer';
+import * as GameAction from './game.actions';
 
-import { Game } from './games.model';
-import { User } from '../auth/user.model';
-import { Progress } from '../shared/progress.model';
-import { ReactionType } from '../shared/settings';
-import { Reaction } from '../shared/reaction.model';
-import { Status } from '../shared/settings';
+import { Game } from '../models/games.model';
+import { User } from '../models/user.model';
+import { Progress } from '../models/progress.model';
+import { ReactionType } from '../models/reactionType.model';
+import { Reaction } from '../models/reaction.model';
 import { Settings } from '../shared/settings';
 
 import {firestore} from 'firebase/app';
@@ -46,7 +46,7 @@ export class GameService {
 
 	fetchGameWithCode(code: string): Observable<Game[]>{
 		this.store.dispatch(new UI.StartLoading());
-		var queryStr = (ref => ref.where('code', '==', code).where('status', '<', Status.finished));
+		var queryStr = (ref => ref.where('code', '==', code));
 		return this.db.collection('games', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {

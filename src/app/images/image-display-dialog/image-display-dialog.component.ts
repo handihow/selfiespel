@@ -2,14 +2,14 @@ import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Subscription } from 'rxjs';
 
-import { Image } from '../image.model';
+import { Image } from '../../models/image.model';
 import { ImageService } from '../image.service';
-import { User } from '../../auth/user.model';
+import { User } from '../../models/user.model';
 
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
-import { Reaction } from '../../shared/reaction.model';
-import { ReactionType } from '../../shared/settings';
+import { Reaction } from '../../models/reaction.model';
+import { ReactionType } from '../../models/reactionType.model';
 
 @Component({
   selector: 'app-image-display-dialog',
@@ -57,6 +57,7 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
 
   onRemoveImage(){
     this.child.deleteImage();
+    this.dialogRef.close();
   }
 
 }

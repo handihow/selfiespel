@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { DialogCommentData } from '../../shared/dialogCommentData.model';
+import { DialogCommentData } from '../../models/dialogCommentData.model';
 
 @Component({
   selector: 'app-comment-dialog',

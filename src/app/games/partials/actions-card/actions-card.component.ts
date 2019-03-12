@@ -8,10 +8,8 @@ import * as fromGame from '../../game.reducer';
 
 import { Observable, Subscription } from 'rxjs';
 import { GameService } from '../../game.service';
-import { Game } from '../../games.model';
-import { User } from '../../../auth/user.model';
-
-import { Status } from '../../../shared/settings';
+import { Game } from '../../../models/games.model';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-actions-card',
@@ -22,7 +20,6 @@ export class ActionsCardComponent implements OnInit, OnDestroy {
 
   game: Game;
   sub: Subscription;
-  get status() { return Status; }
 
   constructor(private store: Store<fromGame.State>,
 			        private router: Router,
@@ -41,27 +38,35 @@ export class ActionsCardComponent implements OnInit, OnDestroy {
   }
 
   onPlay(){
-    this.game.status = Status.playing;
+    this.game.status.playing = true;
+    this.game.status.pauzed = false;
+    this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/play']);
+    this.router.navigate(['/games/view']);
   }
 
   onPauze(){
-    this.game.status = Status.pauzed;
+    this.game.status.playing = false;
+    this.game.status.pauzed = true;
+    this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/view']);
   }
 
   onStop(){
-    this.game.status = Status.finished;
+    this.game.status.playing = false;
+    this.game.status.pauzed = false;
+    this.game.status.finished = true;
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/view']);
   }
 
   onReopen(){
-    this.game.status = Status.playing;
+    this.game.status.playing = true;
+    this.game.status.pauzed = false;
+    this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/play']);
+    this.router.navigate(['/games/view']);
   }
   
 }

@@ -7,8 +7,8 @@ import * as helpers from '../helpers';
 
 // const db = admin.firestore();
 
-import { Reaction } from '../../../src/app/shared/reaction.model';
-import { ReactionType } from '../../../src/app/shared/settings';
+import { Reaction } from '../../../src/app/models/reaction.model';
+import { ReactionType } from '../../../src/app/models/reactionType.model';
 
 // function runs when a reaction is created
 export const onCreateReaction = functions.firestore

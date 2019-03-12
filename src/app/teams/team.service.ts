@@ -8,9 +8,9 @@ import { UIService } from '../shared/ui.service';
 import * as UI from '../shared/ui.actions';
 import * as fromUI from '../shared/ui.reducer';
 
-import { Game } from '../games/games.model';
-import { User } from '../auth/user.model';
-import { Team } from './team.model';
+import { Game } from '../models/games.model';
+import { User } from '../models/user.model';
+import { Team } from '../models/team.model';
 
 @Injectable()
 export class TeamService {

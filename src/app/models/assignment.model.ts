@@ -1,4 +1,4 @@
-import { Rating } from '../shared/settings';
+import { Rating } from './rating.model';
 
 export interface Assignment {
   assignment: string;

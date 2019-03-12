@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Game } from '../../games/games.model';
+import { Game } from '../../models/games.model';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GameService } from '../../games/game.service';
@@ -10,8 +10,7 @@ import * as fromRoot from '../../app.reducer';
 import * as fromGame from '../../games/game.reducer'; 
 
 import { Settings } from '../../shared/settings';
-import { Status } from '../../shared/settings';
-import { Assignment } from '../assignment.model';
+import { Assignment } from '../../models/assignment.model';
 import { AssignmentService } from '../assignment.service';
 
 @Component({
@@ -32,12 +31,10 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   game: Game;
   subs: Subscription[] = []; 
   assignments: Assignment[];
-  hasAssignments: boolean;
 
   allAssignments = Settings.assignments;
 
   quantity: number = 12;
-  get status() { return Status; }
 
   constructor(private route: ActivatedRoute,
               private store: Store<fromGame.State>,
@@ -52,7 +49,15 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
           this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
             if(assignments && assignments.length > 0){
               this.assignments = assignments.sort((a,b) => a.order - b.order);
-              this.hasAssignments = true;
+              if(!this.game.status.assigned){
+                this.game.status.assigned = true;
+                this.gameService.updateGameToDatabase(this.game);
+              }
+            } else {
+              if(this.game.status.assigned){
+                this.game.status.assigned = false;
+                this.gameService.updateGameToDatabase(this.game);
+              }
             }
           }));
         }
@@ -100,10 +105,11 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     this.onRandomAssignments(this.selectedLevel, this.quantity);
   }
 
-  onNewAssignments(){
-    this.assignmentService.deleteAssignments(this.game.id, this.assignments);
+  async onNewAssignments(){
+    await this.assignmentService.deleteAssignments(this.game.id, this.assignments);
     this.assignments = [];
-    this.hasAssignments = false;
+    this.game.status.assigned = false;
+    this.gameService.updateGameToDatabase(this.game);
   }
 
   onNew(){

@@ -10,12 +10,12 @@ import * as fromGame from '../../games/game.reducer';
 import * as GameAction from '../../games/game.actions';
 
 import { GameService } from '../../games/game.service';
-import { Game } from '../../games/games.model';
+import { Game } from '../../models/games.model';
 
 import { Settings } from '../../shared/settings';
-import { User } from '../../auth/user.model';
+import { User } from '../../models/user.model';
 
-import { Team } from '../team.model';
+import { Team } from '../../models/team.model';
 import { TeamService } from '../team.service';
 
 import { UIService } from '../../shared/ui.service';

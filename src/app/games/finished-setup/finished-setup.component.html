@@ -1,14 +1,25 @@
-<section fxLayout="row" fxLayoutAlign="space-around center">
+<!-- <section fxLayout="row" fxLayoutAlign="space-around center">
   <button mat-fab color="accent" (click)="onPrevious()" matTooltip="Vorige stap">
   	<mat-icon>arrow_back</mat-icon>
   </button>
   <h1>Klaar om te beginnen!</h1>
-</section>
+</section> -->
 <section fxLayout="column" fxLayoutAlign="center start" class="explanation">
-	<p>Je bent klaar met het instellen van het spel.</p>
-	<p>Als je het spel wilt starten, druk je op de "Play" knop.</p>
-	<p>Let op! Als het spel eenmaal is begonnen, kunnen er geen nieuwe spelers meer meedoen!</p>
-</section>
-<section class="action-card">
-	<app-actions-card></app-actions-card>
+	<p>Controleer of je klaar bent met het instellen van het spel.</p>
+	 <mat-checkbox [(ngModel)]="game.status.invited" (change)="onChange()">
+     	Alle spelers zijn aangemeld  
+     </mat-checkbox>
+      <mat-checkbox [(ngModel)]="game.status.assigned" (change)="onChange()">
+     	Opdrachten zijn klaar 
+     </mat-checkbox>
+     <mat-checkbox [(ngModel)]="game.status.judgesAssigned" (change)="onChange()">
+     	Juryleden zijn ingesteld
+     </mat-checkbox>
+     <mat-checkbox [(ngModel)]="game.status.teamsCreated" (change)="onChange()">
+     	Teams zijn ingesteld
+     </mat-checkbox>
+     <p>Let op! Als je op de knop "Klaar met instellen" drukt, kunnen er geen nieuwe spelers meer meedoen!</p>
+     <button mat-raised-button (click)="onCloseAdmin()"
+     [disabled]="!game.status.invited || !game.status.assigned || !game.status.judgesAssigned || !game.status.teamsCreated">
+ 		KLAAR MET INSTELLEN</button>
 </section>

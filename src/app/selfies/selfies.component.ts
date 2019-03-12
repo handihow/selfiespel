@@ -6,10 +6,10 @@ import { Subscription, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../app.reducer'; 
 
-import { Image } from '../images/image.model';
+import { Image } from '../models/image.model';
 import { ImageService } from '../images/image.service';
 
-import { User } from '../auth/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-selfies',

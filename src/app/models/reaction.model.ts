@@ -1,5 +1,5 @@
-import { ReactionType } from './settings';
-import { Rating } from './settings';
+import { ReactionType } from './reactionType.model';
+import { Rating } from './rating.model';
 
 export interface Reaction {
 comment?: string;

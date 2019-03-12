@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -9,11 +10,9 @@ import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
-import { Game } from '../games.model';
-import { Status } from '../../shared/settings';
+import { Game } from '../../models/games.model';
 
-import { User } from '../../auth/user.model';
-import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 import { UIService } from '../../shared/ui.service';
 
@@ -28,7 +27,7 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
   user: User;
   isLoading$: Observable<boolean>;
   game: Game;
-  sub: Subscription;
+  subs: Subscription[] = [];
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
@@ -39,11 +38,11 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
   	//get the loading state
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     //get the user and organisation from the root app state management
-    this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
+    this.subs.push(this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
       if(user){
         this.user = user;
       }
-    });
+    }));
     //create the course form
     this.gameForm = new FormGroup({
       code: new FormControl(null, Validators.compose([
@@ -55,29 +54,40 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    if(this.sub){
-      this.sub.unsubscribe();  
-    }
-  }
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    })
+   }
 
    onSubmit(){
-    this.sub = this.gameService.fetchGameWithCode(this.gameForm.value.code)
+    this.subs.push(this.gameService.fetchGameWithCode(this.gameForm.value.code)
     	.subscribe(async games => {
     		if(games && games[0]){
     			let gameFound = games[0];
     			if(gameFound.administrator === this.user.uid) {
     				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
-    			} else if(gameFound.status>Status.assigned) {
+    			} else if(gameFound.status.closedAdmin) {
             this.uiService.showSnackbar("Dit spel is al begonnen. Je kunt niet meer meedoen.", null, 3000);
           } else {
+            //first unsubscribe to the user and game because the user/game objects will change during the update process 
+            this.subs.forEach(sub => {
+              sub.unsubscribe();
+            });
+            //if the game that is found with the code does not have the status "invited" set, set it
+            if(!gameFound.status.invited) {
+              gameFound.status.invited = true;
+              await this.gameService.updateGameToDatabase(gameFound);
+            }
+            //add the user as participant
     				await this.gameService.manageGameParticipants(this.user, gameFound, 'participant', true);
+            //add the user as player
             await this.gameService.manageGameParticipants(this.user, gameFound, 'player', true);
     			}
     		} else {
     			this.uiService.showSnackbar("Geen spel gevonden met deze code", null, 3000);
     		}
         this.router.navigate(['/games']);
-    	});
+    	}));
   }
 
 }

@@ -11,29 +11,14 @@
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
-		<h4 *ngIf="game.status<status.playing && !isAdmin">Spel is nog niet begonnen...</h4>
+		<h4 *ngIf="!game.status.closedAdmin && !isAdmin">Spel is nog niet begonnen...</h4>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onOpen(status.created)"
-					*ngIf="(game.status===status.created) && isAdmin">
-			Naar wachtkamer</button>
-		<button mat-raised-button color="accent" (click)="onOpen(status.invited)"
-					*ngIf="(game.status===status.invited) && isAdmin">
-			Juryleden instellen</button>
-		<button mat-raised-button color="accent" (click)="onOpen(status.judgesAssigned)"
-					*ngIf="(game.status===status.judgesAssigned) && isAdmin">
-			Teams instellen</button>
-		<button mat-raised-button color="accent" (click)="onOpen(status.teamsCreated)"
-					*ngIf="(game.status===status.teamsCreated) && isAdmin">
-			Opdrachten instellen</button>
-		<button mat-raised-button color="accent" (click)="onOpen(status.assigned)"
-					*ngIf="(game.status===status.assigned) && isAdmin">
-			Ga naar spel starten</button>
-		<button mat-raised-button color="accent" (click)="onOpen(status.playing)"
-					*ngIf="game.status===status.playing">
-			Speel</button>
+		<button mat-raised-button color="accent" (click)="onAdmin()"
+					*ngIf="!game.status.closedAdmin && isAdmin">
+			Beheer spel</button>
 		<button mat-raised-button color="accent" (click)="onOpen()"
-					*ngIf="game.status==status.pauzed || game.status==status.finished">
-			Bekijk</button>
+					*ngIf="game.status.closedAdmin">
+			Open</button>
 	</mat-card-actions>
 </mat-card>

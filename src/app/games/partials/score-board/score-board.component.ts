@@ -4,18 +4,18 @@ import * as fromRoot from '../../../app.reducer';
 
 import { Subscription } from 'rxjs';
 
-import { Game } from '../../games.model';
+import { Game } from '../../../models/games.model';
 import { GameService } from '../../game.service';
 
-import { Team } from '../../../teams/team.model';
+import { Team } from '../../../models/team.model';
 import { TeamService } from '../../../teams/team.service';
 
-import { User } from '../../../auth/user.model';
-import { Progress } from '../../../shared/progress.model';
-import { Image} from '../../../images/image.model';
+import { User } from '../../../models/user.model';
+import { Progress } from '../../../models/progress.model';
+import { Image} from '../../../models/image.model';
 
-import { Assignment } from '../../../assignments/assignment.model';
-import { ReactionType } from '../../../shared/settings';
+import { Assignment } from '../../../models/assignment.model';
+import { ReactionType } from '../../../models/reactionType.model';
 
 @Component({
   selector: 'app-score-board',

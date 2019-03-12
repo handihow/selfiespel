@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material';
 import {map,  take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { Message } from './messages.model';
+import { Message } from '../models/messages.model';
 
 @Injectable()
 export class UIService {

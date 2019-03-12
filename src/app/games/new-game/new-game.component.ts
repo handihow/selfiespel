@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
@@ -9,14 +10,14 @@ import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { GameService } from '../game.service';
-import { Game } from '../games.model';
+import { Game } from '../../models/games.model';
 
-import { User } from '../../auth/user.model';
-import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
+
 
 import { UIService } from '../../shared/ui.service';
 import { Settings } from '../../shared/settings';
-import { Status } from '../../shared/settings';
+import { Status } from '../../models/status.model';
 
 @Component({
   selector: 'app-new-game',
@@ -30,6 +31,7 @@ export class NewGameComponent implements OnInit {
   isLoading$: Observable<boolean>;
   minDate = new Date();
   gameNames = Settings.gameNames;
+  sub: Subscription;
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
@@ -40,7 +42,7 @@ export class NewGameComponent implements OnInit {
   	//get the loading state
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     //get the user and organisation from the root app state management
-    this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
+    this.sub = this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
       if(user){
         this.user = user;
       }
@@ -55,22 +57,37 @@ export class NewGameComponent implements OnInit {
   }
 
   onSubmit(){
+    //first unsubscribe to the store because the authenticated user object will change
+    this.sub.unsubscribe();
+    //create the status of the new game
+    let status : Status = {
+      created: true,
+      invited: false,
+      judgesAssigned: false,
+      teamsCreated: false,
+      assigned: false,
+      closedAdmin: false,
+      playing: false,
+      pauzed: false,
+      finished: false
+    }
+    //create the new game
     let newGame : Game = {
       name: this.gameForm.value.name,
+      date: new Date(this.gameForm.value.date),
+      created: new Date(),
+      updated: new Date(),
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
       administrator: this.user.uid,
-      status: Status.created
+      status: status
     }
-    try{
-      newGame.date = new Date(this.gameForm.value.date);
-      let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
-      this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
-        this.store.dispatch(new GameAction.StartGame(game));
-        this.router.navigate(['/games/invite']);
-      });
-    } catch {
-      this.uiService.showSnackbar("Er ging iets mis met het bewaren van het spel", null, 3000);
-    }
+    let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
+    //now add the game to the database and start adminstrating the game
+    this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
+      this.store.dispatch(new GameAction.StartGame(game));
+      this.router.navigate(['/games/admin']);
+    });
+    
   }
 
 }

@@ -13,7 +13,6 @@ import { NewGameComponent } from './new-game/new-game.component';
 import { RegisterGameComponent } from './register-game/register-game.component';
 import { ViewGameComponent } from './view-game/view-game.component';
 import { GamesCardComponent } from './partials/games-card/games-card.component';
-import { PlayGameComponent } from './play-game/play-game.component';
 import { JudgesCardComponent } from './partials/judges-card/judges-card.component';
 import { ParticipantsCardComponent } from './partials/participants-card/participants-card.component';
 import { ActionsCardComponent } from './partials/actions-card/actions-card.component';
@@ -27,6 +26,7 @@ import { AssignJudgesComponent } from './assign-judges/assign-judges.component';
 import { CreateTeamsComponent } from './create-teams/create-teams.component';
 import { CreateAssignmentsComponent } from './create-assignments/create-assignments.component';
 import { FinishedSetupComponent } from './finished-setup/finished-setup.component';
+import { AdminGameComponent } from './admin-game/admin-game.component';
 
 
 @NgModule({
@@ -36,12 +36,18 @@ import { FinishedSetupComponent } from './finished-setup/finished-setup.componen
   	RegisterGameComponent, 
   	ViewGameComponent, 
   	GamesCardComponent, 
-  	PlayGameComponent, 
   	JudgesCardComponent, 
   	ParticipantsCardComponent, 
   	ActionsCardComponent, 
     GameUploadExpansionPanelComponent, 
-    ScoreBoardComponent, ChooseNewGameTypeComponent, InvitePlayersComponent, AssignJudgesComponent, CreateTeamsComponent, CreateAssignmentsComponent, FinishedSetupComponent
+    ScoreBoardComponent, 
+    ChooseNewGameTypeComponent, 
+    InvitePlayersComponent, 
+    AssignJudgesComponent, 
+    CreateTeamsComponent, 
+    CreateAssignmentsComponent, 
+    FinishedSetupComponent, 
+    AdminGameComponent
   ],
   imports: [
     CommonModule,

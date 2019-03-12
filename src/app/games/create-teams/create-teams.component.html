@@ -1,4 +1,4 @@
-<section fxLayout="row" fxLayoutAlign="space-around center">
+<!-- <section fxLayout="row" fxLayoutAlign="space-around center">
   <button mat-fab color="accent" (click)="onPrevious()" matTooltip="Vorige stap">
   	<mat-icon>arrow_back</mat-icon>
   </button>
@@ -6,10 +6,14 @@
   <button mat-fab color="accent" (click)="onNext()" matTooltip="Volgende stap">
   	<mat-icon>arrow_forward</mat-icon>
   </button>
+</section> -->
+<section class="team-container" *ngIf="!game.status.teamsCreated">
+	<p>Voordat je teams gaat instellen, moeten eerst alle spelers zich hebben aangemeld.</p>
+  <p>Bevestig eerst dat alle spelers zich hebben aangemeld.</p>
+  <p>Je kunt controleren wie zich hebben aangemeld bij het eerste tabblad "Uitnodigen".</p>
+  <button mat-raised-button (click)="onInvited()">ALLE SPELERS ZIJN AANGEMELD</button>
 </section>
-<section fxLayout="column" fxLayoutAlign="center center" class="explanation">
+<section fxLayout="column" fxLayoutAlign="center center" class="team-container" *ngIf="game.status.teamsCreated">
 	Deel hier de teams in. Deelnemers die niet meespelen sleep je onder "Speelt niet mee".
-</section>
-<section class="teams-card">
 	<app-teams-card></app-teams-card>
 </section>

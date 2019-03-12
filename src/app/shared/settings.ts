@@ -1,29 +1,6 @@
 import { NotifierOptions } from 'angular-notifier';
-import { Assignment } from '../assignments/assignment.model';
-
-export enum Status  {
-created,    	// game has been created
-invited,    	// finished inviting players to join
-judgesAssigned, // judges are set for the game
-teamsCreated,	// teams with players have been created
-assigned,   	// assignments are created and game is ready to be started
-playing,    	// game is ongoing
-pauzed,     	// game is pauzed
-finished    	// game is finished
-}
-
-export enum ReactionType {
-like, 			// user likes the image
-comment,		// user commented on the image
-rating			// judge rates an image
-}
-
-export enum Rating {
-invalid = 0,	// image is not approved
-easy = 1,		// image is rated easy
-medium = 3,		// image is rated medium
-hard = 5		// image is rated hard
-}
+import { Assignment } from '../models/assignment.model';
+import { Rating } from '../models/rating.model';
 
 export class Settings {
 

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store'; 
-import { User } from './user.model';
+import { User } from '../models/user.model';
 
 export const SET_AUTHENTICATED = '[Auth] Set Authenticated';
 export const SET_UNAUTHENTICATED = '[Auth] Set Unauthenticated';

@@ -7,10 +7,10 @@ import { take, map, startWith, finalize, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
 import { UIService } from '../../shared/ui.service';
-import { Game } from '../../games/games.model';
-import { Team } from '../../teams/team.model';
-import { Message } from '../../shared/messages.model';
-import { Assignment } from '../../assignments/assignment.model';
+import { Game } from '../../models/games.model';
+import { Team } from '../../models/team.model';
+import { Message } from '../../models/messages.model';
+import { Assignment } from '../../models/assignment.model';
 
 @Component({
   selector: 'app-file-upload',

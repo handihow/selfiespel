@@ -1,4 +1,4 @@
-<section fxLayout="row" fxLayoutAlign="space-around center">
+<!-- <section fxLayout="row" fxLayoutAlign="space-around center">
   <div>
   	<h1>Wachtkamer</h1>
   	Wacht hier totdat alle spelers zich hebben aangemeld bij het spel.
@@ -8,7 +8,7 @@
   			[disabled]="(participants$ | async)?.length<=1">
   	<mat-icon>arrow_forward</mat-icon>
   </button>
-</section>
+</section> -->
 <section fxLayout="row" fxLayoutAlign="space-around stretch" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
 	<mat-card  *ngIf="game?.date" class="full-width">
 		<mat-card-header>

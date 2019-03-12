@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+// import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 
-import { Game } from '../games.model';
+import { Game } from '../../models/games.model';
 import { GameService } from '../game.service';
 
-import { User } from '../../auth/user.model';
-import { Status } from '../../shared/settings';
+import { User } from '../../models/user.model';
+// import { Status } from '../../shared/settings';
 
-import { WarningDialogComponent } from '../../shared/warning-dialog.component';
+// import { WarningDialogComponent } from '../../shared/warning-dialog.component';
 
 @Component({
   selector: 'app-assign-judges',
@@ -33,7 +33,7 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
 
   constructor(	private store: Store<fromGame.State>,
   				      private gameService: GameService,
-  				      private dialog: MatDialog,
+  				      // private dialog: MatDialog,
   				      private router: Router) { }
 
   ngOnInit() {
@@ -57,38 +57,38 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
   	})
   }
 
-  onPrevious(){
-  	 const dialogRef = this.dialog.open(WarningDialogComponent, {
-      data: {
-        title: 'Terug naar wachtkamer',
-        content: 'Je wilt terug naar de wachtkamer. Wil je doorgaan?'
-      }
-    });
+  // onPrevious(){
+  // 	 const dialogRef = this.dialog.open(WarningDialogComponent, {
+  //     data: {
+  //       title: 'Terug naar wachtkamer',
+  //       content: 'Je wilt terug naar de wachtkamer. Wil je doorgaan?'
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if(result){
-        this.game.status = Status.created;
-        await this.gameService.updateGameToDatabase(this.game);
-        this.router.navigate(['/games/invite'])
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(async result => {
+  //     if(result){
+  //       this.game.status = Status.created;
+  //       await this.gameService.updateGameToDatabase(this.game);
+  //       this.router.navigate(['/games/invite'])
+  //     }
+  //   });
+  // }
 
-  onNext(){
-    const dialogRef = this.dialog.open(WarningDialogComponent, {
-      data: {
-        title: 'Controleer juryleden',
-        content: 'Check of je de juiste deelnemers jurylid hebt gemaakt. Wil je doorgaan?'
-      }
-    });
+  // onNext(){
+  //   const dialogRef = this.dialog.open(WarningDialogComponent, {
+  //     data: {
+  //       title: 'Controleer juryleden',
+  //       content: 'Check of je de juiste deelnemers jurylid hebt gemaakt. Wil je doorgaan?'
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if(result){
-        this.game.status = Status.judgesAssigned;
-        await this.gameService.updateGameToDatabase(this.game);
-        this.router.navigate(['/games/teams'])
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(async result => {
+  //     if(result){
+  //       this.game.status = Status.judgesAssigned;
+  //       await this.gameService.updateGameToDatabase(this.game);
+  //       this.router.navigate(['/games/teams'])
+  //     }
+  //   });
+  // }
 
 }

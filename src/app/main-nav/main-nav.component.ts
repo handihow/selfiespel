@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../app.reducer'; 
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-main-nav',

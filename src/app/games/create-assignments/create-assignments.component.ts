@@ -9,12 +9,12 @@ import { Router } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 
-import { Game } from '../games.model';
+import { Game } from '../../models/games.model';
 import { GameService } from '../game.service';
 
-import { Status } from '../../shared/settings';
+// import { Status } from '../../models/status.model';
 
-import { WarningDialogComponent } from '../../shared/warning-dialog.component';
+// import { WarningDialogComponent } from '../../shared/warning-dialog.component';
 
 @Component({
   selector: 'app-create-assignments',
@@ -46,39 +46,39 @@ export class CreateAssignmentsComponent implements OnInit , OnDestroy {
 	  	})
 	}
 
-	onPrevious(){
-	  	 const dialogRef = this.dialog.open(WarningDialogComponent, {
-	      data: {
-	        title: 'Terug naar teams',
-	        content: 'Je wilt terug naar het instellen van teams. Wil je doorgaan?'
-	      }
-	    });
+	// onPrevious(){
+	//   	 const dialogRef = this.dialog.open(WarningDialogComponent, {
+	//       data: {
+	//         title: 'Terug naar teams',
+	//         content: 'Je wilt terug naar het instellen van teams. Wil je doorgaan?'
+	//       }
+	//     });
 
-	    dialogRef.afterClosed().subscribe(async result => {
-	      if(result){
-	        this.game.status = Status.judgesAssigned;
-	        await this.gameService.updateGameToDatabase(this.game);
-	        this.router.navigate(['/games/teams'])
-	      }
-	    });
-	}
+	//     dialogRef.afterClosed().subscribe(async result => {
+	//       if(result){
+	//         this.game.status = Status.judgesAssigned;
+	//         await this.gameService.updateGameToDatabase(this.game);
+	//         this.router.navigate(['/games/teams'])
+	//       }
+	//     });
+	// }
 
-	onNext(){
-	    const dialogRef = this.dialog.open(WarningDialogComponent, {
-	      data: {
-	        title: 'Controleer opdrachten',
-	        content: 'Check of je alle opdrachten hebt gemaakt. Wil je doorgaan?'
-	      }
-	    });
+	// onNext(){
+	//     const dialogRef = this.dialog.open(WarningDialogComponent, {
+	//       data: {
+	//         title: 'Controleer opdrachten',
+	//         content: 'Check of je alle opdrachten hebt gemaakt. Wil je doorgaan?'
+	//       }
+	//     });
 
-	    dialogRef.afterClosed().subscribe(async result => {
-	      if(result){
-	        this.game.status = Status.assigned;
-	        await this.gameService.updateGameToDatabase(this.game);
-	        this.router.navigate(['/games/ready'])
-	      }
-	    });
-	}
+	//     dialogRef.afterClosed().subscribe(async result => {
+	//       if(result){
+	//         this.game.status = Status.assigned;
+	//         await this.gameService.updateGameToDatabase(this.game);
+	//         this.router.navigate(['/games/ready'])
+	//       }
+	//     });
+	// }
 
 
   }

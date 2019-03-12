@@ -6,9 +6,9 @@ import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { GameService } from './game.service';
-import { Game } from './games.model';
+import { Game } from '../models/games.model';
 
-import { User } from '../auth/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-games',
