@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AssignmentsModule } from '../assignments/assignments.module';
 import { ImagesModule } from '../images/images.module';
 import { TeamsModule } from '../teams/teams.module';
+import { ChatsModule } from '../chats/chats.module';
 
 import { GamesRoutingModule } from './games-routing.module';
 import { GamesComponent } from './games.component';
@@ -56,6 +57,7 @@ import { AdminGameComponent } from './admin-game/admin-game.component';
     AssignmentsModule,
     TeamsModule,
     ImagesModule,
+    ChatsModule,
     StoreModule.forFeature('game', gameReducer)
   ]
 })

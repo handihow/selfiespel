@@ -13,7 +13,7 @@ import { GameService } from '../game.service';
 import { Game } from '../../models/games.model';
 
 import { User } from '../../models/user.model';
-
+import { ChatService } from '../../chats/chats.service';
 
 import { UIService } from '../../shared/ui.service';
 import { Settings } from '../../shared/settings';
@@ -31,12 +31,14 @@ export class NewGameComponent implements OnInit {
   isLoading$: Observable<boolean>;
   minDate = new Date();
   gameNames = Settings.gameNames;
+  gameImages = Settings.standardGameImages;
   sub: Subscription;
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
                 private router: Router,
-                private uiService: UIService) { }
+                private uiService: UIService,
+                private chatService: ChatService) { }
 
   ngOnInit() {
   	//get the loading state
@@ -75,6 +77,7 @@ export class NewGameComponent implements OnInit {
     let newGame : Game = {
       name: this.gameForm.value.name,
       date: new Date(this.gameForm.value.date),
+      imageUrl: this.gameImages[Math.floor(Math.random() * this.gameImages.length)],
       created: new Date(),
       updated: new Date(),
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
@@ -84,6 +87,8 @@ export class NewGameComponent implements OnInit {
     let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
     //now add the game to the database and start adminstrating the game
     this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
+      console.log(game);
+      this.chatService.create(game.id);
       this.store.dispatch(new GameAction.StartGame(game));
       this.router.navigate(['/games/admin']);
     });

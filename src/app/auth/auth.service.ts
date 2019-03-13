@@ -1,7 +1,7 @@
 
 import {of,  Observable, Subscription } from 'rxjs';
 
-import {switchMap, map,  take } from 'rxjs/operators';
+import {switchMap, map,  take, first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -54,7 +54,9 @@ export class AuthService {
 	    			user.displayName = "Anoniem"
 	    		}
 	    		this.store.dispatch(new Auth.SetAuthenticated(user));
-	    		this.router.navigate(['/games']);
+	    		if(!this.router.url.includes('/games/register') && !this.router.url.includes('/games/new')){
+	    			this.router.navigate(['/games']);
+	    		}
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
 	    		this.router.navigate(['/']);
@@ -66,6 +68,9 @@ export class AuthService {
 		this.afAuth.auth.signOut();
 	}
 
+	getUser() {
+	   return this.user$.pipe(first()).toPromise();
+	}
 
 	//creates custom user profile after signing in for first time with Google account
 	//updates the profile when logging in again with Google account

@@ -29,6 +29,7 @@ import { GameService } from './games/game.service';
 import { ImageService } from './images/image.service';
 import { AssignmentService } from './assignments/assignment.service';
 import { TeamService } from './teams/team.service';
+import { ChatService} from './chats/chats.service';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
@@ -68,6 +69,7 @@ import { Settings } from './shared/settings';
     GameService,
     ImageService,
     AssignmentService,
+    ChatService,
     TeamService],
   bootstrap: [AppComponent]
 })

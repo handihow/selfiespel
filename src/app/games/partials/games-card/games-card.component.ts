@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/storage';
+
+import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromGame from '../../game.reducer'; 
@@ -19,14 +22,22 @@ export class GamesCardComponent implements OnInit {
   @Input() user: User;
   isAdmin: boolean;
   gameDate: string;
+  gameImage$: Observable<string>;
 
-  constructor(private store: Store<fromGame.State>, private router: Router) { }
+  constructor(private storage: AngularFireStorage,
+              private store: Store<fromGame.State>, 
+              private router: Router) { }
 
   ngOnInit() {
     if(this.game.administrator === this.user.uid){
       this.isAdmin = true;
     }
     this.checkDate();
+    console.log(this.game.imageUrl);
+    if(this.game.imageUrl){
+      const ref = this.storage.ref(this.game.imageUrl);
+      this.gameImage$ = ref.getDownloadURL();
+    }
   }
 
   checkDate(){

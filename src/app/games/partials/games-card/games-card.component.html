@@ -7,7 +7,7 @@
 			{{isAdmin ? 'Beheerder' : 'Speler'}}
 		</mat-card-subtitle>
 	</mat-card-header>
-	<qrcode mat-card-image [qrdata]="game?.code" [size]="128" [level]="'M'" *ngIf="isAdmin"></qrcode>
+	<img mat-card-image [src]="gameImage$ | async" *ngIf="game.imageUrl"> 
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>

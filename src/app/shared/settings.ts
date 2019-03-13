@@ -192,6 +192,13 @@ userVariable: 'administrating'
 }
 };
 
+public static standardGameImages = 
+[
+'standaard/selfie3.png',
+'standaard/selfiestick.png',
+'standaard/selfie-strand.png'
+];
+
 }
 
 

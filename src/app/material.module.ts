@@ -1,5 +1,7 @@
 
 import { NgModule } from '@angular/core';
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+
 import { 
 	MatButtonModule, 
 	MatIconModule, 
@@ -31,7 +33,8 @@ import {
 	MatButtonToggleModule,
 	MatTooltipModule,
 	MatSliderModule,
-	MatBadgeModule
+	MatBadgeModule,
+	
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -68,7 +71,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatButtonToggleModule,
 		MatTooltipModule,
 		MatSliderModule,
-		MatBadgeModule],
+		MatBadgeModule,
+		ScrollDispatchModule],
 	exports: [
 		MatButtonModule, 
 		MatIconModule, 
@@ -101,7 +105,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatButtonToggleModule,
 		MatTooltipModule,
 		MatSliderModule,
-		MatBadgeModule]
+		MatBadgeModule,
+		ScrollDispatchModule]
 })
 
 export class MaterialModule{}

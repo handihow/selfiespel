@@ -23,6 +23,14 @@
                   [images$]="images$"></app-images-grid-view>
 	  </ng-template>
   </mat-tab>
+  <mat-tab label="Chat">
+    <ng-template matTabContent>
+      <div class="chat">
+        <app-chat 
+                  [game]="game"></app-chat>
+      </div>
+    </ng-template>
+  </mat-tab>
   <mat-tab label="Score">
   	<ng-template matTabContent>
       <div class="score-board">
