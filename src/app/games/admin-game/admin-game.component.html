@@ -1,40 +1,40 @@
-<mat-horizontal-stepper *ngIf="desktop && game && !game.status.closedAdmin">
+<mat-horizontal-stepper *ngIf="desktop && doneLoading && !game.status.closedAdmin">
   <mat-step label="Uitnodigen">
-    <app-invite-players></app-invite-players>
+    <app-invite-players [game]="game"></app-invite-players>
   </mat-step>
   <mat-step label="Opdrachten">
-    <app-create-assignments></app-create-assignments>
+    <app-create-assignments [game]="game"></app-create-assignments>
   </mat-step>
   <mat-step label="Juryleden">
-    <app-assign-judges></app-assign-judges>
+    <app-assign-judges [game]="game"></app-assign-judges>
   </mat-step>
   <mat-step label="Teams">
-    <app-create-teams></app-create-teams>
+    <app-create-teams [game]="game"></app-create-teams>
   </mat-step>
   <mat-step label="Klaar">
-    <app-finished-setup></app-finished-setup>
+    <app-finished-setup [game]="game"></app-finished-setup>
   </mat-step>
 </mat-horizontal-stepper>
 
-<mat-vertical-stepper *ngIf="!desktop && game && !game.status.closedAdmin">
-  <mat-step label="Spelers">
-    <app-invite-players></app-invite-players>
+<mat-vertical-stepper *ngIf="!desktop && doneLoading && !game.status.closedAdmin">
+  <mat-step label="Uitnodigen">
+    <app-invite-players [game]="game"></app-invite-players>
   </mat-step>
   <mat-step label="Opdrachten">
-    <app-create-assignments></app-create-assignments>
+    <app-create-assignments [game]="game"></app-create-assignments>
   </mat-step>
   <mat-step label="Juryleden">
-    <app-assign-judges></app-assign-judges>
+    <app-assign-judges [game]="game"></app-assign-judges>
   </mat-step>
   <mat-step label="Teams">
-    <app-create-teams></app-create-teams>
+    <app-create-teams [game]="game"></app-create-teams>
   </mat-step>
   <mat-step label="Klaar">
-    <app-finished-setup></app-finished-setup>
+    <app-finished-setup [game]="game"></app-finished-setup>
   </mat-step>
 </mat-vertical-stepper>
 
-<section class="action-card" *ngIf="game.status.closedAdmin">
+<section class="action-card" *ngIf="doneLoading && game.status.closedAdmin">
   <p>Als je het spel wilt starten, druk je op de "Play" knop.</p>
-  <app-actions-card></app-actions-card>
+  <app-actions-card [game]="game"></app-actions-card>
 </section>

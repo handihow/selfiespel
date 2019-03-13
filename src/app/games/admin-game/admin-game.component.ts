@@ -24,6 +24,7 @@ export class AdminGameComponent implements OnInit {
   game: Game;
   desktop: boolean;
   subs: Subscription[] = [];
+  doneLoading: boolean = false;
 
   constructor(	private store: Store<fromGame.State>,
   				private gameService: GameService,
@@ -32,9 +33,13 @@ export class AdminGameComponent implements OnInit {
 
   ngOnInit() {
 	  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game => {
-	  		if(game){
-	  			this.game = game;
-	  		}
+	  		this.subs.push(this.gameService.fetchGame(game.id).subscribe(databaseGame => {
+          if(game && databaseGame){
+            console.log(databaseGame);
+             this.doneLoading = true;
+             this.game = {id:game.id,...databaseGame};
+          }
+        }));
 	  	}));
       this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
         screentype == 'desktop' ? this.desktop = true : this.desktop = false;

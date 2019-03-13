@@ -1,10 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-// import { MatDialog } from '@angular/material';
-
-import { Store } from '@ngrx/store';
-import * as fromGame from '../game.reducer'; 
-import * as GameAction from '../game.actions';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Subscription, Observable } from 'rxjs';
 
@@ -12,57 +6,22 @@ import { Game } from '../../models/games.model';
 import { GameService } from '../game.service';
 
 import { User } from '../../models/user.model';
-// import { Status } from '../../models/status.model';
-
-// import { WarningDialogComponent } from '../../shared/warning-dialog.component';
 
 @Component({
   selector: 'app-invite-players',
   templateUrl: './invite-players.component.html',
   styleUrls: ['./invite-players.component.css']
 })
-export class InvitePlayersComponent implements OnInit, OnDestroy {
+export class InvitePlayersComponent implements OnInit {
   
-  game: Game;
+  @Input() game: Game;
   participants$: Observable<User[]>;
 
-  subs: Subscription[] = [];
-
-  constructor(	private store: Store<fromGame.State>,
-  				private gameService: GameService,
-  				// private dialog: MatDialog,
-  				private router: Router) { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
-  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game => {
-  		if(game){
-  			this.game = game
-  			this.participants$ = this.gameService.fetchGameParticipants(game.id, 'participant');
-  		}
-  	}));
+  		this.participants$ = this.gameService.fetchGameParticipants(this.game.id, 'participant');
   }
 
-  ngOnDestroy(){
-  	this.subs.forEach(sub => {
-  		sub.unsubscribe();
-  	})
-  }
-
-  // onNext(){
-  //   const dialogRef = this.dialog.open(WarningDialogComponent, {
-  //     data: {
-  //       title: 'Controleer deelnemers',
-  //       content: 'Check voordat je doorgaat of alle deelnemers zich hebben aangemeld. Wil je doorgaan?'
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(async result => {
-  //     if(result){
-  //       this.game.status = Status.invited;
-  //       await this.gameService.updateGameToDatabase(this.game);
-  //       this.router.navigate(['/games/judges'])
-  //     }
-  //   });
-  // }
 
 }

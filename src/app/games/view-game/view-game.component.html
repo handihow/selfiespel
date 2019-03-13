@@ -1,4 +1,8 @@
-<mat-tab-group mat-align-tabs="center" *ngIf="game">
+<section *ngIf="doneLoading && !game.status.closedAdmin">
+  Het spel is nog niet begonnen...
+</section>
+
+<mat-tab-group mat-align-tabs="center" *ngIf="doneLoading && game.status.closedAdmin">
   <mat-tab label="Spel" *ngIf="game.status.playing">
   	<ng-template matTabContent>
 	    <app-game-upload-expansion-panel
@@ -32,7 +36,7 @@
   <mat-tab label="Acties" *ngIf="isAdmin">
     <ng-template matTabContent>
       <div class="action-card">
-          <app-actions-card></app-actions-card>
+          <app-actions-card [game]="game"></app-actions-card>
       </div>
     </ng-template>
   </mat-tab>

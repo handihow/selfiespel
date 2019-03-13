@@ -35,6 +35,7 @@ export class ViewGameComponent implements OnInit {
   team: Team;
   user: User;
   subs: Subscription[] = [];
+  doneLoading: boolean = false;
   isAdmin: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
@@ -57,13 +58,18 @@ export class ViewGameComponent implements OnInit {
 
   ngOnInit() {
   	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(async game=> {
-  		if(game){
-  			this.game = game;
-        this.fetchMessages();
-        await this.setUser();
-        await this.fetchTeam();
-        this.fetchImages();
-  		}
+      if(game){
+        this.fetchMessages(game.id);
+        await this.setUser(game.administrator);
+        await this.fetchTeam(game.id);
+        this.fetchImages(game.id);
+        this.subs.push(this.gameService.fetchGame(game.id).subscribe(databaseGame => {
+          if(game && databaseGame){
+            this.doneLoading = true;
+            this.game = {id: game.id,...databaseGame};
+          }
+        }));
+      }
   	}));
   }
 
@@ -73,12 +79,12 @@ export class ViewGameComponent implements OnInit {
     })
   }
 
-  setUser(){
+  setUser(gameAdmin: string){
       return new Promise((resolve, reject) => {
         this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(async user => {
           if(user){
             this.user = user;
-            if(this.game.administrator===this.user.uid){
+            if(gameAdmin===this.user.uid){
               this.isAdmin = true;
             }
             resolve(true);
@@ -87,9 +93,9 @@ export class ViewGameComponent implements OnInit {
       });
   }
 
-  fetchTeam(){
+  fetchTeam(gameId: string){
     return new Promise((resolve, reject) => {
-      this.subs.push(this.teamService.fetchTeam(this.game.id, this.user.uid).subscribe(team => {
+      this.subs.push(this.teamService.fetchTeam(gameId, this.user.uid).subscribe(team => {
         if(team){
           this.team = team;
           resolve(true);  
@@ -98,8 +104,8 @@ export class ViewGameComponent implements OnInit {
     })  
   }
 
-  fetchMessages(){
-    this.subs.push(this.uiService.fetchMessages(this.game.id).subscribe(messages => {
+  fetchMessages(gameId: string){
+    this.subs.push(this.uiService.fetchMessages(gameId).subscribe(messages => {
       messages.forEach(message => {
         if(!message.isShow){
           this.notifier.notify( message.style, message.content );  
@@ -109,18 +115,18 @@ export class ViewGameComponent implements OnInit {
     }));
   }
 
-  fetchImages(){
-    this.subs.push(this.imageService.fetchImageReferences(this.game.id).subscribe(imageReferences =>{
+  fetchImages(gameId: string){
+    this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
       this.imageReferences = imageReferences;
       this.createImageArray();
-      this.fetchUserReactionIds();
-      this.fetchImageReactions();
-      this.fetchAssignments();
+      this.fetchUserReactionIds(gameId);
+      this.fetchImageReactions(gameId);
+      this.fetchAssignments(gameId);
     }))
   }
 
-  fetchAssignments(){
-    this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
+  fetchAssignments(gameId: string){
+    this.subs.push(this.assignmentService.fetchAssignments(gameId).subscribe(assignments => {
        if(assignments){
          this.assignments = assignments;
          this.createThumbnailArray();
@@ -128,8 +134,8 @@ export class ViewGameComponent implements OnInit {
     }))
   }
 
-  fetchUserReactionIds(){
-    this.subs.push(this.imageService.getUserGameReactions(this.game.id, this.user.uid).subscribe(reactions =>{
+  fetchUserReactionIds(gameId: string){
+    this.subs.push(this.imageService.getUserGameReactions(gameId, this.user.uid).subscribe(reactions =>{
       this.imageReferences.forEach(imageRef => {
         //calculate the ID of the like from this particular user
         let userLikeIndex = reactions.findIndex(reaction => 
@@ -146,8 +152,8 @@ export class ViewGameComponent implements OnInit {
     }))
   }
 
-  fetchImageReactions(){
-    this.subs.push(this.gameService.fetchSummaryGameReactions(this.game.id, ReactionType.like).subscribe(likesPerImage => {
+  fetchImageReactions(gameId: string){
+    this.subs.push(this.gameService.fetchSummaryGameReactions(gameId, ReactionType.like).subscribe(likesPerImage => {
       if(likesPerImage){
         this.imageReferences.forEach(imageRef => {
           if(likesPerImage[imageRef.id] || likesPerImage[imageRef.id] === 0){
@@ -156,7 +162,7 @@ export class ViewGameComponent implements OnInit {
         });
       }
     }));
-    this.subs.push(this.gameService.fetchSummaryGameReactions(this.game.id, ReactionType.comment).subscribe(commentsPerImage => {
+    this.subs.push(this.gameService.fetchSummaryGameReactions(gameId, ReactionType.comment).subscribe(commentsPerImage => {
       if(commentsPerImage){
         this.imageReferences.forEach(imageRef => {
           if(commentsPerImage[imageRef.id]){

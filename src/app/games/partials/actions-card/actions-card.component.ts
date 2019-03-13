@@ -1,41 +1,21 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../../app.reducer';
-import * as fromGame from '../../game.reducer'; 
-
-import { Observable, Subscription } from 'rxjs';
 import { GameService } from '../../game.service';
 import { Game } from '../../../models/games.model';
-import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-actions-card',
   templateUrl: './actions-card.component.html',
   styleUrls: ['./actions-card.component.css']
 })
-export class ActionsCardComponent implements OnInit, OnDestroy {
+export class ActionsCardComponent {
 
-  game: Game;
-  sub: Subscription;
+  @Input() game: Game;
 
-  constructor(private store: Store<fromGame.State>,
-			        private router: Router,
+  constructor(private router: Router,
 			        private gameService: GameService) { }
 
-  ngOnInit() {
-    this.sub = this.store.select(fromGame.getActiveGame).subscribe(game => {
-      if(game){
-        this.game = game;
-      }
-    });
-  }
-
-  ngOnDestroy(){
-    this.sub.unsubscribe();
-  }
 
   onPlay(){
     this.game.status.playing = true;

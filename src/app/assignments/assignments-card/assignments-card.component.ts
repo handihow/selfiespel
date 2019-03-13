@@ -28,7 +28,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   	{label: "Level 3", level: 3},
   ];
 
-  game: Game;
+  @Input() game: Game;
   subs: Subscription[] = []; 
   assignments: Assignment[];
 
@@ -43,25 +43,21 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
               private assignmentService: AssignmentService) { }
 
   ngOnInit() {
-    this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game => {
-        if(game){
-          this.game = game;
-          this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
-            if(assignments && assignments.length > 0){
-              this.assignments = assignments.sort((a,b) => a.order - b.order);
-              if(!this.game.status.assigned){
-                this.game.status.assigned = true;
-                this.gameService.updateGameToDatabase(this.game);
-              }
-            } else {
-              if(this.game.status.assigned){
-                this.game.status.assigned = false;
-                this.gameService.updateGameToDatabase(this.game);
-              }
-            }
-          }));
+    this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
+        if(assignments && assignments.length > 0){
+          this.assignments = assignments.sort((a,b) => a.order - b.order);
+          if(!this.game.status.assigned){
+            this.game.status.assigned = true;
+            this.gameService.updateGameToDatabase(this.game);
+          }
+        } else {
+          if(this.game.status.assigned){
+            this.game.status.assigned = false;
+            this.gameService.updateGameToDatabase(this.game);
+          }
         }
       }));
+
   }
 
   ngOnDestroy() {
