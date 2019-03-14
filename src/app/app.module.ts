@@ -38,6 +38,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { NotifierModule } from 'angular-notifier';
 import { Settings } from './shared/settings';
 
+export function loginFunction():string { 
+    return 'com.handihow.selfiespel' 
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +54,14 @@ import { Settings } from './shared/settings';
     MaterialModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxAuthFirebaseUIModule.forRoot(environment.firebase),
+    NgxAuthFirebaseUIModule.forRoot(
+        environment.firebase, 
+        loginFunction, 
+        {
+            enableFirestoreSync: true,
+            toastMessageOnAuthSuccess: true,
+            toastMessageOnAuthError: true
+        }),
     AngularFirestoreModule,
     AngularFireStorageModule,
     FlexLayoutModule,

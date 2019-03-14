@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 
 import { User } from '../models/user.model';
 import { AuthData } from '../models/auth-data.model'; 
+
 import * as fromRoot from '../app.reducer';
 import * as UI from '../shared/ui.actions';
 import * as Auth from './auth.actions';
@@ -37,7 +38,6 @@ export class AuthService {
 		this.user$ = this.afAuth.authState.pipe(
 		switchMap(user => {
 			if (user) {
-				this.updateUser(user);
 				return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
 			} else {
 				this.store.dispatch(new Auth.SetUnauthenticated());
@@ -74,7 +74,7 @@ export class AuthService {
 
 	//creates custom user profile after signing in for first time with Google account
 	//updates the profile when logging in again with Google account
-	private updateUser(user) {
+	updateUser(user, authMethod) {
 		this.store.dispatch(new UI.StartLoading());
 	    // Sets user data to firestore
 	    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
@@ -84,7 +84,8 @@ export class AuthService {
 	    	uid: user.uid,
 	    	email: user.email,
 	    	displayName: user.displayName,
-	    	photoURL: user.photoURL
+	    	photoURL: user.photoURL,
+	    	authMethod: authMethod
 	    }
 	    //now save the users data in the database and resolve true when the database update is finished
 	    userRef.set(data, { merge: true })

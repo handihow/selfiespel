@@ -7,10 +7,10 @@
 
 	<mat-card fxFlex="40">
       <mat-card-content>
-        <ngx-auth-firebaseui (onSuccess)="printUser($event)"
+        <ngx-auth-firebaseui (onSuccess)="onSuccess($event)"
                              (onError)="printError($event)"
                              [providers]="['google', 'facebook', 'twitter']"
-                             [guestEnabled]='true'>
+                             [guestEnabled]='false'>
         </ngx-auth-firebaseui>
       </mat-card-content>
     </mat-card>
