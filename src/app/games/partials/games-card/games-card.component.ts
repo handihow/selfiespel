@@ -33,7 +33,6 @@ export class GamesCardComponent implements OnInit {
       this.isAdmin = true;
     }
     this.checkDate();
-    console.log(this.game.imageUrl);
     if(this.game.imageUrl){
       const ref = this.storage.ref(this.game.imageUrl);
       this.gameImage$ = ref.getDownloadURL();

@@ -1,0 +1,8 @@
+<ng-container *ngIf="contacts$ | async as contacts">
+	<mat-contacts [contacts]="contacts"
+				  [title]="'Contacten'"
+	              [readonly]="false"
+	              (onContactAdded)="addContact($event)"
+	              (onContactRemoved)="removeContact($event)">
+	</mat-contacts>
+</ng-container>

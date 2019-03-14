@@ -1,3 +1,11 @@
+<mat-toolbar color="primary">
+  Spel beheren
+  <span class="fill-remaining"></span>
+  <a mat-icon-button matTooltip="Terug" routerLink="/games">
+    <mat-icon>arrow_back</mat-icon>
+  </a>
+</mat-toolbar>
+
 <mat-horizontal-stepper *ngIf="desktop && doneLoading && !game.status.closedAdmin">
   <mat-step label="Uitnodigen">
     <app-invite-players [game]="game"></app-invite-players>

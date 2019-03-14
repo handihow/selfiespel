@@ -3,3 +3,7 @@
 	max-width: 800px;
 	margin: auto;
 }
+
+.fill-remaining {
+  flex: 1 1 auto;
+}

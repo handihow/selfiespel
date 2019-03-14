@@ -11,6 +11,10 @@ const routes: Routes = [
 	{
 	  path: 'selfies',
 	  loadChildren: './selfies/selfies.module#SelfiesModule'
+	},
+	{
+	  path: 'contacts',
+	  loadChildren: './contacts/contacts.module#ContactsModule'
 	}
 ];
 

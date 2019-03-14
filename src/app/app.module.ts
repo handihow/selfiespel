@@ -21,6 +21,8 @@ import { MaterialModule } from './material.module';
 import { SharedModule } from './shared/shared.module';
 
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
+import { MatContactsModule } from '@angular-material-extensions/contacts';
+
 import { AuthModule } from './auth/auth.module';
 
 import { AuthService } from './auth/auth.service';
@@ -30,6 +32,7 @@ import { ImageService } from './images/image.service';
 import { AssignmentService } from './assignments/assignment.service';
 import { TeamService } from './teams/team.service';
 import { ChatService} from './chats/chats.service';
+import { ContactsService } from './contacts/contacts.service';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
@@ -62,6 +65,7 @@ export function loginFunction():string {
             toastMessageOnAuthSuccess: true,
             toastMessageOnAuthError: true
         }),
+    MatContactsModule.forRoot(),
     AngularFirestoreModule,
     AngularFireStorageModule,
     FlexLayoutModule,
@@ -81,6 +85,7 @@ export function loginFunction():string {
     ImageService,
     AssignmentService,
     ChatService,
+    ContactsService,
     TeamService],
   bootstrap: [AppComponent]
 })

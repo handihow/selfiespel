@@ -1,6 +1,10 @@
-<section fxLayout="column" fxLayoutAlign="center center">
-	<h1>Nieuw Selfiespel</h1>
-</section>
+<mat-toolbar color="primary">
+  Nieuw Selfiespel
+  <span class="fill-remaining"></span>
+  <a mat-icon-button matTooltip="Terug" routerLink="/games">
+  	<mat-icon>arrow_back</mat-icon>
+  </a>
+</mat-toolbar>
 <section fxLayout="row" fxLayoutAlign="space-around stretch" 
 				fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch" >
 	<mat-card class="games-card">

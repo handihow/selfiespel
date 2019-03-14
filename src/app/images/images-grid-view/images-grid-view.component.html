@@ -1,6 +1,6 @@
 <section fxLayout="column" fxLayoutAlign="center center">
   <mat-divider [inset]="true"></mat-divider>
-  <h2 *ngIf="imageReferences?.length===0">Nog geen selfies</h2>
+  <p *ngIf="imageReferences?.length===0">Nog geen selfies</p>
 </section>
 
 <mat-grid-list [cols]="columns" rowHeight="1:1">

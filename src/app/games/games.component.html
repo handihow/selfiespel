@@ -1,8 +1,22 @@
-<section fxLayout="row" fxLayoutAlign="space-around center">
-	<h1>Selfie Spellen</h1>
-	<a routerLink="/games/choose" matTooltip="Nieuw spel!"
-					mat-fab color="accent"><mat-icon>add</mat-icon></a>
-</section>
+<mat-toolbar color="primary">
+  Spellen
+  <span class="fill-remaining"></span>
+  <a fxHide.xs
+          mat-fab
+          color="accent"
+          class="fab-add"
+          routerLink="/games/choose" 
+          matTooltip="Spel toevoegen">
+    <mat-icon>add</mat-icon>
+  </a>
+  <a fxHide
+          fxShow.xs
+          mat-icon-button
+          matTooltip="Spel toevoegen"
+          routerLink="/games/choose">
+    <mat-icon>add</mat-icon>
+  </a>
+</mat-toolbar>
 <section fxLayout="column" fxLayoutAlign="center center">
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
 	<h3 *ngIf="(games$ | async)?.length===0">Nog geen spellen</h3>
