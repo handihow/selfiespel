@@ -9,7 +9,7 @@
 </section>
 <section fxLayout="row wrap" fxLayoutAlign="space-around stretch"
 				fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
-	<div *ngFor="let game of games$ | async" class="games-card">
+	<div *ngFor="let game of games$ | async" fxFlex.gt-sm="30">
 		<app-games-card
 			[game]="game"
 			[user]="user"></app-games-card>

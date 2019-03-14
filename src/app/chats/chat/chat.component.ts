@@ -1,20 +1,29 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ChatService } from '../chats.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
+import { Subscription } from 'rxjs';
+
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { Game } from '../../models/games.model';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit {
-  chat$: Observable<any>;
+export class ChatComponent implements OnInit{
   newMsg: string;
   @Input() game: Game;
+  hasChat: boolean;
+
+  @ViewChild(CdkVirtualScrollViewport)
+  viewport: CdkVirtualScrollViewport;
+
+  chatSub: Subscription;
+  chat: any;
 
   constructor(
     public cs: ChatService,
@@ -24,8 +33,14 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     const chatId = this.game.id;
     const source = this.cs.get(chatId);
-    this.chat$ = this.cs.joinUsers(source); // .pipe(tap(v => this.scrollBottom(v)));
-    this.scrollBottom();
+    this.chatSub = this.cs.joinUsers(source).subscribe(chat => {
+      if(chat){
+        this.chat = chat;
+        this.hasChat = true;
+        setTimeout(()=> this.scrollBottom(), 1000);
+      }
+    }); // .pipe(tap(v => this.scrollBottom(v)));
+    
   }
 
   submit(chatId) {
@@ -41,7 +56,12 @@ export class ChatComponent implements OnInit {
     return msg.createdAt;
   }
 
+  deleteMsg(msg){
+    this.cs.deleteMessage(this.chat, msg);
+  }
+
   private scrollBottom() {
-    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 500);
+    this.viewport.scrollToIndex(this.viewport.getDataLength(), 'auto');
+    
   }
 }

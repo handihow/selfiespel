@@ -15,7 +15,8 @@
 	margin: auto;
 }
 
-.viewport {
-  height: calc(100vh - 250px);
+cdk-virtual-scroll-viewport {
+  height: calc(100vh - 220px);
   width: 100%;
+
 }

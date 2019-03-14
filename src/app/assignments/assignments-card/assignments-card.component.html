@@ -1,4 +1,4 @@
-<mat-card class="full-width" *ngIf="!game.status.assigned">
+<mat-card *ngIf="!game.status.assigned">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Kies niveau en aantal opdrachten</mat-card-subtitle>
@@ -16,7 +16,7 @@
 	</mat-card-actions>
 </mat-card>
 
-<mat-card class="full-width" *ngIf="game.status.assigned">
+<mat-card *ngIf="game.status.assigned">
 	<mat-card-header>
 		<mat-card-title>Opdrachten</mat-card-title>
 		<mat-card-subtitle>Maak een selfie met ....</mat-card-subtitle>
