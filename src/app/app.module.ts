@@ -22,9 +22,9 @@ import { SharedModule } from './shared/shared.module';
 
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 import { MatContactsModule } from '@angular-material-extensions/contacts';
+import { ImgFallbackModule } from 'ngx-img-fallback';
 
 import { AuthModule } from './auth/auth.module';
-
 import { AuthService } from './auth/auth.service';
 import { UIService } from './shared/ui.service';
 import { GameService } from './games/game.service';
@@ -56,6 +56,7 @@ export function loginFunction():string {
     LayoutModule,
     MaterialModule,
     BrowserAnimationsModule,
+    ImgFallbackModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxAuthFirebaseUIModule.forRoot(
         environment.firebase, 

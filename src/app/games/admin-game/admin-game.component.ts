@@ -3,9 +3,7 @@ import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
-import * as fromGame from '../game.reducer'; 
-import * as GameAction from '../game.actions';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 
@@ -21,29 +19,29 @@ import { Status } from '../../models/status.model';
 })
 export class AdminGameComponent implements OnInit {
 
+  gameId: string;
   game: Game;
   desktop: boolean;
   subs: Subscription[] = [];
   doneLoading: boolean = false;
 
-  constructor(	private store: Store<fromGame.State>,
+  constructor(	private store: Store<fromRoot.State>,
+          private route: ActivatedRoute,
   				private gameService: GameService,
   				private dialog: MatDialog,
   				private router: Router) { }
 
   ngOnInit() {
-	  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(game => {
-	  		this.subs.push(this.gameService.fetchGame(game.id).subscribe(databaseGame => {
-          if(game && databaseGame){
-            console.log(databaseGame);
-             this.doneLoading = true;
-             this.game = {id:game.id,...databaseGame};
-          }
-        }));
-	  	}));
-      this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
-        screentype == 'desktop' ? this.desktop = true : this.desktop = false;
-      }))
+    this.gameId = this.route.snapshot.paramMap.get('id'); 
+    this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(databaseGame => {
+      if(databaseGame){
+         this.doneLoading = true;
+         this.game = {id: this.gameId,...databaseGame};
+      }
+    }));
+    this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
+      screentype == 'desktop' ? this.desktop = true : this.desktop = false;
+    }))
 	}
 
 	ngOnDestroy(){

@@ -109,20 +109,18 @@ export class AssignmentService {
 			});;
 	}
 
+
 	//delete multiple assignments
-	deleteAssignments(gameId: string, assignments: Assignment[]){
-		let batch = this.db.firestore.batch();
-		assignments.forEach((assignment) => {
-			const assignmentRef = this.db.collection('assignments').doc(assignment.id).ref;
-			batch.delete(assignmentRef)
-		})
-		return batch.commit()
-			.then(doc => {
-				this.uiService.showSnackbar("Opdrachten verwijderd", null, 3000);
+	async deleteAssignments(gameId: string){
+		const queryStr = (ref => ref.where('gameId', '==', gameId));
+		return this.fetchAssignments(gameId).pipe(take(1)).subscribe(assignments => {
+			let batch = this.db.firestore.batch();
+			assignments.forEach((assignment) => {
+				const assignmentRef = this.db.collection('assignments').doc(assignment.id).ref;
+				batch.delete(assignmentRef);
 			})
-			.catch(error => {
-				this.uiService.showSnackbar(error.message, null, 3000);
-			});
+			return batch.commit();
+		})
 	}
 	
 		

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../shared/shared.module';
 import { AssignmentsModule } from '../assignments/assignments.module';
@@ -20,7 +19,6 @@ import { ActionsCardComponent } from './partials/actions-card/actions-card.compo
 import { GameUploadExpansionPanelComponent } from './partials/game-upload-expansion-panel/game-upload-expansion-panel.component';
 import { ScoreBoardComponent } from './partials/score-board/score-board.component';
 
-import { gameReducer } from './game.reducer';
 import { ChooseNewGameTypeComponent } from './choose-new-game-type/choose-new-game-type.component';
 import { InvitePlayersComponent } from './invite-players/invite-players.component';
 import { AssignJudgesComponent } from './assign-judges/assign-judges.component';
@@ -57,8 +55,7 @@ import { AdminGameComponent } from './admin-game/admin-game.component';
     AssignmentsModule,
     TeamsModule,
     ImagesModule,
-    ChatsModule,
-    StoreModule.forFeature('game', gameReducer)
+    ChatsModule
   ]
 })
 export class GamesModule { }

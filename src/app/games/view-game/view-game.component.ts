@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
-import * as fromGame from '../game.reducer'; 
 import { Subscription, Observable, of } from 'rxjs';
 
 import { GameService } from '../game.service';
@@ -31,6 +30,7 @@ import { AssignmentService } from '../../assignments/assignment.service';
 })
 export class ViewGameComponent implements OnInit {
 
+  gameId: string;
   game: Game;
   team: Team;
   user: User;
@@ -45,7 +45,8 @@ export class ViewGameComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(private store: Store<fromGame.State>,
+  constructor(private store: Store<fromRoot.State>,
+              private route: ActivatedRoute,
               private storage: AngularFireStorage,
 			        private router: Router,
               private gameService: GameService,
@@ -57,20 +58,17 @@ export class ViewGameComponent implements OnInit {
               ) { this.notifier = notifierService; }
 
   ngOnInit() {
-  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(async game=> {
+    this.gameId = this.route.snapshot.paramMap.get('id'); 
+    this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game => {
       if(game){
-        this.fetchMessages(game.id);
         await this.setUser(game.administrator);
-        await this.fetchTeam(game.id);
-        this.fetchImages(game.id);
-        this.subs.push(this.gameService.fetchGame(game.id).subscribe(databaseGame => {
-          if(game && databaseGame){
-            this.doneLoading = true;
-            this.game = {id: game.id,...databaseGame};
-          }
-        }));
+        await this.fetchTeam(this.gameId);
+        this.fetchMessages(this.gameId);
+        this.fetchImages(this.gameId);
+        this.doneLoading = true;
+        this.game = {id: this.gameId,...game};
       }
-  	}));
+    }));
   }
 
   ngOnDestroy(){

@@ -196,7 +196,11 @@ public static standardGameImages =
 [
 'standaard/selfie3.png',
 'standaard/selfiestick.png',
-'standaard/selfie-strand.png'
+'standaard/selfie-strand.png',
+'standaard/selfie-recht.png',
+'standaard/selfie-strand2.png',
+'standaard/selfie-baard.png',
+'standaard/selfie-bitch.png'
 ];
 
 }

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
-import * as GameAction from '../game.actions';
 
 import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -82,15 +81,16 @@ export class NewGameComponent implements OnInit {
       updated: new Date(),
       code: Math.random().toString(36).replace('0.', '').substring(0,6),
       administrator: this.user.uid,
-      status: status
+      status: status,
+      players: [],
+      judges: [],
+      participants: []
     }
     let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
     //now add the game to the database and start adminstrating the game
     this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
-      console.log(game);
-      this.chatService.create(game.id);
-      this.store.dispatch(new GameAction.StartGame(game));
-      this.router.navigate(['/games/admin']);
+      this.chatService.createChat(game.id);
+      this.router.navigate(['/games/' + game.id +'/admin']);
     });
     
   }

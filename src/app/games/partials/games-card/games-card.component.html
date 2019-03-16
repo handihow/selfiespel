@@ -7,7 +7,9 @@
 			{{isAdmin ? 'Beheerder' : 'Speler'}}
 		</mat-card-subtitle>
 	</mat-card-header>
-	<img mat-card-image [src]="gameImage$ | async" *ngIf="game.imageUrl"> 
+	<ng-container *ngIf="gameImage$ | async as image">
+		<img mat-card-image [src]="image" src-fallback="https://via.placeholder.com/500x350.png?text=SelfieTheGame.com">
+	</ng-container>
 	<mat-card-content>
 		<p>Datum: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
@@ -20,5 +22,8 @@
 		<button mat-raised-button color="accent" (click)="onOpen()"
 					*ngIf="game.status.closedAdmin">
 			Open</button>
+		<button mat-button color="warn" (click)="onDelete()"
+					*ngIf="isAdmin">
+			Verwijder</button>
 	</mat-card-actions>
 </mat-card>

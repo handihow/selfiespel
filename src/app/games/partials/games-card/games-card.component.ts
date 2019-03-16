@@ -1,15 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { MatDialog } from '@angular/material';
 
 import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';
-import * as fromGame from '../../game.reducer'; 
-import * as GameAction from '../../game.actions';
 
+import { GameService } from '../../game.service';
 import { Game } from '../../../models/games.model';
 import { User } from '../../../models/user.model'; 
+import { WarningDialogComponent } from '../../..//shared/warning-dialog.component';
 
 @Component({
   selector: 'app-games-card',
@@ -25,8 +26,9 @@ export class GamesCardComponent implements OnInit {
   gameImage$: Observable<string>;
 
   constructor(private storage: AngularFireStorage,
-              private store: Store<fromGame.State>, 
-              private router: Router) { }
+              private router: Router,
+              private dialog: MatDialog,
+              private gameService: GameService) { }
 
   ngOnInit() {
     if(this.game.administrator === this.user.uid){
@@ -54,13 +56,27 @@ export class GamesCardComponent implements OnInit {
   }
 
   onOpen(){
-    this.store.dispatch(new GameAction.StartGame(this.game));
-    this.router.navigate(['games/view']);
+    this.router.navigate(['games/' + this.game.id + '/view']);
   }
    
   onAdmin(){
-    this.store.dispatch(new GameAction.StartGame(this.game));
-    this.router.navigate(['games/admin']);
-  } 
-  
+    this.router.navigate(['games/' + this.game.id + '/admin']);
+  }
+
+  onDelete(){
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+        data: {
+          title: 'Spel verwijderen',
+          content: 'Selfies en reacties worden niet verwijderd maar het spel en alle instellingen van het spel wel. Wil je doorgaan?'
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(async result => {
+        if(result){
+          await this.gameService.removeGame(this.game);
+        }
+      });
+
+    }
+
 }

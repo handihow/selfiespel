@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
@@ -6,8 +6,6 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
-import * as fromGame from '../../games/game.reducer'; 
-import * as GameAction from '../../games/game.actions';
 
 import { GameService } from '../../games/game.service';
 import { Game } from '../../models/games.model';
@@ -27,7 +25,7 @@ import { UIService } from '../../shared/ui.service';
 })
 export class TeamsCardComponent implements OnInit, OnDestroy {
   
-  game: Game;
+  @Input() game: Game;
   players: User[] = [];
   subs: Subscription[] = [];
   playersPerGroup: number = 2;
@@ -36,20 +34,14 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   teamId: string;
   notPlaying: User[] = [];
 
-  constructor(private store: Store<fromGame.State>,
-              private router: Router,
+  constructor(private router: Router,
 			        private gameService: GameService,
               private teamService: TeamService,
               private uiService: UIService ) { }
 
-  ngOnInit() {
-  	this.subs.push(this.store.select(fromGame.getActiveGame).subscribe(async game => {
-      if(game){
-        this.game = game;
-        await this.fetchParticipants();
-        this.fetchTeams();
-      }
-    }));
+  async ngOnInit() {
+      await this.fetchParticipants();
+      this.fetchTeams();
   }
 
   fetchParticipants(){
@@ -77,7 +69,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   async makeNewGroups(){
     //first make sure that all teams in database are deleted
     if(this.teams){
-      await this.teamService.deleteTeams(this.game.id, this.teams);
+      await this.teamService.deleteTeams(this.game.id);
     }
     this.notPlaying = [];
   	//first calculate how many groups you need

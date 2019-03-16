@@ -32,8 +32,8 @@ export class ChatComponent implements OnInit{
 
   ngOnInit() {
     const chatId = this.game.id;
-    const source = this.cs.get(chatId);
-    this.chatSub = this.cs.joinUsers(source).subscribe(chat => {
+    const source = this.cs.getChat(chatId);
+    this.chatSub = this.cs.joinChatUsers(source).subscribe(chat => {
       if(chat){
         this.chat = chat;
         this.hasChat = true;
@@ -47,7 +47,7 @@ export class ChatComponent implements OnInit{
     if (!this.newMsg) {
       return alert('you need to enter something');
     }
-    this.cs.sendMessage(chatId, this.newMsg);
+    this.cs.sendChatMessage(chatId, this.newMsg);
     this.newMsg = '';
     this.scrollBottom();
   }
@@ -57,7 +57,7 @@ export class ChatComponent implements OnInit{
   }
 
   deleteMsg(msg){
-    this.cs.deleteMessage(this.chat, msg);
+    this.cs.deleteChatMessage(this.chat, msg);
   }
 
   private scrollBottom() {

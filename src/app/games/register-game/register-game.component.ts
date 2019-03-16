@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
-import * as GameAction from '../game.actions';
 
 import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';

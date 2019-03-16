@@ -1,4 +1,5 @@
   <mat-spinner *ngIf="!downloadURL"></mat-spinner>
   <div *ngIf="downloadURL">
-    <img class="full-width" [src]="downloadURL" [@photoState]="imageState">
+    <img class="full-width" [src]="downloadURL" [@photoState]="imageState" 
+    	src-fallback="https://via.placeholder.com/500x500.png?text=SelfieTheGame.com">
   </div> 

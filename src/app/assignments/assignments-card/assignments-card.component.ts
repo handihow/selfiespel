@@ -7,7 +7,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
-import * as fromGame from '../../games/game.reducer'; 
 
 import { Settings } from '../../shared/settings';
 import { Assignment } from '../../models/assignment.model';
@@ -37,7 +36,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   quantity: number = 12;
 
   constructor(private route: ActivatedRoute,
-              private store: Store<fromGame.State>,
+              private store: Store<fromRoot.State>,
               private router: Router,
               private gameService: GameService,
               private assignmentService: AssignmentService) { }
@@ -102,7 +101,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   }
 
   async onNewAssignments(){
-    await this.assignmentService.deleteAssignments(this.game.id, this.assignments);
+    await this.assignmentService.deleteAssignments(this.game.id);
     this.assignments = [];
     this.game.status.assigned = false;
     this.gameService.updateGameToDatabase(this.game);

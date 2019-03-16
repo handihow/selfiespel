@@ -5,6 +5,7 @@ admin.initializeApp(functions.config().firebase);
 import * as images from './images';
 import * as reactions from './reactions';
 import * as chats from './chats';
+import * as emails from './emails';
 
 export const generateThumbs = images.generateThumbs;
 export const deletedImage = images.deletedImage;
@@ -14,3 +15,5 @@ export const onUpdateReaction = reactions.onUpdateReaction;
 export const onDeleteReaction = reactions.onDeleteReaction;
 
 export const archiveChat = chats.archiveChat;
+
+export const inviteUserEmail = emails.inviteUserEmail;

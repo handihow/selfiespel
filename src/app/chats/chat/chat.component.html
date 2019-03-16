@@ -2,10 +2,11 @@
   <ng-container *ngIf=" auth.user$ | async as user">
 
     <cdk-virtual-scroll-viewport itemSize="50">
-      <mat-list>
+      <mat-list dense>
         <mat-list-item  *cdkVirtualFor="let msg of chat.messages; trackBy: trackByCreated">
-          <img matListAvatar [src]="msg.user?.photoURL || 'assets/unicorn.svg'">
-          <h3 matLine> {{ msg.user?.displayName || msg.user?.uid }} </h3>
+          <img matListAvatar [src]="msg.user?.photoURL" 
+                src-fallback="https://via.placeholder.com/150x150.png">
+          <p matLine> {{ msg.user?.displayName || msg.user?.uid }} </p>
           <p matLine>
             <span> {{ msg.content }} </span>
           </p>

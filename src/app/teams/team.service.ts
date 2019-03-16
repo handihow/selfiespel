@@ -109,16 +109,16 @@ export class TeamService {
 	}
 
 	//delete multiple teams
-	deleteTeams(gameId: string, teams: Team[]){
-		let batch = this.db.firestore.batch();
-		teams.forEach((team) => {
-			const teamRef = this.db.collection('teams').doc(team.id).ref;
-			batch.delete(teamRef)
+	async deleteTeams(gameId: string){
+		const queryStr = (ref => ref.where('gameId', '==', gameId));
+		return this.fetchTeams(gameId).pipe(take(1)).subscribe(teams => {
+			let batch = this.db.firestore.batch();
+			teams.forEach((team) => {
+				const teamRef = this.db.collection('teams').doc(team.id).ref;
+				batch.delete(teamRef)
+			})
+			return batch.commit();
 		})
-		return batch.commit()
-			.catch(error => {
-				this.uiService.showSnackbar(error.message, null, 3000);
-			});
 	}
 
 	deleteTeam(team: Team){

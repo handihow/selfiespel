@@ -15,5 +15,5 @@
 </section>
 <section fxLayout="column" fxLayoutAlign="center center" class="team-container" *ngIf="game.status.teamsCreated">
 	Deel hier de teams in. Deelnemers die niet meespelen sleep je onder "Speelt niet mee".
-	<app-teams-card></app-teams-card>
+	<app-teams-card [game]="game"></app-teams-card>
 </section>

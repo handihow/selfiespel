@@ -19,7 +19,7 @@ import * as UI from '../shared/ui.actions';
 import * as Auth from './auth.actions';
 
 import { environment } from '../../environments/environment';
-
+import { ContactsService } from '../contacts/contacts.service';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +30,7 @@ export class AuthService {
 		private afAuth: AngularFireAuth,
 		private afs: AngularFirestore,
 		private uiService: UIService,
+		private contactService: ContactsService,
 		private store: Store<fromRoot.State>){}
 
 	initAuthListener(){
@@ -54,7 +55,7 @@ export class AuthService {
 	    			user.displayName = "Anoniem"
 	    		}
 	    		this.store.dispatch(new Auth.SetAuthenticated(user));
-	    		if(!this.router.url.includes('/games/register') && !this.router.url.includes('/games/new')){
+	    		if(!this.router.url.includes('/games')){
 	    			this.router.navigate(['/games']);
 	    		}
 	    	} else {
@@ -72,8 +73,7 @@ export class AuthService {
 	   return this.user$.pipe(first()).toPromise();
 	}
 
-	//creates custom user profile after signing in for first time with Google account
-	//updates the profile when logging in again with Google account
+	//creates custom user profile 
 	updateUser(user, authMethod) {
 		this.store.dispatch(new UI.StartLoading());
 	    // Sets user data to firestore
@@ -90,6 +90,7 @@ export class AuthService {
 	    //now save the users data in the database and resolve true when the database update is finished
 	    userRef.set(data, { merge: true })
 	    .then( _ => {
+	    	this.createContactsList(user.uid);
 	    	this.store.dispatch(new UI.StopLoading());
 	    })
 	    .catch( _ => {
@@ -97,66 +98,17 @@ export class AuthService {
 	    })
 	}
 
-	// updateUserProfile(profileUpdate) {
-	//     // Sets user data to firestore on login
-	//     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${profileUpdate.uid}`);
-
-	//     var data: User = {
-	//       	classes: profileUpdate.classes ? profileUpdate.classes : null,
-	//       	subjects: profileUpdate.subjects ? profileUpdate.subjects : null
-	//     }
-
-	//     if(profileUpdate.imageURL){
-	//     	data.imageURL = profileUpdate.imageURL;
-	//     }
-	//     if(profileUpdate.thumbnailURL){
-	//     	data.thumbnailURL = profileUpdate.thumbnailURL;
-	//     }
-
-	//     return userRef.set(data, { merge: true })
-
-	// }
-
-	// sendPasswordResetEmail(emailAddress){
-	// 	var auth = firebase.auth();
-	// 	var uiService = this.uiService;
-	// 	var router = this.router;
-	// 	auth.sendPasswordResetEmail(emailAddress).then(function() {
-	// 	  uiService.showSnackbar("Er is een email gestuurd. Controleer je emails.", null, 3000);
-	// 	  router.navigate(['/']);
-	// 	}).catch(function(error) {
-	// 	  uiService.showSnackbar(error, null, 3000);
-	// 	});
-	// }
-
-	// fetchUsers(organisationId: string, userType: string) : Observable<User[]> {
-	// 	this.store.dispatch(new UI.StartLoading());
-	// 	var queryStr = (ref => ref.where('organisationId', '==', organisationId).where('role', '==', userType));
-	// 	return this.afs.collection('users', queryStr)
-	// 		.snapshotChanges().pipe(
-	// 		map(docArray => {
-	// 			this.store.dispatch(new UI.StopLoading());
-	// 			return docArray.map(doc => {
-	// 					const data = doc.payload.doc.data() as User;
-	// 					const id = doc.payload.doc.id;
-	// 					return { id, ...data };
-	// 				}).sort((a,b) => {return (a.displayName > b.displayName) ? 1 : ((b.displayName > a.displayName) ? -1 : 0);})
-	// 		}))
-	// }
-
-	// fetchUserResults(user: User) {
-	// 	this.store.dispatch(new UI.StartLoading());
-	// 	return this.afs.collection('users').doc(user.uid).collection('results')
-	// 		.snapshotChanges().pipe(
-	// 		map(docArray => {
-	// 			this.store.dispatch(new UI.StopLoading());
-	// 			return docArray.map(doc => {
-	// 				const data = doc.payload.doc.data();
-	// 				const id = doc.payload.doc.id;
-	// 				return { id, ...data}
-	// 			})
-	// 		}))
-	// }
+	private async createContactsList(userId){
+				//check if the contact list exists, if not, create new list
+		const contactListRef = this.afs.collection('contacts').doc(userId);
+		const contactList = await contactListRef.valueChanges().pipe(first()).toPromise();
+		if(!contactList){
+			console.log('creating contact list for new user');
+			return this.contactService.createContactList(userId);
+		} else {
+			return console.log('contact list already exists');
+		}
+	}
 
 }
 

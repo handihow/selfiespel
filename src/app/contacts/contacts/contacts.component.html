@@ -1,8 +1,13 @@
-<ng-container *ngIf="contacts$ | async as contacts">
+<ng-container *ngIf="!isLoading">
 	<mat-contacts [contacts]="contacts"
 				  [title]="'Contacten'"
-	              [readonly]="false"
 	              (onContactAdded)="addContact($event)"
 	              (onContactRemoved)="removeContact($event)">
+	</mat-contacts>
+</ng-container>
+<ng-container *ngIf="isLoading">
+	<mat-contacts [contacts]="contacts"
+				  [title]="'Contacten'"
+				  [isLoading]="isLoading">
 	</mat-contacts>
 </ng-container>

@@ -7,7 +7,6 @@ import { Store } from '@ngrx/store';
 import { UIService } from '../shared/ui.service';
 import * as UI from '../shared/ui.actions';
 import * as fromUI from '../shared/ui.reducer';
-import * as GameAction from './game.actions';
 
 import { Game } from '../models/games.model';
 import { User } from '../models/user.model';
@@ -18,12 +17,17 @@ import { Settings } from '../shared/settings';
 
 import {firestore} from 'firebase/app';
 
+import { TeamService } from '../teams/team.service';
+import { AssignmentService } from '../assignments/assignment.service';
+
 @Injectable()
 export class GameService {
    
 	constructor( private db: AngularFirestore,
 				 private uiService: UIService,
-				 private store: Store<fromUI.State> ){}
+				 private store: Store<fromUI.State>,
+				 private teamService: TeamService,
+				 private assignmentService: AssignmentService ){}
 
 
 	addGame(user: User, game: Game, playing: boolean){
@@ -104,23 +108,17 @@ export class GameService {
 
 	async manageGameParticipants(user: User, game: Game, userLevel: string, add: boolean){
 		this.store.dispatch(new UI.StartLoading());
-		let userVariable: string = Settings.userLevels[userLevel].userVariable;
-		let gameVariable: string = Settings.userLevels[userLevel].gameVariable;
+		const userVariable: string = Settings.userLevels[userLevel].userVariable;
+		const gameVariable: string = Settings.userLevels[userLevel].gameVariable;
+		const userRef = this.db.collection('users').doc(user.uid);
+		const gameRef = this.db.collection('games').doc(game.id)
 		if(add){
-			user[userVariable] = [game.id].concat(user[userVariable] || []);
-			game[gameVariable] = [user.uid].concat(game[gameVariable] || []);
+			await userRef.update({[userVariable]: firestore.FieldValue.arrayUnion(game.id)});
+			await gameRef.update({[gameVariable]: firestore.FieldValue.arrayUnion(user.uid)})
 		} else {
-			const gameIndex = user[userVariable].indexOf(game.id);
-			if (gameIndex > -1) {
-			  user[userVariable].splice(gameIndex, 1);
-			}
-			const userIndex = game[gameVariable].indexOf(user.uid);
-			if(userIndex > -1){
-				game[gameVariable].splice(userIndex, 1);
-			}
+			await userRef.update({[userVariable]: firestore.FieldValue.arrayRemove(game.id)});
+			await gameRef.update({[gameVariable]: firestore.FieldValue.arrayRemove(user.uid)})
 		}
-		await this.db.collection('users').doc(user.uid).set(user, {merge: true});
-		await this.db.collection('games').doc(game.id).set(game, {merge: true});
 		let message: string;
 		if(add){
 			message = user.displayName + " doet mee aan het spel als " + Settings.userLevels[userLevel].level + " !";	
@@ -143,14 +141,17 @@ export class GameService {
 			})
 	}
 
-	removeGames(game: Game){
-		this.db.collection('games').doc(game.id).delete()
-		.then(_ => {
-			this.uiService.showSnackbar("Spel verwijderd", null, 3000);
-		})
-		.catch(error => {
-			this.uiService.showSnackbar(error.message, null, 3000);
-		})
+	async removeGame(game: Game){
+		//remove assignments
+		await this.assignmentService.deleteAssignments(game.id);
+		//remove teams
+		await this.teamService.deleteTeams(game.id);
+		//remove chat
+		await this.db.collection('chats').doc(game.id).delete();
+		//remove the game
+		await this.db.collection('games').doc(game.id).delete();
+		//show message
+		this.uiService.showSnackbar("Spel verwijderd", null, 3000);
 	}
 
 	fetchTeamProgress(teamId: string){

@@ -14,8 +14,8 @@ const routes: Routes = [
 	{ path: 'choose', component: ChooseNewGameTypeComponent, canLoad: [AuthGuard] },
 	{ path: 'new', component: NewGameComponent, canLoad: [AuthGuard] },
 	{ path: 'register', component: RegisterGameComponent, canLoad: [AuthGuard] },
-	{ path: 'admin', component: AdminGameComponent, canLoad: [AuthGuard] },
-	{ path: 'view', component: ViewGameComponent, canLoad: [AuthGuard] },
+	{ path: ':id/admin', component: AdminGameComponent, canLoad: [AuthGuard] },
+	{ path: ':id/view', component: ViewGameComponent, canLoad: [AuthGuard] },
 ];
 
 @NgModule({

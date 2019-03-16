@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { firestore } from 'firebase/app';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, combineLatest, of } from 'rxjs';
+
+import { Chat } from '../models/chat.model';
+import { ChatMessage } from '../models/chat-message.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,14 +19,14 @@ export class ChatService {
     private router: Router
   ) {}
 
-  get(chatId) {
+  getChat(chatId) {
     return this.afs
       .collection<any>('chats')
       .doc(chatId)
       .snapshotChanges()
       .pipe(
         map(doc => {
-          return { id: doc.payload.id, ...doc.payload.data() };
+          return { id: doc.payload.id, ...doc.payload.data() as Chat };
         })
       );
   }
@@ -36,7 +40,7 @@ export class ChatService {
           .pipe(
             map(actions => {
               return actions.map(a => {
-                const data: Object = a.payload.doc.data();
+                const data: Chat = a.payload.doc.data() as Chat;
                 const id = a.payload.doc.id;
                 return { id, ...data };
               });
@@ -46,10 +50,10 @@ export class ChatService {
     );
   }
 
-  async create(gameId: string) {
+  async createChat(gameId: string) {
     const { uid } = await this.auth.getUser();
 
-    const data = {
+    const data : Chat = {
       uid,
       createdAt: Date.now(),
       count: 0,
@@ -59,10 +63,10 @@ export class ChatService {
     return this.afs.collection('chats').doc(gameId).set(data);
   }
 
-  async sendMessage(chatId, content) {
+  async sendChatMessage(chatId, content) {
     const { uid } = await this.auth.getUser();
 
-    const data = {
+    const data : ChatMessage = {
       uid,
       content,
       createdAt: Date.now()
@@ -76,7 +80,7 @@ export class ChatService {
     }
   }
 
-  async deleteMessage(chat, msg) {
+  async deleteChatMessage(chat, msg) {
     const { uid } = await this.auth.getUser();
 
     const ref = this.afs.collection('chats').doc(chat.id);
@@ -90,7 +94,7 @@ export class ChatService {
     }
   }
 
-  joinUsers(chat$: Observable<any>) {
+  joinChatUsers(chat$: Observable<any>) {
     let chat;
     const joinKeys = {};
 

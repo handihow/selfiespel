@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
-import * as fromGame from '../game.reducer'; 
-import * as GameAction from '../game.actions';
 import { Router } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
@@ -27,7 +25,7 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
 
   subs: Subscription[] = [];
 
-  constructor(	private store: Store<fromGame.State>,
+  constructor(	private store: Store<fromRoot.State>,
   				      private gameService: GameService,
   				      // private dialog: MatDialog,
   				      private router: Router) { }
