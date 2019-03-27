@@ -85,11 +85,11 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
       let newTeam : Team = {
         name: Settings.teamNames[randomIndex],
         order: i,
-        members: {},
+        members: [],
         color: Settings.teamColors[randomIndex].color
       }
       members.forEach(member => {
-        newTeam.members[member.uid] = true;
+        newTeam.members.push(member.uid);
       })
       teams.push(newTeam);
     }
@@ -130,7 +130,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     teams.forEach(team => {
       let participants: User[] = [];
       this.players.forEach(player => {
-        if(team.members && team.members[player.uid]){
+        if(team.members && team.members.includes(player.uid)){
           participants.push(player);
         }
       });

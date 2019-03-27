@@ -111,7 +111,7 @@ export class AssignmentService {
 
 
 	//delete multiple assignments
-	async deleteAssignments(gameId: string){
+	deleteAssignments(gameId: string){
 		const queryStr = (ref => ref.where('gameId', '==', gameId));
 		return this.fetchAssignments(gameId).pipe(take(1)).subscribe(assignments => {
 			let batch = this.db.firestore.batch();

@@ -64,8 +64,7 @@ export class TeamService {
 
 	//fetch the team Id for a game / user 
 	fetchTeam(gameId: string, userId: string): Observable<Team>{
-		let str = 'members.' + userId;
-		var queryStr = (ref => ref.where('gameId', '==', gameId).where(str, '==', true));
+		var queryStr = (ref => ref.where('gameId', '==', gameId).where('members', 'array-contains', userId));
 		return this.db.collection('teams', queryStr)
 		.snapshotChanges().pipe(
 		map(docArray => {
@@ -92,9 +91,9 @@ export class TeamService {
 	//update multiple teams
 	updateTeams(teams: Team[]){
 		teams.forEach(team => {
-			team.members = {};
+			team.members = [];
 			team.participants.forEach(participant => {
-				team.members[participant.uid] = true;
+				team.members.push(participant.uid);
 			})
 		})
 		let batch = this.db.firestore.batch();

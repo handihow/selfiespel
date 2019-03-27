@@ -22,7 +22,7 @@ export class ActionsCardComponent {
     this.game.status.pauzed = false;
     this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/view']);
+    this.router.navigate(['/games/' + this.game.id + '/view']);
   }
 
   onPauze(){
@@ -30,7 +30,7 @@ export class ActionsCardComponent {
     this.game.status.pauzed = true;
     this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/view']);
+    this.router.navigate(['/games/' + this.game.id + '/view']);
   }
 
   onStop(){
@@ -38,7 +38,7 @@ export class ActionsCardComponent {
     this.game.status.pauzed = false;
     this.game.status.finished = true;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/view']);
+    this.router.navigate(['/games/' + this.game.id + '/view']);
   }
 
   onReopen(){
@@ -46,7 +46,7 @@ export class ActionsCardComponent {
     this.game.status.pauzed = false;
     this.game.status.finished = false;
     this.gameService.updateGameToDatabase(this.game);
-    this.router.navigate(['/games/view']);
+    this.router.navigate(['/games/' + this.game.id + '/view']);
   }
   
 }
