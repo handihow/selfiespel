@@ -4,10 +4,10 @@
 			Maak teams
 		</mat-card-title>
 		<mat-card-subtitle>
-			Met de schuif kun je teams van 2, 3 of 4 maken
+			Met de schuif kun je teams van 2, 3, 4 of 5 maken
 		</mat-card-subtitle>
 	</mat-card-header>
-	<mat-slider min="2" max="4" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
+	<mat-slider min="2" max="5" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
 	<mat-card-content cdkDropListGroup>
 		<div *ngFor="let team of teams">
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id!==teamId">

@@ -105,7 +105,15 @@ public static teamNames = [
 'SelfieIt',
 'SeeMySelfie',
 'TheBestSelfieMakers',
-'HappySelfieMakers'
+'HappySelfieMakers',
+'TrueSelfies',
+'KardashianSelfies',
+'BeMySelfie',
+'HelloSelfies',
+'TheOnlySelfies',
+'WeLoveSelfies',
+'TakeMySelfie',
+'WhateverSelfie'
 ];
 
 public static notifierOptions: NotifierOptions = {
