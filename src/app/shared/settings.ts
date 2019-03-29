@@ -215,7 +215,10 @@ public static standardGameImages =
 'standaard/selfie-recht.png',
 'standaard/selfie-strand2.png',
 'standaard/selfie-baard.png',
-'standaard/selfie-bitch.png'
+'standaard/selfie-bitch.png',
+'standaard/Hoedje.png',
+'standaard/selfie-achter.png',
+'standaard/selfie-recht2.png'
 ];
 
 }

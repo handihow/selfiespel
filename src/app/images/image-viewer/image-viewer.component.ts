@@ -68,10 +68,10 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
 
   ngOnChanges(){
   	if(typeof this.assignmentId !== 'undefined'){
-  		this.subs.push(this.imageService.fetchImageReference(this.assignmentId, this.gameId, this.teamId)
-      .subscribe(references => {
-	  		if(references && references[0]){
-          this.image = references[0];
+  		this.subs.push(this.imageService.fetchImageReference(this.assignmentId, this.teamId)
+      .subscribe(reference => {
+	  		if(reference){
+          this.image = reference;
 	  			this.containsImage.emit(true);
 	  			const ref = this.storage.ref(this.image.path);
           this.imageState = this.image.imageState ? this.image.imageState : '';

@@ -24,17 +24,8 @@ export class ImageService {
 				 private uiService: UIService,
 				 private storage: AngularFireStorage, ){}
 
-	fetchImageReference(assignmentId: string, gameId: string, teamId: string): Observable<Image[]> {
-		let queryStr = (ref => ref.where('assignmentId', '==', assignmentId).where('gameId', '==', gameId).where('teamId', '==', teamId));
-		return this.db.collection('images', queryStr)
-			.snapshotChanges().pipe(
-			map(docArray => {
-				return docArray.map(doc => {
-						const data = doc.payload.doc.data() as Image;
-						const id = doc.payload.doc.id;
-						return { id, ...data };
-					})
-			}))
+	fetchImageReference(assignmentId: string, teamId: string): Observable<Image> {
+		return this.db.collection('images').doc(assignmentId + '_' + teamId) .valueChanges() as Observable<Image>;
 	}
 
 	fetchImageReferences(gameId: string, teamId?: string): Observable<Image[]>{

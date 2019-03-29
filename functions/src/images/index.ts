@@ -32,9 +32,12 @@ export const generateThumbs = functions.storage
  	const bucketDir = dirname(filePath);
 
 	if (fileName.includes('thumb@') || !contentType.includes('image')) {
-		console.log('exiting function');
+		console.log('exiting function: this image is already transformed');
 		return false;
-	} 
+	} else if(!metaData || !metaData.gameId){
+		console.log('exiting function: this is not uploaded via the app')
+		return false;
+	}
 
 	const workingDir = join(tmpdir(), 'thumbs');
 	const tmpFilePath = join(workingDir, fileName);
@@ -72,28 +75,30 @@ export const generateThumbs = functions.storage
 	// cleanup remove the tmp/thumbs from the filesystem
 	await fs.remove(workingDir);
 
+	const imageId = metaData.assignmentId + '_' + metaData.teamId;
+
 	const image : Image = {
+		id: imageId,
 		pathOriginal: filePath,
 		path: filePaths[1],
 		pathTN: filePaths[0],
-		assignmentId: metaData ? metaData.assignmentId : '',
-		gameId: metaData ? metaData.gameId : '',
-		teamId: metaData ? metaData.teamId : '',
-		userId: metaData ? metaData.userId : '',
-		teamName: metaData ? metaData.teamName : '',
-		assignment: metaData ? metaData.assignment : '',
+		assignmentId: metaData.assignmentId,
+		gameId: metaData.gameId,
+		teamId: metaData.teamId,
+		userId: metaData.userId,
+		teamName: metaData.teamName,
+		assignment: metaData.assignment,
 		created: admin.firestore.FieldValue.serverTimestamp(),
 		updated: admin.firestore.FieldValue.serverTimestamp(),
-		maxPoints: metaData ? parseInt(metaData.maxPoints) : 1
+		maxPoints: parseInt(metaData.maxPoints)
 	}
-	return db.collection('images').add(image).then(async doc => {
-		image.id = doc.id;
-		//send a message regarding upload of new image
-		await messages.newImageMessage(image);
-		//update the team progress
-		return progress.newImageProgress(image);
-	});
-		
+	await db.collection('images').doc(imageId).set(image, {merge: true});
+
+	//send a message regarding upload of new image
+	await messages.newImageMessage(image);
+	
+	//update the team progress
+	return progress.newImageProgress(image);	
 	
 });
 
