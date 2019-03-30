@@ -9,7 +9,7 @@
       <mat-card-content>
         <ngx-auth-firebaseui (onSuccess)="onSuccess($event)"
                              (onError)="printError($event)"
-                             [providers]="['google', 'facebook', 'twitter']"
+                             [providers]="['google', 'facebook']"
                              [guestEnabled]='false'>
         </ngx-auth-firebaseui>
       </mat-card-content>
