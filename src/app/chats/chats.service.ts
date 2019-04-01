@@ -7,6 +7,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Observable, combineLatest, of } from 'rxjs';
 
 import { Chat } from '../models/chat.model';
+import { User } from '../models/user.model';
 import { ChatMessage } from '../models/chat-message.model';
 
 @Injectable({
@@ -50,12 +51,12 @@ export class ChatService {
     );
   }
 
-  async createChat(gameId: string) {
-    const { uid } = await this.auth.getUser();
+  async createChat(gameId: string, userId: string) {
 
     const data : Chat = {
-      uid,
-      createdAt: Date.now(),
+      id: gameId,
+      uid: userId,
+      createdAt: new Date(),
       count: 0,
       messages: []
     };
@@ -63,62 +64,35 @@ export class ChatService {
     return this.afs.collection('chats').doc(gameId).set(data);
   }
 
-  async sendChatMessage(chatId, content) {
-    const { uid } = await this.auth.getUser();
+  async sendChatMessage(chatId: string, content: string, user: User) {
+
+    if(!user || !user.uid){
+      return null;
+    }
 
     const data : ChatMessage = {
-      uid,
-      content,
-      createdAt: Date.now()
+      uid: user.uid,
+      displayName: user.displayName,
+      content: content,
+      createdAt: new Date()
     };
 
-    if (uid) {
-      const ref = this.afs.collection('chats').doc(chatId);
-      return ref.update({
-        messages: firestore.FieldValue.arrayUnion(data)
-      });
-    }
+    const ref = this.afs.collection('chats').doc(chatId);
+    return ref.update({
+      messages: firestore.FieldValue.arrayUnion(data)
+    });
   }
 
-  async deleteChatMessage(chat, msg) {
-    const { uid } = await this.auth.getUser();
+  async deleteChatMessage(chat: Chat, msg: ChatMessage, user: User) {
 
     const ref = this.afs.collection('chats').doc(chat.id);
     console.log(msg);
-    if (chat.uid === uid || msg.uid === uid) {
+    if (chat.uid === user.uid || msg.uid === user.uid) {
       // Allowed to delete
-      delete msg.user;
       return ref.update({
         messages: firestore.FieldValue.arrayRemove(msg)
       });
     }
   }
 
-  joinChatUsers(chat$: Observable<any>) {
-    let chat;
-    const joinKeys = {};
-
-    return chat$.pipe(
-      switchMap(c => {
-        // Unique User IDs
-        chat = c;
-        const uids = Array.from(new Set(c.messages.map(v => v.uid)));
-
-        // Firestore User Doc Reads
-        const userDocs = uids.map(u =>
-          this.afs.doc(`users/${u}`).valueChanges()
-        );
-
-        return userDocs.length ? combineLatest(userDocs) : of([]);
-      }),
-      map(arr => {
-        arr.forEach(v => (joinKeys[(<any>v).uid] = v));
-        chat.messages = chat.messages.map(v => {
-          return { ...v, user: joinKeys[v.uid] };
-        });
-
-        return chat;
-      })
-    );
-  }
 }

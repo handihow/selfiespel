@@ -59,7 +59,7 @@ export const generateThumbs = functions.storage
 		filePaths.push(join(bucketDir, thumbName));
 
 		// resize source image
-		await sharp(tmpFilePath)
+		await sharp(tmpFilePath, {failOnError: false})
 			.rotate()
 			.resize(size, size)
 			.toFile(thumbPath);

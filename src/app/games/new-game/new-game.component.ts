@@ -89,7 +89,7 @@ export class NewGameComponent implements OnInit {
     let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
     //now add the game to the database and start adminstrating the game
     this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
-      this.chatService.createChat(game.id);
+      this.chatService.createChat(game.id, this.user.uid);
       this.router.navigate(['/games/' + game.id +'/admin']);
     });
     

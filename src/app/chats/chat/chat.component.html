@@ -4,9 +4,7 @@
     <cdk-virtual-scroll-viewport itemSize="50">
       <mat-list dense>
         <mat-list-item  *cdkVirtualFor="let msg of chat.messages; trackBy: trackByCreated">
-          <img matListAvatar [src]="msg.user?.photoURL" 
-                src-fallback="https://via.placeholder.com/150x150.png">
-          <p matLine> {{ msg.user?.displayName || msg.user?.uid }} </p>
+          <h3 matLine> {{ msg.displayName }} </h3>
           <p matLine>
             <span> {{ msg.content }} </span>
           </p>

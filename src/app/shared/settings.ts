@@ -113,7 +113,6 @@ public static teamNames = [
 'TheOnlySelfies',
 'WeLoveSelfies',
 'TakeMySelfie',
-'WhateverSelfie'
 ];
 
 public static notifierOptions: NotifierOptions = {

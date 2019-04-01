@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 
 import { User } from '../models/user.model';
 import { AuthData } from '../models/auth-data.model'; 
+import { AuthMethod } from '../models/auth-method.model';
 
 import * as fromRoot from '../app.reducer';
 import * as UI from '../shared/ui.actions';
@@ -69,13 +70,13 @@ export class AuthService {
 		this.afAuth.auth.signOut();
 	}
 
-	getUser() {
-	   return this.user$.pipe(first()).toPromise();
-	}
-
 	//creates custom user profile 
-	updateUser(user, authMethod) {
+	updateUser(user: User, authMethod: AuthMethod) {
 		this.store.dispatch(new UI.StartLoading());
+
+		if(authMethod == AuthMethod.email){
+			return console.log('not updating email user');
+		}
 	    // Sets user data to firestore
 	    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
