@@ -69,7 +69,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     teams.forEach(team => {
       let participants: User[] = [];
       this.players.forEach(player => {
-        if(team.members[player.uid]){
+        if(team.members.includes(player.uid)){
           participants.push(player);
         }
       });
