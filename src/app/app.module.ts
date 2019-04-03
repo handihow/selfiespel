@@ -62,7 +62,7 @@ export function loginFunction():string {
         environment.firebase, 
         loginFunction, 
         {
-            enableFirestoreSync: false,
+            enableFirestoreSync: true,
             toastMessageOnAuthSuccess: true,
             toastMessageOnAuthError: true
         }),

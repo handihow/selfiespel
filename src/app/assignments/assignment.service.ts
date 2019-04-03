@@ -58,7 +58,7 @@ export class AssignmentService {
 	//retrieve game assignments
 	fetchAssignments(gameId: string): Observable<Assignment[]>{
 		this.store.dispatch(new UI.StartLoading());
-		var queryStr = (ref => ref.where('gameId', '==', gameId));
+		var queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('order', 'asc'));
 		return this.db.collection('assignments', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {

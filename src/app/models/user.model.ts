@@ -6,7 +6,7 @@ export interface User {
   photoURL?: string;
   displayName?: string;
   authMethod?: AuthMethod;
-  
+  providerId?: string;
   participating?: string[];
   playing?: string[];
   judging?: string[];

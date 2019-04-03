@@ -50,6 +50,7 @@ export class AuthService {
 	    //and set the custom user object as current user in the NgRx State Management
 	    this.user$.subscribe(async user => {
 	    	if(user){
+	    		this.updateUser(user);
 	    		//dispatch the current user to the app state
 	    		if(!user.displayName){
 	    			//set the user display name to Anonimous if not available
@@ -71,31 +72,32 @@ export class AuthService {
 	}
 
 	//creates custom user profile 
-	updateUser(user: User, authMethod: AuthMethod) {
-		this.store.dispatch(new UI.StartLoading());
+	updateUser(user: User) {
 
-		if(authMethod == AuthMethod.email){
-			return console.log('not updating email user');
-		}
+	    let providerId = user.providerId || null;
+	    let authMethod: AuthMethod;
+	    switch (providerId) {
+	      case "google.com":
+	        authMethod = AuthMethod.google;
+	        break;
+	      case "facebook.com":
+	        authMethod = AuthMethod.facebook;
+	        break;
+	      case "twitter.com":
+	        authMethod = AuthMethod.twitter;
+	        break;
+	      default:
+	        authMethod = AuthMethod.email;
+	        break;
+	    }
+		
 	    // Sets user data to firestore
 	    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
-	    //creates the user object to be stored
-	    const data: User = {
-	    	uid: user.uid,
-	    	email: user.email,
-	    	displayName: user.displayName,
-	    	photoURL: user.photoURL,
-	    	authMethod: authMethod
-	    }
 	    //now save the users data in the database and resolve true when the database update is finished
-	    userRef.set(data, { merge: true })
+	    userRef.update({'authMethod': authMethod})
 	    .then( _ => {
 	    	this.createContactsList(user.uid);
-	    	this.store.dispatch(new UI.StopLoading());
-	    })
-	    .catch( _ => {
-	    	this.store.dispatch(new UI.StopLoading());
 	    })
 	}
 
@@ -104,11 +106,8 @@ export class AuthService {
 		const contactListRef = this.afs.collection('contacts').doc(userId);
 		const contactList = await contactListRef.valueChanges().pipe(first()).toPromise();
 		if(!contactList){
-			console.log('creating contact list for new user');
 			return this.contactService.createContactList(userId);
-		} else {
-			return console.log('contact list already exists');
-		}
+		} 
 	}
 
 }

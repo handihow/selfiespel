@@ -42,7 +42,7 @@ export class ContactsService {
 		
 		const data : ContactList = {
 			uid: userId,
-			createdAt: Date.now(),
+			createdAt: new Date(),
 			count: 0,
 			contacts: []
 		};
