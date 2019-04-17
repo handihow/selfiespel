@@ -117,7 +117,6 @@ export class ImageService {
 
 	reactOnImage(image: Image, user: User, reactionType: ReactionType, comment?: string, rating?: Rating){
 		//create the like in the db
-		const timestamp = new Date().toISOString();
 		const reaction : Reaction = {
 			userDisplayName: user.displayName,
 			userId: user.uid,

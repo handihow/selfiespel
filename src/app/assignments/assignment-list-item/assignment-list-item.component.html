@@ -6,13 +6,13 @@
 			<span>
 				<mat-button-toggle-group [value]="assignment.maxPoints" (change)="onChangePoints($event)">
 				  <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
-				    <mat-icon>check</mat-icon>
+				    <img src="assets/points_one.png">
 				  </mat-button-toggle>
 				  <mat-button-toggle [value]="rating.medium" matTooltip="3 punten">
-				    <mat-icon>thumb_up_alt</mat-icon>
+				    <img src="assets/points_three.png">
 				  </mat-button-toggle>
 				  <mat-button-toggle [value]="rating.hard" matTooltip="5 punten">
-				    <mat-icon>whatshot</mat-icon>
+				    <img src="assets/points_five.png">
 				  </mat-button-toggle>
 				</mat-button-toggle-group>
 			</span>

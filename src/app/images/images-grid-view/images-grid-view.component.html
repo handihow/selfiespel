@@ -28,16 +28,22 @@
       <span *ngIf="isJudge || isAdmin">
        <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
           <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
-            <mat-icon>remove</mat-icon>
+            <!-- <mat-icon>remove</mat-icon> -->
+            <img src="assets/points_zero.png">
           </mat-button-toggle>
           <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
-            <mat-icon>check</mat-icon>
+            <!-- <mat-icon>check</mat-icon> -->
+            <img src="assets/points_one.png">
           </mat-button-toggle>
           <mat-button-toggle [value]="rating.medium" matTooltip="3 punten" [disabled]="imageRef.maxPoints < rating.medium">
-            <mat-icon>thumb_up_alt</mat-icon>
+            <!-- <mat-icon>thumb_up_alt</mat-icon> -->
+            <img src="assets/points_three.png" *ngIf="imageRef.maxPoints >= rating.medium">
+            <img src="assets/points_three_disabled.png" *ngIf="imageRef.maxPoints < rating.medium">
           </mat-button-toggle>
           <mat-button-toggle [value]="rating.hard" matTooltip="5 punten" [disabled]="imageRef.maxPoints < rating.hard">
-            <mat-icon>whatshot</mat-icon>
+            <!-- <mat-icon>whatshot</mat-icon> -->
+            <img src="assets/points_five.png" *ngIf="imageRef.maxPoints >= rating.hard">
+            <img src="assets/points_five_disabled.png" *ngIf="imageRef.maxPoints < rating.hard">
           </mat-button-toggle>
         </mat-button-toggle-group>
       </span>
