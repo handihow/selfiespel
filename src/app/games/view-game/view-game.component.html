@@ -3,7 +3,7 @@
 </section>
 
 <mat-tab-group mat-align-tabs="center" *ngIf="doneLoading && game.status.closedAdmin">
-  <mat-tab label="Spel" *ngIf="game.status.playing">
+  <mat-tab label="Spel" *ngIf="game.status.playing && hasTeam">
   	<ng-template matTabContent>
 	    <app-game-upload-expansion-panel
                   [thumbnailReferences]="thumbnailReferences"

@@ -72,7 +72,7 @@ export class TeamService {
 					const data = doc.payload.doc.data() as Team;
 					const id = doc.payload.doc.id;
 					return { id, ...data };
-				})[0] || null;
+				})[0] || undefined;
 		}));
 	}
 

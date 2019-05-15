@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   printUser(event) {
   	console.log("success");
-	  console.log(event);
+	  // console.log(event);
   }
 
   printError(event) {
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSuccess(user){
-    console.log(user);
+    // console.log(user);
   }
 
 }

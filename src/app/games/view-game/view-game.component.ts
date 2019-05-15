@@ -36,6 +36,7 @@ export class ViewGameComponent implements OnInit {
   user: User;
   subs: Subscription[] = [];
   doneLoading: boolean = false;
+  hasTeam: boolean = true;
   isAdmin: boolean;
   imageReferences: Image[];
   images$: Observable<string>[] = [];
@@ -62,10 +63,14 @@ export class ViewGameComponent implements OnInit {
     this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game => {
       if(game){
         await this.setUser(game.administrator);
-        await this.fetchTeam(this.gameId);
+        let result = await this.fetchTeam(this.gameId);
+        if(!result){
+          this.hasTeam = false;
+        }
         this.fetchMessages(this.gameId);
         this.fetchImages(this.gameId);
         this.doneLoading = true;
+        console.log(this.doneLoading);
         this.game = {id: this.gameId,...game};
       }
     }));
@@ -97,6 +102,8 @@ export class ViewGameComponent implements OnInit {
         if(team){
           this.team = team;
           resolve(true);  
+        } else if(typeof team == 'undefined') {
+          resolve(false);
         }
       }));
     })  
