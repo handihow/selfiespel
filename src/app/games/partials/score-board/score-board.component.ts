@@ -95,22 +95,28 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     this.subs.push(this.gameService.fetchGameReactions(this.game.id, ReactionType.rating).subscribe(ratings => {
       if(ratings){
         teams.forEach(team => {
+          // let totalOfRatingsTeam = 0;
+          // this.score[team.id]={};
+          // this.assignments.forEach(assignment => {
+          //   this.score[team.id][assignment.id] = 0;
+          //   const filteredRatings = ratings.filter(rating => rating.teamId === team.id && rating.assignmentId == assignment.id);
+          //   if(filteredRatings && filteredRatings.length>0){
+          //     const numberOfRatings = filteredRatings.length;
+          //     let totalOfRatingsAssignment = 0;
+          //     filteredRatings.forEach(filteredRating => {
+          //       totalOfRatingsAssignment += filteredRating.rating;
+          //     });
+          //     const averageRating = Math.round(totalOfRatingsAssignment * 10 / numberOfRatings) / 10;
+          //     this.score[team.id][assignment.id] = averageRating;
+          //     totalOfRatingsTeam += averageRating;
+          //   }
+          // })
           let totalOfRatingsTeam = 0;
           this.score[team.id]={};
-          this.assignments.forEach(assignment => {
-            this.score[team.id][assignment.id] = 0;
-            const filteredRatings = ratings.filter(rating => rating.teamId === team.id && rating.assignmentId == assignment.id);
-            if(filteredRatings && filteredRatings.length>0){
-              const numberOfRatings = filteredRatings.length;
-              let totalOfRatingsAssignment = 0;
-              filteredRatings.forEach(filteredRating => {
-                totalOfRatingsAssignment += filteredRating.rating;
-              });
-              const averageRating = Math.round(totalOfRatingsAssignment * 10 / numberOfRatings) / 10;
-              this.score[team.id][assignment.id] = averageRating;
-              totalOfRatingsTeam += averageRating;
-            }
-          })
+          const filteredRatings = ratings.filter(rating => rating.teamId === team.id);
+          filteredRatings.forEach(filteredRating => {
+            totalOfRatingsTeam += filteredRating.rating;
+          });
           this.score[team.id]['total'] = totalOfRatingsTeam;
         });
       }    
