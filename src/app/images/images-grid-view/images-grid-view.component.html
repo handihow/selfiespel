@@ -5,7 +5,22 @@
 
 <mat-grid-list [cols]="columns" rowHeight="1:1">
   <mat-grid-tile *ngFor="let imageRef of imageReferences; let i=index">
-  	<mat-grid-tile-header *ngIf="game">{{imageRef.teamName}} met {{imageRef.assignment}}</mat-grid-tile-header>
+  	<mat-grid-tile-header *ngIf="game">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="!imageRef.userInappropriateId">
+          <mat-icon color="warn">report</mat-icon>
+          <span>Rapporteer</span>
+        </button>
+        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="imageRef.userInappropriateId">
+          <mat-icon color="accent">report_off</mat-icon>
+          <span>Niet rapporteren</span>
+        </button>
+      </mat-menu>
+      {{imageRef.teamName}} met {{imageRef.assignment}}
+    </mat-grid-tile-header>
   	<img [src]="images$[i] | async" class="tile-image" 
             (click)="onOpenImage(imageRef)" 
             src-fallback="https://via.placeholder.com/500x500.png?text=SelfieTheGame.com">

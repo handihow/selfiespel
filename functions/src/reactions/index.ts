@@ -3,6 +3,7 @@ import * as functions from 'firebase-functions';
 import * as messages from '../messages';
 import * as likes from '../likes';
 import * as comments from '../comments';
+import * as abuses from '../abuses';
 import * as helpers from '../helpers';
 
 // const db = admin.firestore();
@@ -26,6 +27,7 @@ export const onCreateReaction = functions.firestore
 	const reaction : Reaction = {id: reactionId, ...reactionData};
 
 	let content : string;
+	let messageType : string = 'info';
 	switch (reaction.reactionType) {
 		case ReactionType.like:
 			content = reaction.userDisplayName + ' heeft de selfie met ' 
@@ -43,11 +45,17 @@ export const onCreateReaction = functions.firestore
 			content = reaction.userDisplayName + ' heeft ' + reaction.rating + ' punt(en) gegeven aan de selfie met ' 
 						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
 			break;
+		case ReactionType.inappropriate:
+			content = reaction.userDisplayName + ' vindt de selfie met ' 
+						+ reaction.assignment + ' van ' + reaction.teamName + ' ongepast!';
+			messageType = 'warning';
+			await abuses.onNewAbuse(reaction);
+			break;
 		default:
 			content = reaction.userDisplayName + ' heeft gereageerd op de selfie met ' 
 						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
 	}
-	return messages.reactionMessage(reaction, content, 'info');
+	return messages.reactionMessage(reaction, content, messageType);
 
 });
 
@@ -103,6 +111,7 @@ export const onDeleteReaction = functions.firestore
 	const reaction : Reaction = {id: reactionId, ...reactionData};
 
 	let content : string;
+	let messageType : string = 'warning';
 	switch (reaction.reactionType) {
 		case ReactionType.like:
 			content = reaction.userDisplayName + ' heeft de like op de selfie met ' 
@@ -120,10 +129,16 @@ export const onDeleteReaction = functions.firestore
 			content = reaction.userDisplayName + ' heeft de score op de selfie met ' 
 						+ reaction.assignment + ' van ' + reaction.teamName + ' verwijderd!';
 			break;
+		case ReactionType.inappropriate:
+			content = reaction.userDisplayName + ' vindt de selfie met ' 
+						+ reaction.assignment + ' van ' + reaction.teamName + ' gepast!';
+			messageType = 'info';
+			await abuses.onDeleteAbuse(reaction);
+			break;
 		default:
 			content = reaction.userDisplayName + ' heeft gereageerd op de selfie met ' 
 						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
 	}
-	return messages.reactionMessage(reaction, content, 'warning');
+	return messages.reactionMessage(reaction, content, messageType);
 
 });

@@ -153,6 +153,11 @@ export class ViewGameComponent implements OnInit {
                                       reaction.reactionType === ReactionType.rating);
         imageRef.userAwardedPoints = userRatingIndex > -1 ? reactions[userRatingIndex].rating : null;
         imageRef.userRatingId = userRatingIndex > -1 ? reactions[userRatingIndex].id : null;
+        //calculate the ID of the inappropriate reaction from this particular user
+        let userInappropriateIndex = reactions.findIndex(reaction => 
+                                      reaction.imageId === imageRef.id && 
+                                      reaction.reactionType === ReactionType.inappropriate);
+        imageRef.userInappropriateId = userInappropriateIndex > -1 ? reactions[userInappropriateIndex].id : null;
       })
     }))
   }

@@ -90,6 +90,14 @@ export class ImagesGridViewComponent implements OnInit {
     }
   }
 
+  reportImage(image: Image){
+    if(image.userInappropriateId){
+      this.imageService.removeReactionFromImage(image.userInappropriateId);
+    } else {
+      this.imageService.reactOnImage(image, this.user, ReactionType.inappropriate);
+    }
+  }
+
   onAwardPoints(event, image: Image){
     if(image.userRatingId){
       this.imageService.updateAwardedPoints(image.userRatingId, event.value);

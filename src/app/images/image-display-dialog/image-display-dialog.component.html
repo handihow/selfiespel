@@ -8,6 +8,7 @@
 	  	<mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.like">thumb_up_alt</mat-icon>
 	    <mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.comment">insert_comment</mat-icon>
 	    <mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.rating">assessment</mat-icon>
+	    <mat-icon matListIcon *ngIf="reaction.reactionType === reactionType.inappropriate" color="warn">report</mat-icon>
 	    <h3 matLine>{{reaction.userDisplayName}}</h3>
 	    <p matLine *ngIf="reaction.reactionType > reactionType.like">
 	      {{reaction.reactionType === reactionType.comment? reaction.comment : reaction.rating}}

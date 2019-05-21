@@ -136,10 +136,17 @@ export class ImageService {
 		if(reactionType === ReactionType.rating){
 			reaction.rating = rating;
 		}
-		return this.db.collection('reactions').add(reaction)
-		.catch(error => {
-			this.uiService.showSnackbar(error.message, null, 3000);
-		})
+		if(reactionType == ReactionType.inappropriate){
+			return this.db.collection('reactions').doc(image.id + '_' + user.uid).set(reaction)
+			.catch(error => {
+				this.uiService.showSnackbar(error.message, null, 3000);
+			});
+		} else {
+			return this.db.collection('reactions').add(reaction)
+			.catch(error => {
+				this.uiService.showSnackbar(error.message, null, 3000);
+			})
+		}
 	}
 
 	updateAwardedPoints(reactionId: string, newValue: number){
