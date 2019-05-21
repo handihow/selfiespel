@@ -18,16 +18,20 @@
 	}
 
 	.spacing {
-		height: 37%;
+		height: 35%;
 	}
 
 	.second-spacing {
-		height: 45%;
+		height: 40%;
 	}
 
 	.copyright {
 		width: 150px;
 		height: auto;
+	}
+
+	.store-buttons{
+		visibility: hidden;
 	}
   
 }
@@ -54,6 +58,10 @@
 	.spacing {
 		height: 83%;
 	}
+
+	.store-buttons{
+		visibility: hidden;
+	}
   
 }
 
@@ -68,12 +76,7 @@
 	}
 
 	.join-button {
-		width: 200px;
-		height: auto;
-		padding: 10px;
-		border: 5px solid white;
-	  	border-radius: 10px;
-	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+		visibility: hidden;
 	}
 
 	.spacing {

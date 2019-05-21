@@ -62,7 +62,7 @@ export class AuthService {
 	    		}
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
-	    		this.router.navigate(['/']);
+		    	this.router.navigate(['/']);
 	    	}
 	    });
 	}

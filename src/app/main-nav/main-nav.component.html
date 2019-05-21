@@ -10,12 +10,13 @@
       <a mat-list-item routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
       <a mat-list-item routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
       <a mat-list-item routerLink="/profile" *ngIf="isAuth$ | async">Account</a>
+      <a mat-list-item routerLink="/privacy" *ngIf="!(isAuth$ | async)">Privacy</a>
       <a mat-list-item routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
       <button mat-list-item (click)="onLogout()" *ngIf="isAuth$ | async">Log out</button>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary" *ngIf="isAuth$ | async">
+    <mat-toolbar color="primary">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -30,6 +31,7 @@
         <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacten</a>
         <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
+        <a routerLinkActive="active" routerLink="/privacy" *ngIf="!(isAuth$ | async)">Privacy</a>
         <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
       </div>
       <button mat-mini-fab [matMenuTriggerFor]="profile" *ngIf="isAuth$ | async">

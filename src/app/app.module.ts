@@ -40,6 +40,7 @@ import { reducers } from './app.reducer';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NotifierModule } from 'angular-notifier';
 import { Settings } from './shared/settings';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 export function loginFunction():string { 
     return 'com.handihow.selfiespel' 
@@ -48,7 +49,8 @@ export function loginFunction():string {
 @NgModule({
   declarations: [
     AppComponent,
-    MainNavComponent
+    MainNavComponent,
+    PrivacyComponent
   ],
   imports: [
     BrowserModule,
