@@ -2,7 +2,7 @@
   
   	.background-image {
 	  background-image: url("/assets/desktop.png");
-	  height: 100%; 
+	  height: calc(100% - 60px); 
 	  background-position: center;
 	  background-repeat: no-repeat;
 	  background-size: cover;
@@ -69,7 +69,7 @@
   
   	.background-image {
 	  background-image: url("/assets/phone.png");
-	  height: 100%; 
+	  height: calc(100% - 60px); 
 	  background-position: center;
 	  background-repeat: no-repeat;
 	  background-size: cover;
@@ -80,7 +80,7 @@
 	}
 
 	.spacing {
-		height: 83%;
+		height: 75%;
 	}
   
 }
