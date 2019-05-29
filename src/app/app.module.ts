@@ -22,7 +22,10 @@ import { SharedModule } from './shared/shared.module';
 
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 import { MatContactsModule } from '@angular-material-extensions/contacts';
+import { MatFaqModule } from '@angular-material-extensions/faq';
+import { MatPagesModule } from '@angular-material-extensions/pages';
 import { ImgFallbackModule } from 'ngx-img-fallback';
+import {SlideshowModule} from 'ng-simple-slideshow';
 
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
@@ -41,6 +44,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { NotifierModule } from 'angular-notifier';
 import { Settings } from './shared/settings';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
+import { TosComponent } from './tos/tos.component';
+import { FaqComponent } from './faq/faq.component';
+
 
 export function loginFunction():string { 
     return 'com.handihow.selfiespel' 
@@ -50,7 +57,10 @@ export function loginFunction():string {
   declarations: [
     AppComponent,
     MainNavComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    SelfiethegameComponent,
+    TosComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +79,8 @@ export function loginFunction():string {
             toastMessageOnAuthError: true
         }),
     MatContactsModule.forRoot(),
+    MatFaqModule.forRoot(),
+    MatPagesModule.forRoot(),
     AngularFirestoreModule,
     AngularFireStorageModule,
     FlexLayoutModule,
@@ -76,7 +88,8 @@ export function loginFunction():string {
     SharedModule,
     NotifierModule.withConfig( Settings.notifierOptions ),
     StoreModule.forRoot(reducers),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    SlideshowModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-be'},

@@ -37,3 +37,14 @@ body{
 .mat-list .mat-list-item.right .mat-list-text>*{
   margin: 0 0 0 auto;
 }
+
+.no-content {
+  height: 60vh;
+}
+
+.terms-conditions {
+  max-width: 800px;
+  margin: 5px auto;
+  padding: 20px;
+  background-color: white;
+}

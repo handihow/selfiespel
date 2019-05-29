@@ -3,11 +3,26 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './auth/auth.guard';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { TosComponent } from './tos/tos.component';
+import { FaqComponent } from './faq/faq.component';
+import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 
 const routes: Routes = [
 	{
+		path: 'info',
+		component: SelfiethegameComponent
+	},
+	{
 		path: 'privacy',
 		component: PrivacyComponent
+	},
+	{
+		path: 'tos',
+		component: TosComponent
+	},
+	{
+		path: 'faq',
+		component: FaqComponent
 	},
 	{
 	  path: 'games',

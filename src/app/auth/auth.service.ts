@@ -62,7 +62,12 @@ export class AuthService {
 	    		}
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
-		    	this.router.navigate(['/']);
+	    		if(!this.router.url.includes('privacy') 
+	    			&& !this.router.url.includes('tos')
+	    			&& !this.router.url.includes('info')
+	    			&& !this.router.url.includes('faq')){
+		    		this.router.navigate(['/']);
+		    	}
 	    	}
 	    });
 	}

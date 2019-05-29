@@ -10,9 +10,13 @@
       <a mat-list-item routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
       <a mat-list-item routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
       <a mat-list-item routerLink="/profile" *ngIf="isAuth$ | async">Account</a>
-      <a mat-list-item routerLink="/privacy" *ngIf="!(isAuth$ | async)">Privacy</a>
       <a mat-list-item routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
       <button mat-list-item (click)="onLogout()" *ngIf="isAuth$ | async">Log out</button>
+      <mat-list-item>Algemene informatie</mat-list-item>
+      <a mat-list-item routerLink="/info">Hoe werkt het?</a>
+      <a mat-list-item routerLink="/privacy">Privacybeleid</a>
+      <a mat-list-item routerLink="/tos">Gebruiksvoorwaarden</a>
+      <a mat-list-item routerLink="/faq">Veelgestelde vragen</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -26,13 +30,16 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span><a routerLink="/"><img src="/assets/selfieTheGame.png" class="selfieTheGame"></a></span>
+      <div [ngClass]="{hidden: isHandset$ | async}">
+        <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/" *ngIf="!(isAuth$ | async)">Home</a>
+        <a routerLinkActive="active" routerLink="/info" *ngIf="!(isAuth$ | async)">Hoe werkt het?</a>
+        <a routerLinkActive="active" routerLink="/faq" *ngIf="!(isAuth$ | async)">Veelgestelde vragen</a>
+      </div>
       <span class="spacer"></span>
       <div [ngClass]="{hidden: isHandset$ | async}">
         <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacten</a>
         <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
-        <a routerLinkActive="active" routerLink="/privacy" *ngIf="!(isAuth$ | async)">Privacy</a>
-        <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Login</a>
       </div>
       <button mat-mini-fab [matMenuTriggerFor]="profile" *ngIf="isAuth$ | async">
         {{(user$ | async)?.displayName.charAt(0)}}
@@ -43,7 +50,29 @@
         <button style="cursor: pointer" (click)="onLogout()" mat-menu-item>Log uit</button>
       </mat-menu>
     </mat-toolbar>
-    <ng-content></ng-content>
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
     <!-- Add Content Here -->
+    <footer>
+      <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <span><a routerLink="/"><img src="/assets/selfieTheGame.png" class="selfieTheGame"></a></span>
+        <div>
+          <a mat-icon-button href="mailto:office@handihow.com?subject=Vraag / opmerking over SelfieTheGame">
+            <mat-icon>email_outline</mat-icon>
+          </a>
+          <span class="footer-text">office@handihow.com</span>
+        </div>
+        <a href="https://handihow.com" target=_blank class="active">
+          <mat-icon>copyright</mat-icon><span class="footer-text">2019 - Made by HandiHow</span>
+        </a>
+      </mat-toolbar>
+      <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+          <a class="active" routerLink="/privacy"><span class="footer-text">Privacybeleid</span></a>
+          <a class="active" routerLink="/tos"><span class="footer-text">Gebruiksvoorwaarden</span></a>
+          <a class="active" routerLink="/info"><span class="footer-text">Hoe werkt het?</span></a>
+          <a class="active" routerLink="/faq"><span class="footer-text">Veelgestelde vragen</span></a>
+      </mat-toolbar>
+    </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

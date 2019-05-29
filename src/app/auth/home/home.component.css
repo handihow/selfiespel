@@ -1,86 +1,26 @@
-@media (min-width: 1023px) {
-  
-  	.background-image {
-	  background-image: url("/assets/desktop.png");
-	  height: calc(100% - 60px); 
-	  background-position: center;
-	  background-repeat: no-repeat;
-	  background-size: cover;
-	}
-
-	.join-button {
-		width: 400px;
-		height: auto;
-		padding: 15px;
-		border: 7px solid white;
-	  	border-radius: 10px;
-	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
-	}
-
-	.spacing {
-		height: 35%;
-	}
-
-	.second-spacing {
-		height: 40%;
-	}
-
-	.copyright {
-		width: 150px;
-		height: auto;
-	}
-
-	.store-buttons{
-		visibility: hidden;
-	}
-  
+mat-card {
+	margin: 5px;
+	
 }
 
-@media (min-width: 767px) and (max-width: 1023px) {
-  
-  	.background-image {
-	  background-image: url("/assets/ipad.png");
-	  height: 100%; 
-	  background-position: center;
-	  background-repeat: no-repeat;
-	  background-size: cover;
-	}
-
-	.join-button {
-		width: 350px;
-		height: auto;
-		padding: 15px;
-		border: 7px solid white;
-	  	border-radius: 10px;
-	  	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
-	}
-
-	.spacing {
-		height: 83%;
-	}
-
-	.store-buttons{
-		visibility: hidden;
-	}
-  
+.background-image {
+  background-image: url("/assets/desktop.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 350px;
 }
 
-@media (max-width: 767px) {
-  
-  	.background-image {
-	  background-image: url("/assets/phone.png");
-	  height: calc(100% - 60px); 
-	  background-position: center;
-	  background-repeat: no-repeat;
-	  background-size: cover;
-	}
+section {
+	background-color: #040046;
+}
 
-	.join-button {
-		visibility: hidden;
-	}
+.icon-apps {
+  background-image: url('/assets/icon_apps.png');
+  background-size: cover;
+}
 
-	.spacing {
-		height: 75%;
-	}
-  
+.logo-image {
+  background-image: url('/assets/logo-image.png');
+  background-size: cover;
 }

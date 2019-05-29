@@ -19,7 +19,7 @@
 </mat-toolbar>
 <section fxLayout="column" fxLayoutAlign="center center">
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
-	<p *ngIf="(games$ | async)?.length===0">Nog geen spellen</p>
+	<p *ngIf="(games$ | async)?.length===0" class="no-content">Nog geen spellen</p>
 </section>
 <section fxLayout="row wrap" fxLayoutAlign="space-around stretch"
 				fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">

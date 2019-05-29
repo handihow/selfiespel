@@ -4,10 +4,12 @@
 	              (onContactAdded)="addContact($event)"
 	              (onContactRemoved)="removeContact($event)">
 	</mat-contacts>
+	<div *ngIf="contacts.length===0" class="no-content"></div>
 </ng-container>
 <ng-container *ngIf="isLoading">
 	<mat-contacts [contacts]="contacts"
 				  [title]="'Contacten'"
 				  [isLoading]="isLoading">
 	</mat-contacts>
+	<div class="no-content">Laden..</div>
 </ng-container>
