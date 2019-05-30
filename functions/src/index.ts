@@ -7,6 +7,7 @@ import * as images from './images';
 import * as reactions from './reactions';
 import * as chats from './chats';
 import * as emails from './emails';
+import * as contacts from './contacts';
 
 export const generateThumbs = images.generateThumbs;
 export const deletedImage = images.deletedImage;
@@ -18,3 +19,5 @@ export const onDeleteReaction = reactions.onDeleteReaction;
 export const archiveChat = chats.archiveChat;
 
 export const inviteUserEmail = emails.inviteUserEmail;
+
+export const onReadyToPlay = contacts.onReadyToPlay;

@@ -40,11 +40,11 @@ export const onNewAbuse = async (reaction: Reaction) => {
 	const adminRef = db.collection('users').doc(gameData.administrator);
 	const adminSnap = await adminRef.get();
 	const adminData = adminSnap.data() as User;
-	if(count == 1 && userData.email && userData.displayName){
+	if(count === 1 && userData.email && userData.displayName){
 		await email.firstReportAbuse(userData.email, userData.displayName, reaction.teamName, reaction.assignment, gameData.name);
-	} else if(count == 2 && adminData.email && adminData.displayName){
+	} else if(count === 2 && adminData.email && adminData.displayName){
 		await email.secondReportAbuse(adminData.email, adminData.displayName, reaction.teamName, reaction.assignment, gameData.name);
-	} else if(count == 3 && userData.email && adminData.email && adminData.displayName && reaction.id) {
+	} else if(count === 3 && userData.email && adminData.email && adminData.displayName && reaction.id) {
 		await email.thirdReportAbuse(adminData.email, adminData.displayName, reaction.teamName, reaction.assignment, gameData.name);
 		await email.officialReportAbuse(gameId, imageId, userData.email, adminData.email);
 		await imageRef.delete();
