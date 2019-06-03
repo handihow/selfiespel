@@ -7,8 +7,8 @@
 		      <mat-icon matListIcon>face</mat-icon>
 		      <h4 matLine>Deelnemers:</h4>
 		      <p matLine>
-		      	<span *ngFor="let participant of team?.participants; let i=index">
-		      		{{participant.displayName}}{{ i === team?.participants.length - 1 ? '' : ', '}}
+		      	<span *ngFor="let displayName of team?.memberDisplayNames; let i=index">
+		      		{{displayName}}{{ i === team?.memberDisplayNames.length - 1 ? '' : ', '}}
 		      	</span>
 		      </p>
 		   </mat-list-item>
@@ -22,7 +22,7 @@
 		   <mat-list-item>
 		      <mat-icon matListIcon>assessment</mat-icon>
 		      <h4 matLine>Totale score:</h4>
-		      <p matLine>{{score ? score[team?.id] ? score[team?.id]['total'] : 0 : 0}}</p>
+		      <p matLine>{{team?.rating ? team.rating : 0}}</p>
 		   </mat-list-item>
 		   <mat-divider></mat-divider>
 	   </mat-list>

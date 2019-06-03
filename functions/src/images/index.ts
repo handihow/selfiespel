@@ -19,6 +19,8 @@ import { join, dirname } from 'path';
 import * as sharp from 'sharp';
 import * as fs from 'fs-extra';
 
+const UUID = require("uuid/v4");
+
 // creates a resized image when an images is uploaded
 export const generateThumbs = functions.storage
 	.object()
@@ -53,7 +55,8 @@ export const generateThumbs = functions.storage
 	const sizes = [128, 512];
 
 	const filePaths: string[] = [];
-	const uploadPromises = sizes.map(async size => {
+	const downloadUrls: string[] = [];
+	const uploadPromises = sizes.map(async (size, index) => {
 		const thumbName = `thumb@${size}_${fileName}`;
 		const thumbPath = join(workingDir, thumbName);
 		filePaths.push(join(bucketDir, thumbName));
@@ -64,14 +67,29 @@ export const generateThumbs = functions.storage
 			.resize(size, size)
 			.toFile(thumbPath);
 
+		//get the download url for the image
+		const uuid = UUID();
+		downloadUrls.push(
+			"https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/" +
+			encodeURIComponent(filePaths[index]) + 
+			"?alt=media&token=" +
+			uuid
+		);
+		
 		// upload to GCS
 		return bucket.upload(thumbPath, {
-			destination: join(bucketDir, thumbName)
+			destination: join(bucketDir, thumbName),
+			metadata: {
+				metadata: {
+		          firebaseStorageDownloadTokens: uuid
+		        }
+			}
 		});
 	});
-
+	
 	// run the upload operations
 	await Promise.all(uploadPromises);
+	
 	// cleanup remove the tmp/thumbs from the filesystem
 	await fs.remove(workingDir);
 
@@ -82,6 +100,8 @@ export const generateThumbs = functions.storage
 		pathOriginal: filePath,
 		path: filePaths[1],
 		pathTN: filePaths[0],
+		downloadUrl: downloadUrls[1],
+		downloadUrlTN: downloadUrls[0],
 		assignmentId: metaData.assignmentId,
 		gameId: metaData.gameId,
 		teamId: metaData.teamId,

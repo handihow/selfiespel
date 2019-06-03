@@ -84,8 +84,12 @@ export class ImageService {
 		})
 	}
 
-	getUserGameReactions(gameId: string, userId: string){
+	getUserGameReactions(gameId: string, userId: string, reactionType?: ReactionType){
 		let queryStr = (ref => ref.where('gameId', '==', gameId).where('userId', '==', userId).orderBy('created', 'asc'));
+		if(reactionType){
+			queryStr = (ref => ref.where('gameId', '==', gameId).where('userId', '==', userId)
+									.where('reactionType', '==', reactionType).orderBy('created', 'asc'));
+		}
 		return this.db.collection('reactions', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -136,24 +140,25 @@ export class ImageService {
 		if(reactionType === ReactionType.rating){
 			reaction.rating = rating;
 		}
-		if(reactionType == ReactionType.inappropriate){
-			return this.db.collection('reactions').doc(image.id + '_' + user.uid).set(reaction)
-			.catch(error => {
-				this.uiService.showSnackbar(error.message, null, 3000);
-			});
-		} else {
-			return this.db.collection('reactions').add(reaction)
-			.catch(error => {
-				this.uiService.showSnackbar(error.message, null, 3000);
-			})
-		}
+		return this.db.collection('reactions').doc(reactionType + '_' + image.id + '_' + user.uid).set(reaction)
+		.catch(error => {
+			this.uiService.showSnackbar(error.message, null, 3000);
+		});
+		
 	}
 
-	updateAwardedPoints(reactionId: string, newValue: number){
+	updateAwardedPoints(reactionId: string, newValue: number){		
 		return this.db.collection('reactions').doc(reactionId).update({
 			rating: newValue,
 			updated: firestore.FieldValue.serverTimestamp()
-		});
+		});		
+	}
+
+	updateComment(reactionId: string, newComment: string){		
+		return this.db.collection('reactions').doc(reactionId).update({
+			comment: newComment,
+			updated: firestore.FieldValue.serverTimestamp()
+		});		
 	}
 
 	removeReactionFromImage(reactionId: string){

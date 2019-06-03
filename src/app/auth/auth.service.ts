@@ -60,6 +60,7 @@ export class AuthService {
 	    		if(!this.router.url.includes('/games')){
 	    			this.router.navigate(['/games']);
 	    		}
+	    		
 	    	} else {
 	    		this.store.dispatch(new Auth.SetUnauthenticated());
 	    		if(!this.router.url.includes('privacy') 

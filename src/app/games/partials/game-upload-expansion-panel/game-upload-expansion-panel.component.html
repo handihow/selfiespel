@@ -12,8 +12,8 @@
 		</mat-panel-title>
 	    <mat-panel-description>
 		    	max. {{assignment.maxPoints}} punten
-		    	<span *ngIf="thumbnails$[i] | async as url">
-		    		<img class="avatar" [src]="url">
+		    	<span *ngIf="containsImage(assignment)">
+		    		<img class="avatar" [src]="containsImage(assignment)">
 		    	</span>
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
@@ -21,16 +21,16 @@
 		  <app-file-upload 	[userId]="user?.uid" 
 		  					[gameId]="game?.id" 
 		  					[team]="team" 
-		  					[assignment]="assignment" *ngIf="!containsImage && hasObtainedImageStatus"></app-file-upload>
+		  					[assignment]="assignment" *ngIf="!containsImage(assignment)"></app-file-upload>
 		  <app-image-viewer 
 		  					[userId]="user?.uid" 
 		  					[gameId]="game?.id" 
 		  					[teamId]="team?.id" 
-		  					[hidden]="!containsImage"
+		  					[hidden]="!containsImage(assignment)"
 		  					[assignmentId]="assignmentId" 
 		  					(containsImage)="retrieveImageState($event)"></app-image-viewer>
 	  </div>
-	   <mat-action-row *ngIf="containsImage">
+	   <mat-action-row *ngIf="containsImage(assignment)">
 	    <!-- <button mat-button (click)="onRotate()">Roteren</button> -->
 	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
 	  </mat-action-row>

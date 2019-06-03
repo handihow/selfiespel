@@ -19,16 +19,13 @@ export class GameUploadExpansionPanelComponent {
   @Input() game: Game;
   @Input() team: Team;
   @Input() user: User;
-  @Input() thumbnailReferences: Image[];
-  @Input() thumbnails$: Observable<string>[] = [];
+  @Input() imageReferences: Image[];
   @Input() assignments: Assignment[];
 
   assignmentId: string;
   
   isOwner: boolean;
   hasObtainedImageStatus: boolean;
-  containsImage: boolean;
-  
 
   @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
 
@@ -40,8 +37,16 @@ export class GameUploadExpansionPanelComponent {
     }
   }
 
+  containsImage(assignment: Assignment){
+    const index = this.imageReferences.findIndex(i => i.assignmentId == assignment.id);
+    if(index>-1){
+      return this.imageReferences[index].downloadUrlTN;
+    } else {
+      return null;
+    }
+  }
+
   onOpenPanel(assignment: Assignment){
-    this.containsImage = true;
   	this.assignmentId = assignment.id;
   }
 
@@ -50,7 +55,6 @@ export class GameUploadExpansionPanelComponent {
   }
 
   retrieveImageState(containsImage: boolean){
-    this.containsImage = containsImage;
     this.hasObtainedImageStatus = true;
   }
 

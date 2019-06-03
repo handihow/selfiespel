@@ -32,7 +32,6 @@ export class ImagesGridViewComponent implements OnInit {
   @Input() game: Game;
   @Input() user: User;
   @Input() imageReferences: Image[];
-  @Input() images$: Observable<string>[] = [];
   
   subs: Subscription[] = [];
   isAdmin: boolean;
@@ -49,6 +48,19 @@ export class ImagesGridViewComponent implements OnInit {
     this.subs.push(this.store.select(fromRoot.getScreenType).subscribe(screentype => {
       this.setColumns(screentype);
     }))
+    if(this.game){
+      this.subs.push(this.imageService.getUserGameReactions(this.game.id, this.user.uid, ReactionType.rating).subscribe(reactions => {
+        if(reactions){
+          this.imageReferences.forEach(imageRef => {
+            const index = reactions.findIndex(r => r.imageId === imageRef.id);
+            if(index>-1){
+              imageRef.userAwardedPoints = reactions[index].rating;
+            }
+          })
+        }
+      }));
+    }
+    
   }
 
   ngOnDestroy(){
@@ -83,24 +95,27 @@ export class ImagesGridViewComponent implements OnInit {
   }
 
   likeImage(image: Image){
-    if(image.userLikeId){
-      this.imageService.removeReactionFromImage(image.userLikeId);
+    if(image.likes && image.likes.includes(this.user.uid)){
+      const reactionId = ReactionType.like + "_" + image.id + "_" + this.user.uid;
+      this.imageService.removeReactionFromImage(reactionId);
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.like);
     }
   }
 
   reportImage(image: Image){
-    if(image.userInappropriateId){
-      this.imageService.removeReactionFromImage(image.userInappropriateId);
+    if(image.abuses && image.abuses.includes(this.user.uid)){
+      const reactionId = ReactionType.inappropriate + "_" + image.id + "_" + this.user.uid;
+      this.imageService.removeReactionFromImage(reactionId);
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.inappropriate);
     }
   }
 
   onAwardPoints(event, image: Image){
-    if(image.userRatingId){
-      this.imageService.updateAwardedPoints(image.userRatingId, event.value);
+    if(image.ratings && image.ratings.includes(this.user.uid)){
+      const reactionId = ReactionType.rating + "_" + image.id + "_" + this.user.uid;
+      this.imageService.updateAwardedPoints(reactionId, event.value);
     } else {
       this.imageService.reactOnImage(image, this.user, ReactionType.rating, null, event.value);
     }
@@ -114,9 +129,19 @@ export class ImagesGridViewComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(comment => {
       if(comment){
-        this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment);
+        if(image.comments && image.comments.includes(this.user.uid)){
+          const reactionId = ReactionType.comment + "_" + image.id + "_" + this.user.uid;
+          this.imageService.updateComment(reactionId, comment);
+        } else {
+          this.imageService.reactOnImage(image, this.user, ReactionType.comment, comment);
+        }
       }
     });
+  }
+
+  removeComment(image: Image){
+    const reactionId = ReactionType.comment + "_" + image.id + "_" + this.user.uid;
+    this.imageService.removeReactionFromImage(reactionId);
   }
 
   onOpenImage(image: Image){
@@ -126,6 +151,30 @@ export class ImagesGridViewComponent implements OnInit {
         user: this.user
       }
     });
+  }
+
+  hasLiked(image: Image){
+    if(image.likes && image.likes.includes(this.user.uid)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  hasCommented(image: Image){
+    if(image.comments && image.comments.includes(this.user.uid)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  hasFoundInappropriate(image: Image){
+    if(image.abuses && image.abuses.includes(this.user.uid)){
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

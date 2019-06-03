@@ -43,7 +43,6 @@ export class ContactsService {
 		const data : ContactList = {
 			uid: userId,
 			createdAt: new Date(),
-			count: 0,
 			contacts: []
 		};
 

@@ -8,8 +8,8 @@ export interface Team {
   memberDisplayNames?: string[];
   gameId?: string;
   id?: string;
+  progress: number;
+  rating: number;
   // dynamically set helper properties
   participants?: User[];
-  progress?: number;
-  rating?: number;
 }

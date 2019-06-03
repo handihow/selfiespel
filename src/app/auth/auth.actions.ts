@@ -15,6 +15,4 @@ export class SetUnauthenticated implements Action {
 }
 
 
-
-
-export type AuthActions = SetAuthenticated | SetUnauthenticated;
+export type AuthActions = SetAuthenticated | SetUnauthenticated ;

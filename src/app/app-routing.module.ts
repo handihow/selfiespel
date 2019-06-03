@@ -29,6 +29,10 @@ const routes: Routes = [
 	  loadChildren: './games/games.module#GamesModule'
 	},
 	{
+	  path: 'admin',
+	  loadChildren: './admin/admin.module#AdminModule'
+	},
+	{
 	  path: 'selfies',
 	  loadChildren: './selfies/selfies.module#SelfiesModule'
 	},

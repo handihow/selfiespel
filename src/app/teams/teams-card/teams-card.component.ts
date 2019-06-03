@@ -86,7 +86,9 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
         name: Settings.teamNames[randomIndex],
         order: i,
         members: [],
-        color: Settings.teamColors[randomIndex].color
+        color: Settings.teamColors[randomIndex].color,
+        progress: 0,
+        rating: 0
       }
       members.forEach(member => {
         newTeam.members.push(member.uid);
@@ -180,7 +182,9 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
       name: 'Nieuw team',
       order: this.teams.length,
       color: Settings.teamColors[this.teams.length].color,
-      gameId: this.game.id
+      gameId: this.game.id,
+      progress: 0,
+      rating: 0
     }
     this.teamService.addTeam(team);
   }
@@ -197,7 +201,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   }
 
   onRemove(team: Team){
-    if(team.participants.length>0){
+    if(team.members.length>0){
       return this.uiService.showSnackbar("Dit team heeft teamleden. Sleep de spelers eerst naar een ander team voordat je het team verwijdert.", null, 3000);
     }
     this.teamService.deleteTeam(team);

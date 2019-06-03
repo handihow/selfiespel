@@ -6,8 +6,7 @@
   <mat-tab label="Spel" *ngIf="game.status.playing && hasTeam">
   	<ng-template matTabContent>
 	    <app-game-upload-expansion-panel
-                  [thumbnailReferences]="thumbnailReferences"
-                  [thumbnails$]="thumbnails$"
+                  [imageReferences]="imageReferences"
                   [assignments]="assignments"
                   [game]="game"
                   [team]="team"
@@ -19,8 +18,7 @@
 	    <app-images-grid-view 
                   [game]="game"
                   [user]="user"
-                  [imageReferences]="imageReferences"
-                  [images$]="images$"></app-images-grid-view>
+                  [imageReferences]="imageReferences"></app-images-grid-view>
 	  </ng-template>
   </mat-tab>
   <mat-tab label="Chat">

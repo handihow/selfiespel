@@ -39,9 +39,6 @@ export class ViewGameComponent implements OnInit {
   hasTeam: boolean = true;
   isAdmin: boolean;
   imageReferences: Image[];
-  images$: Observable<string>[] = [];
-  thumbnailReferences: Image[];
-  thumbnails$: Observable<string>[] = [];
   assignments: Assignment[];
 
   private readonly notifier: NotifierService;
@@ -69,8 +66,9 @@ export class ViewGameComponent implements OnInit {
         }
         this.fetchMessages(this.gameId);
         this.fetchImages(this.gameId);
+        this.fetchAssignments(this.gameId);
         this.doneLoading = true;
-        console.log(this.doneLoading);
+        // console.log(this.doneLoading);
         this.game = {id: this.gameId,...game};
       }
     }));
@@ -122,11 +120,9 @@ export class ViewGameComponent implements OnInit {
 
   fetchImages(gameId: string){
     this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
-      this.imageReferences = imageReferences;
-      this.createImageArray();
-      this.fetchUserReactionIds(gameId);
-      this.fetchImageReactions(gameId);
-      this.fetchAssignments(gameId);
+      if(imageReferences){
+         this.imageReferences = imageReferences;
+      }
     }))
   }
 
@@ -134,77 +130,8 @@ export class ViewGameComponent implements OnInit {
     this.subs.push(this.assignmentService.fetchAssignments(gameId).subscribe(assignments => {
        if(assignments){
          this.assignments = assignments;
-         this.createThumbnailArray();
        }
     }))
-  }
-
-  fetchUserReactionIds(gameId: string){
-    this.subs.push(this.imageService.getUserGameReactions(gameId, this.user.uid).subscribe(reactions =>{
-      this.imageReferences.forEach(imageRef => {
-        //calculate the ID of the like from this particular user
-        let userLikeIndex = reactions.findIndex(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.reactionType === ReactionType.like);
-        imageRef.userLikeId = userLikeIndex > -1 ? reactions[userLikeIndex].id : null;
-        //calculate the ID and the rating that this user has given to the image
-        let userRatingIndex = reactions.findIndex(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.reactionType === ReactionType.rating);
-        imageRef.userAwardedPoints = userRatingIndex > -1 ? reactions[userRatingIndex].rating : null;
-        imageRef.userRatingId = userRatingIndex > -1 ? reactions[userRatingIndex].id : null;
-        //calculate the ID of the inappropriate reaction from this particular user
-        let userInappropriateIndex = reactions.findIndex(reaction => 
-                                      reaction.imageId === imageRef.id && 
-                                      reaction.reactionType === ReactionType.inappropriate);
-        imageRef.userInappropriateId = userInappropriateIndex > -1 ? reactions[userInappropriateIndex].id : null;
-      })
-    }))
-  }
-
-  fetchImageReactions(gameId: string){
-    this.subs.push(this.gameService.fetchSummaryGameReactions(gameId, ReactionType.like).subscribe(likesPerImage => {
-      if(likesPerImage){
-        this.imageReferences.forEach(imageRef => {
-          if(likesPerImage[imageRef.id] || likesPerImage[imageRef.id] === 0){
-            imageRef.likes = likesPerImage[imageRef.id]
-          }
-        });
-      }
-    }));
-    this.subs.push(this.gameService.fetchSummaryGameReactions(gameId, ReactionType.comment).subscribe(commentsPerImage => {
-      if(commentsPerImage){
-        this.imageReferences.forEach(imageRef => {
-          if(commentsPerImage[imageRef.id]){
-            imageRef.comments = commentsPerImage[imageRef.id]
-          }
-        });
-      }
-    }));
-  }
-
-  createImageArray(){
-    this.images$ = [];
-    this.imageReferences.forEach(imageRef => {
-      const ref = this.storage.ref(imageRef.path);
-      const downloadURL$ = ref.getDownloadURL();
-      this.images$.push(downloadURL$);
-    })
-  }
-
-  createThumbnailArray(){
-    this.thumbnails$ = [];
-    this.assignments.forEach(assignment => {
-      const refTN : Image = this.imageReferences.find(ref => 
-                               ref.assignmentId === assignment.id && ref.teamId === this.team.id);
-      if(refTN && refTN.pathTN){
-        const ref = this.storage.ref(refTN.pathTN);
-        const downloadURL$ = ref.getDownloadURL();
-        this.thumbnails$.push(downloadURL$);
-      } else {
-        this.thumbnails$.push(of(null));
-      }
-    })
   }
   
 }

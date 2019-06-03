@@ -25,6 +25,7 @@ export function authReducer(state = initialState, action: AuthActions) {
 			return {
 				...state,
 				isAuthenticated: false,
+				isAdmin: false,
 				user: null
 			}
 		default: {

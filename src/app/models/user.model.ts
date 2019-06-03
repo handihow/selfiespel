@@ -10,5 +10,5 @@ export interface User {
   participating?: string[];
   playing?: string[];
   judging?: string[];
-
+  roles?: {};
 }

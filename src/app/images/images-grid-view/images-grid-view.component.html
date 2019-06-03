@@ -10,37 +10,46 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="!imageRef.userInappropriateId">
+        <button mat-menu-item 
+                  (click)="likeImage(imageRef)" >
+          <mat-icon 
+                    [color]="hasLiked(imageRef) ? 'primary' : null"
+                    [matBadge]="imageRef.likes ? imageRef.likes.length : 0" 
+                    matBadgePosition="before" 
+                    matBadgeColor="accent">thumb_up_alt</mat-icon>
+          {{hasLiked(imageRef) ? 'Unlike' : 'Geef like'}}
+        </button>
+        <button mat-menu-item 
+                  (click)="openCommentDialog(imageRef)">
+          <mat-icon [color]="hasCommented(imageRef) ? 'primary' : null" 
+                    [matBadge]="imageRef.comments ? imageRef.comments.length : 0"
+                    matBadgePosition="before" 
+                    matBadgeColor="accent">
+                    insert_comment</mat-icon>
+          {{hasCommented(imageRef) ? 'Update commentaar' : 'Geef commentaar'}}
+        </button>
+        <button mat-menu-item 
+                (click)="removeComment(imageRef)" 
+                *ngIf="hasCommented(imageRef)">
+          <mat-icon color="warn">
+                    remove</mat-icon>
+          Verwijder commentaar
+        </button>
+        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="!hasFoundInappropriate(imageRef)">
           <mat-icon color="warn">report</mat-icon>
           <span>Rapporteer</span>
         </button>
-        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="imageRef.userInappropriateId">
+        <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="hasFoundInappropriate(imageRef)">
           <mat-icon color="accent">report_off</mat-icon>
           <span>Niet rapporteren</span>
         </button>
       </mat-menu>
       {{imageRef.teamName}} met {{imageRef.assignment}}
     </mat-grid-tile-header>
-  	<img [src]="images$[i] | async" class="tile-image" 
+  	<img [src]="imageRef.downloadUrl" class="tile-image" 
             (click)="onOpenImage(imageRef)" 
             src-fallback="https://via.placeholder.com/500x500.png?text=SelfieTheGame.com">
-  	<mat-grid-tile-footer  fxLayout="row" fxLayoutAlign="space-between center" *ngIf="game">
-  		<span>
-        <button mat-icon-button 
-                  matTooltip="Like" 
-                  (click)="likeImage(imageRef)" 
-                  [color]="imageRef.userLikeId ? 'primary' : null">
-    			<mat-icon [matBadge]="imageRef.likes" 
-                    matBadgePosition="before" 
-                    matBadgeColor="accent">thumb_up_alt</mat-icon>
-    		</button>
-    		<button mat-icon-button 
-                  matTooltip="Commentaar"
-                  (click)="openCommentDialog(imageRef)">
-    			<mat-icon [matBadge]="imageRef.comments" matBadgeColor="accent">insert_comment</mat-icon>
-    		</button>
-      </span>
-      <span *ngIf="isJudge || isAdmin">
+  	<mat-grid-tile-footer  *ngIf="game && (isJudge || isAdmin)" fxFlex="column" fxLayoutAlign="center">
        <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
           <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
             <!-- <mat-icon>remove</mat-icon> -->
@@ -61,7 +70,6 @@
             <img src="assets/points_five_disabled.png" *ngIf="imageRef.maxPoints < rating.hard">
           </mat-button-toggle>
         </mat-button-toggle-group>
-      </span>
   	</mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>

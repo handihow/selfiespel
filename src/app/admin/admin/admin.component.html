@@ -1,0 +1,15 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>
+			Set moderator
+		</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<div *ngIf="(result$ | async) && (result$ | async)?.result">{{ (result$ | async)?.result }}</div>
+		<div *ngIf="(result$ | async) && (result$ | async)?.error">{{ (result$ | async)?.error }}</div>
+	</mat-card-content>
+	<mat-card-actions>
+		<button mat-button (click)="setModerator()">SET MODERATOR</button>
+		<button mat-button (click)="removeModerator()">REMOVE MODERATOR</button>
+	</mat-card-actions>
+</mat-card>

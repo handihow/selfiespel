@@ -13,11 +13,11 @@ export const onReadyToPlay = functions.firestore
 .document('games/{gameId}')
 .onUpdate(async (change, context) => {
 
-	const newGame = change.after!.data() as Game;
+	const newGame = change.after.data() as Game;
 
-    const previousGame = change.before!.data() as Game;
+    const previousGame = change.before.data() as Game;
 
-    const gameId = change.after!.id;
+    const gameId = change.after.id;
 
     if(gameId && newGame.status.closedAdmin && !previousGame.status.closedAdmin){
     	const firestoreBatch = db.batch();
@@ -55,7 +55,7 @@ export const onReadyToPlay = functions.firestore
     	});
     	//now add the list of contacts to the contact list of each user;
     	users.forEach(user => {
-    		const contactRef = db.collection('contacts').doc(user.uid);
+    		const contactRef = db.collection('contacts').doc(user.uid || '');
             contacts.forEach(contact => {
                 firestoreBatch.update(contactRef, {'contacts': admin.firestore.FieldValue.arrayUnion(contact)})
             });
