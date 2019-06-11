@@ -8,11 +8,11 @@
 mat-card {
 	margin: 2px;
 }
-
+/*
 section {
 	background-color: #040046;
 }
-
+*/
 @media only screen and (min-width: 950px) {
   mat-card {
 		max-width: 500px;
