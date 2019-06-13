@@ -7,12 +7,12 @@
 
 <div *ngIf="percentage | async as pct">
   <div *ngIf="pct < 100">
-    <mat-progress-bar mode="indeterminate" value="pct"></mat-progress-bar>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
     {{ pct | number: '1.0-0' }}%
   </div>
   <div *ngIf="pct == 100">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    Verwerken ... (duurt 3 - 10 seconden)
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+    Verwerken ...
   </div>
 </div>
 

@@ -119,7 +119,7 @@ export class ViewGameComponent implements OnInit {
   }
 
   fetchImages(gameId: string){
-    this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
+    this.subs.push(this.imageService.fetchImageReferences(gameId, this.team.id).subscribe(imageReferences =>{
       if(imageReferences){
          this.imageReferences = imageReferences;
       }

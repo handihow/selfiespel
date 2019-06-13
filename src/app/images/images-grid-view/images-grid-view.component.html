@@ -46,9 +46,13 @@
       </mat-menu>
       {{imageRef.teamName}} met {{imageRef.assignment}}
     </mat-grid-tile-header>
-  	<img [src]="imageRef.downloadUrl" class="tile-image" 
-            (click)="onOpenImage(imageRef)" 
+    <div class="container" (click)="onOpenImage(imageRef)">
+      <img [src]="imageRef.downloadUrl" class="tile-image" 
             src-fallback="https://via.placeholder.com/500x500.png?text=SelfieTheGame.com">
+      <div class="overlay" *ngIf="imageRef.ratings && imageRef.ratings.includes(user.uid)">
+        <mat-icon class="icon">check</mat-icon>
+      </div>
+    </div>
   	<mat-grid-tile-footer  *ngIf="game && (isJudge || isAdmin)" fxFlex="column" fxLayoutAlign="center">
        <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
           <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
