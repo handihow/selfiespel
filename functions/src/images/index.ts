@@ -3,7 +3,7 @@ import * as functions from 'firebase-functions';
 import { Image } from '../../../src/app/models/image.model';
 
 import * as messages from '../messages';
-import * as progress from '../progress';
+import * as helpers from '../helpers';
 
 const {Storage} = require('@google-cloud/storage');
 // Creates a client
@@ -60,13 +60,6 @@ export const generateThumbs = functions.storage
 		const thumbName = `thumb@${size}_${fileName}`;
 		const thumbPath = join(workingDir, thumbName);
 		filePaths.push(join(bucketDir, thumbName));
-
-		// resize source image
-		await sharp(tmpFilePath, {failOnError: false})
-			.rotate()
-			.resize(size, size)
-			.toFile(thumbPath);
-
 		//get the download url for the image
 		const uuid = UUID();
 		downloadUrls.push(
@@ -75,6 +68,11 @@ export const generateThumbs = functions.storage
 			"?alt=media&token=" +
 			uuid
 		);
+		// resize source image
+		await sharp(tmpFilePath, {failOnError: false})
+			.rotate()
+			.resize(size, size)
+			.toFile(thumbPath);
 		
 		// upload to GCS
 		return bucket.upload(thumbPath, {
@@ -115,25 +113,31 @@ export const generateThumbs = functions.storage
 	await db.collection('images').doc(imageId).set(image, {merge: true});
 
 	//send a message regarding upload of new image
-	await messages.newImageMessage(image);
-	
-	//update the team progress
-	return progress.newImageProgress(image);	
-	
+	return messages.newImageMessage(image);
+		
 });
 
 // function runs when an image is deleted
 export const deletedImage = functions.firestore
 .document('images/{imageId}')
-.onDelete(async (snap) => {
+.onDelete(async (snap, context) => {
+
+		if (await helpers.alreadyTriggered(context.eventId)) {
+		  console.log("deleted image function abandoned because it is run duplicate");
+		  return false;
+		}
 		// get the data
 		const imageData = snap.data() as Image;
 		const imageId = snap.id;
 		const image = {id: imageId, ...imageData};
 
+		const teamRef = db.collection('teams').doc(image.teamId);
+
+		await teamRef.update({
+			progress: admin.firestore.FieldValue.increment(-1)
+		});
+
 		//send a warning message regarding the image delete
-		await messages.deletedImageMessage(image);
-		//update the team progress
-		return progress.deletedImageProgress(image);
+		return messages.deletedImageMessage(image);
 
 	});

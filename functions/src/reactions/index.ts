@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 import * as functions from 'firebase-functions';
 import * as messages from '../messages';
+import * as helpers from '../helpers';
 
 import * as abuses from '../abuses';
 
@@ -13,6 +14,11 @@ import { ReactionType } from '../../../src/app/models/reactionType.model';
 export const onCreateReaction = functions.firestore
 .document('reactions/{reactionId}')
 .onCreate(async (snap, context) => {
+
+	if (await helpers.alreadyTriggered(context.eventId)) {
+	  console.log("create reaction function abandoned because it is run duplicate");
+	  return false;
+	}
 
 	//first define the reaction that came in
 	const reactionData = snap.data() as Reaction;
@@ -74,6 +80,11 @@ export const onUpdateReaction = functions.firestore
 .document('reactions/{reactionId}')
 .onUpdate(async (change, context) => {
 	
+	if (await helpers.alreadyTriggered(context.eventId)) {
+	  console.log("update reaction function abandoned because it is run duplicate");
+	  return false;
+	}
+
 	const changeBefore = change.before;
 	const changeAfter = change.after;
 	if(!changeAfter || !changeBefore){
@@ -119,6 +130,11 @@ export const onUpdateReaction = functions.firestore
 export const onDeleteReaction = functions.firestore
 .document('reactions/{reactionId}')
 .onDelete(async (snap, context) => {
+
+	if (await helpers.alreadyTriggered(context.eventId)) {
+	  console.log("delete reaction function abandoned because it is run duplicate");
+	  return false;
+	}
 	
 	//first define the reaction that came in
 	const reactionData = snap.data() as Reaction;
@@ -171,11 +187,11 @@ export const onDeleteReaction = functions.firestore
 	}
 	await messages.reactionMessage(reaction, content, messageType);
 
-	imageRef.get().then((docSnapshot) => {
+	return imageRef.get().then((docSnapshot) => {
 		if(docSnapshot.exists){
 			return imageRef.update(updateObj);
 		} else {
-			return;
+			return null;
 		}
 	})
 

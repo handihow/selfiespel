@@ -4,6 +4,7 @@ import * as functions from 'firebase-functions';
 admin.initializeApp(functions.config().firebase);
 
 import * as images from './images';
+import * as progress from './progress';
 import * as reactions from './reactions';
 import * as chats from './chats';
 import * as emails from './emails';
@@ -16,6 +17,8 @@ export const deletedImage = images.deletedImage;
 export const onCreateReaction = reactions.onCreateReaction;
 export const onUpdateReaction = reactions.onUpdateReaction;
 export const onDeleteReaction = reactions.onDeleteReaction;
+
+export const onCreateImage = progress.onCreateImage;
 
 export const archiveChat = chats.archiveChat;
 

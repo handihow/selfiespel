@@ -3,47 +3,6 @@
 	<mat-card>
 		<mat-card-header>
 			<mat-card-title>
-				Screenshots
-			</mat-card-title>
-			<mat-card-subtitle>
-				Vogelvlucht door SelfieTheGame
-			</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-content class="slideshow">
-			<slideshow [height]="500"
-			           [minHeight]="'500px'"
-			           [autoPlay]="autoPlay"
-			           [autoPlayInterval]="4000"
-			           [stopAutoPlayOnSlide]="true"
-			           [showArrows]="true"
-			           [imageUrls]="images"
-			           [lazyLoad]="images?.length > 1"
-			           [autoPlayWaitForLazyLoad]="true"
-			           [captionBackground]="'rgba(0, 0, 0, 0.7)'">
-			</slideshow>
-		</mat-card-content>
-		<mat-card-actions>
-			<a 
-				routerLink="/" 
-				mat-icon-button
-				matTooltip="Terug">
-				<mat-icon>
-					arrow_back
-				</mat-icon>
-			</a>
-			<button 
-				mat-icon-button 
-				(click)="toggleAutoPlay()"
-				matTooltip="Slider instellen">
-				<mat-icon *ngIf="autoPlay">pause_circle_outline</mat-icon>
-				<mat-icon *ngIf="!autoPlay">play_circle_outline</mat-icon>
-			</button>
-		</mat-card-actions>
-	</mat-card>
-
-	<mat-card>
-		<mat-card-header>
-			<mat-card-title>
 				Stap 1
 			</mat-card-title>
 			<mat-card-subtitle>
@@ -102,6 +61,47 @@
 		<mat-card-actions>
 		  	 <a mat-button routerLink="/faq">VEELGESTELDE VRAGEN</a>
 		</mat-card-actions> 
+	</mat-card>
+
+		<mat-card>
+		<mat-card-header>
+			<mat-card-title>
+				Screenshots
+			</mat-card-title>
+			<mat-card-subtitle>
+				Vogelvlucht door SelfieTheGame
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content class="slideshow">
+			<slideshow [height]="500"
+			           [minHeight]="'500px'"
+			           [autoPlay]="autoPlay"
+			           [autoPlayInterval]="4000"
+			           [stopAutoPlayOnSlide]="true"
+			           [showArrows]="true"
+			           [imageUrls]="images"
+			           [lazyLoad]="images?.length > 1"
+			           [autoPlayWaitForLazyLoad]="true"
+			           [captionBackground]="'rgba(0, 0, 0, 0.7)'">
+			</slideshow>
+		</mat-card-content>
+		<mat-card-actions>
+			<a 
+				routerLink="/" 
+				mat-icon-button
+				matTooltip="Terug">
+				<mat-icon>
+					arrow_back
+				</mat-icon>
+			</a>
+			<button 
+				mat-icon-button 
+				(click)="toggleAutoPlay()"
+				matTooltip="Slider instellen">
+				<mat-icon *ngIf="autoPlay">pause_circle_outline</mat-icon>
+				<mat-icon *ngIf="!autoPlay">play_circle_outline</mat-icon>
+			</button>
+		</mat-card-actions>
 	</mat-card>
 
 </section>
