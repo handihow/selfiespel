@@ -24,7 +24,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   user: User;
   hasChat: boolean;
 
-  @ViewChild(CdkVirtualScrollViewport)
+  @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
 
   subs: Subscription[] = [];

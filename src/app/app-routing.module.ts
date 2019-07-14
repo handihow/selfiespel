@@ -26,19 +26,19 @@ const routes: Routes = [
 	},
 	{
 	  path: 'games',
-	  loadChildren: './games/games.module#GamesModule'
+	  loadChildren: () => import('./games/games.module').then(m => m.GamesModule)
 	},
 	{
 	  path: 'admin',
-	  loadChildren: './admin/admin.module#AdminModule'
+	  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
 	},
 	{
 	  path: 'selfies',
-	  loadChildren: './selfies/selfies.module#SelfiesModule'
+	  loadChildren: () => import('./selfies/selfies.module').then(m => m.SelfiesModule)
 	},
 	{
 	  path: 'contacts',
-	  loadChildren: './contacts/contacts.module#ContactsModule'
+	  loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
 	}
 ];
 

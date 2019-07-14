@@ -27,7 +27,7 @@ export class GameUploadExpansionPanelComponent {
   isOwner: boolean;
   hasObtainedImageStatus: boolean;
 
-  @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
+  @ViewChild(ImageViewerComponent, { static: false }) child: ImageViewerComponent;
 
   constructor() { }
 

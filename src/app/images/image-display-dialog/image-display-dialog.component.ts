@@ -24,7 +24,7 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
   sub: Subscription;
   get reactionType() { return ReactionType; }
 
-  @ViewChild(ImageViewerComponent ) child: ImageViewerComponent;
+  @ViewChild(ImageViewerComponent, { static: true }) child: ImageViewerComponent;
 
   constructor(	private dialogRef: MatDialogRef<ImageDisplayDialogComponent>,
     			      @Inject(MAT_DIALOG_DATA) private data: any,
