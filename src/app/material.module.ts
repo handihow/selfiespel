@@ -34,6 +34,7 @@ import {
 	MatTooltipModule,
 	MatSliderModule,
 	MatBadgeModule,
+	MatChipsModule
 	
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -72,7 +73,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatTooltipModule,
 		MatSliderModule,
 		MatBadgeModule,
-		ScrollDispatchModule],
+		ScrollDispatchModule,
+		MatChipsModule
+	],
 	exports: [
 		MatButtonModule, 
 		MatIconModule, 
@@ -106,7 +109,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatTooltipModule,
 		MatSliderModule,
 		MatBadgeModule,
-		ScrollDispatchModule]
+		ScrollDispatchModule,
+		MatChipsModule
+	]
 })
 
 export class MaterialModule{}

@@ -1,0 +1,65 @@
+<mat-toolbar color="primary">
+  Opdrachten
+  <span class="fill-remaining"></span>
+  <a fxHide.xs
+          mat-fab
+          color="accent"
+          class="fab-add"
+          routerLink="/assignments/add" 
+          matTooltip="Opdrachten toevoegen">
+    <mat-icon>add</mat-icon>
+  </a>
+  <a fxHide
+          fxShow.xs
+          mat-icon-button
+          matTooltip="Opdrachten toevoegen"
+          routerLink="/assignments/add">
+    <mat-icon>add</mat-icon>
+  </a>
+</mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="center center" >
+  <mat-form-field fxFlex.gt-sm="40%">
+    <input matInput type="text" [(ngModel)]="filterValue" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>    
+</div>
+<mat-table [dataSource]="dataSource" matSort>
+
+  <ng-container matColumnDef="created">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Datum</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.created.toDate() | date : 'dd-MM-yy' }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Naam</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Categorie</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.category }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="tags">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Tags</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.tags }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="isPublic">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Openbaar</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.isPublic ? "Openbaar" : "Privé" }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="owned">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Eigenaar</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.userId === user.uid ? "Eigenaar" : "Nee" }}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"
+            (click)="selection.select(row)"></mat-row>
+</mat-table>
+
+<mat-paginator [length]="100" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>

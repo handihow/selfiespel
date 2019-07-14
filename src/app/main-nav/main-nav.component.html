@@ -7,6 +7,7 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/contacts" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Contacten</a>
+      <a mat-list-item routerLink="/assignments" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Opdrachten</a>
       <a mat-list-item routerLink="/selfies" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Selfies</a>
       <a mat-list-item routerLink="/games" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Spellen</a>
       <a mat-list-item routerLink="/profile" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Account</a>
@@ -42,6 +43,7 @@
       <div [ngClass]="{hidden: isHandset$ | async}">
         <a routerLinkActive="active" routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
         <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacten</a>
+        <a routerLinkActive="active" routerLink="/assignments" *ngIf="isAuth$ | async">Opdrachten</a>
         <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Spellen</a>
       </div>

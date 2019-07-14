@@ -1,0 +1,24 @@
+.mat-column-created {
+  flex: 1;
+  min-width: 55px;
+}
+
+.mat-column-name {
+  flex: 2;
+}
+
+.mat-column-category {
+  flex: 2;
+}
+
+.mat-column-tags {
+  flex: 4;
+}
+
+.mat-column-isPublic {
+  flex: 2;
+}
+
+.mat-column-owned {
+  flex: 2;
+}

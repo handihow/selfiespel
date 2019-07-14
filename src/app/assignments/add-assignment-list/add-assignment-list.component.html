@@ -1,0 +1,63 @@
+<section fxLayout fxLayoutAlign="center">
+	<form [formGroup]="assignmentListForm" (ngSubmit)="onSubmit()">
+		<mat-card fxFlex.xs="100%" fxFlex="400px">
+			<mat-card-title fxLayoutAlign="center">
+				Maak een eigen opdrachtenlijst
+			</mat-card-title>
+			<mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="!(isLoading$ | async)">
+				<mat-form-field class="full-width">
+				   <input matInput placeholder="Naam" formControlName="name" required>
+				   <mat-error>Vul de naam van de lijst in</mat-error>
+				</mat-form-field>
+				<mat-form-field class="full-width">  
+					<mat-select 
+							placeholder="Categorie" 
+							formControlName="category"
+							required>
+						<mat-option *ngFor="let category of categories" 
+							[value]="category">
+							{{ category }}
+						</mat-option>
+					</mat-select>
+					<mat-error>Selecteer een categorie</mat-error>
+				</mat-form-field>
+				<mat-form-field class="full-width">
+				  <mat-chip-list #tagList aria-label="Selecteer tags">
+				    <mat-chip
+				      *ngFor="let tag of tags"
+				      [selectable]="selectable"
+				      [removable]="removable"
+				      (removed)="remove(tag)">
+				      {{tag}}
+				      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+				    </mat-chip>
+				    <input
+				      placeholder="Voeg tags toe ..."
+				      #tagInput
+				      formControlName="tags"
+				      [matAutocomplete]="auto"
+				      [matChipInputFor]="tagList"
+				      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+				      [matChipInputAddOnBlur]="addOnBlur"
+				      (matChipInputTokenEnd)="add($event)">
+				  </mat-chip-list>
+				  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+				    <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+				      {{tag}}
+				    </mat-option>
+				  </mat-autocomplete>
+				</mat-form-field>
+				<mat-checkbox formControlName="isPublic">Is openbaar (kan door iedereen worden gebruikt)</mat-checkbox>
+			</mat-card-content>
+			<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>	
+			<mat-card-actions fxLayoutAlign="center">
+				<a routerLink="/assignments" mat-button color="warn">Annuleren</a>
+				<button type="submit" mat-raised-button color="primary" [disabled]="assignmentListForm.invalid">
+					Bewaar
+				</button>
+			</mat-card-actions>
+		</mat-card>	
+	</form>
+</section>
+
+

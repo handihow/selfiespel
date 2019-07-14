@@ -16,7 +16,6 @@ body{
 	width:100%;
 }
 
-
 /* LEFT align */
 .mat-list .mat-list-item.left .mat-list-item-content{
       justify-content: flex-start;
@@ -25,6 +24,12 @@ body{
 /* RIGHT align */
 .mat-list .mat-list-item.right .mat-list-item-content{
       justify-content: flex-end;
+}
+
+#wrapper {
+    opacity: 0.4;
+    filter: alpha(opacity=40); /* msie */
+    background-color: #000;
 }
 
 /* If you will use matLine */
@@ -40,6 +45,17 @@ body{
 
 .no-content {
   height: 60vh;
+}
+
+
+.fill-remaining {
+  flex: 1 1 auto;
+}
+
+.fab-add {
+  margin-top: 55px;
+  margin-right: 20px;
+  z-index: 99;
 }
 
 .terms-conditions {

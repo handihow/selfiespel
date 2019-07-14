@@ -39,6 +39,10 @@ const routes: Routes = [
 	{
 	  path: 'contacts',
 	  loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
+	},
+	{
+	  path: 'assignments',
+	  loadChildren: () => import('./assignments/assignments.module').then(m => m.AssignmentsModule)
 	}
 ];
 

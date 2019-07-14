@@ -220,6 +220,16 @@ public static standardGameImages =
 'standaard/selfie-recht2.png'
 ];
 
+public static assignmentCategories = [
+	"Familie",
+	"Onderwijs",
+	"Toerisme",
+	"Vrijgezellen",
+	"Teamuitje",
+	"Kinderfeest",
+	"Overig"	
+];
+
 }
 
 
