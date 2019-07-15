@@ -11,6 +11,8 @@ import * as fromRoot from '../../app.reducer';
 import { Settings } from '../../shared/settings';
 import { Assignment } from '../../models/assignment.model';
 import { AssignmentService } from '../assignment.service';
+import { User } from '../../models/user.model';
+import { AssignmentList } from '../../models/assignment-list.model';
 
 @Component({
   selector: 'app-assignments-card',
@@ -28,9 +30,11 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   ];
 
   @Input() game: Game;
+  user: User;
+  assignmentList: AssignmentList;
   subs: Subscription[] = []; 
   assignments: Assignment[];
-
+  assignmentListId: string;
   allAssignments = Settings.assignments;
 
   quantity: number = 12;
@@ -42,9 +46,17 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
               private assignmentService: AssignmentService) { }
 
   ngOnInit() {
+    if(this.game){
+      this.initiateForGame();
+    } else {
+      this.initiateForAssignmentList();
+    }
+  }
+
+  initiateForGame(){
     this.subs.push(this.assignmentService.fetchAssignments(this.game.id).subscribe(assignments => {
         if(assignments && assignments.length > 0){
-          this.assignments = assignments.sort((a,b) => a.order - b.order);
+          this.assignments = assignments;
           if(!this.game.status.assigned){
             this.game.status.assigned = true;
             this.gameService.updateGameToDatabase(this.game);
@@ -56,7 +68,19 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
           }
         }
       }));
+  }
 
+  initiateForAssignmentList(){
+    this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
+      this.user = user;
+    }))
+    this.assignmentListId = this.route.snapshot.paramMap.get("id");
+    this.subs.push(this.assignmentService.fetchAssignments(null, this.assignmentListId).subscribe(assignments => {
+      this.assignments = assignments;
+    }));
+    this.subs.push(this.assignmentService.fetchAssignmentList(this.assignmentListId).subscribe(list => {
+      this.assignmentList = list;
+    }))
   }
 
   ngOnDestroy() {
@@ -113,7 +137,8 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
       level: 1,
       maxPoints: 3,
       order: this.assignments.length,
-      gameId: this.game.id
+      gameId: this.game ? this.game.id : null,
+      listId: this.assignmentListId
     }
     this.assignmentService.addAssignment(assignment);
   }
@@ -123,11 +148,17 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     this.assignments.forEach((assignment, index) => {
       assignment.order = index;
     });
-    this.assignmentService.updateAssignments(this.game.id, this.assignments);
+    this.assignmentService.updateAssignments(this.assignments);
+    
   }
 
   dropUnsaved(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.assignments, event.previousIndex, event.currentIndex);
+  }
+
+  onCreateGame(){
+    let routerLink = encodeURI('/games/new/' + this.assignmentListId);
+    this.router.navigate([routerLink]);
   }
 
 }

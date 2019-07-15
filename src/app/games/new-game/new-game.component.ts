@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
@@ -18,12 +18,15 @@ import { UIService } from '../../shared/ui.service';
 import { Settings } from '../../shared/settings';
 import { Status } from '../../models/status.model';
 
+import { AssignmentService } from '../../assignments/assignment.service';
+import { Assignment } from '../../models/assignment.model';
+
 @Component({
   selector: 'app-new-game',
   templateUrl: './new-game.component.html',
   styleUrls: ['./new-game.component.css']
 })
-export class NewGameComponent implements OnInit {
+export class NewGameComponent implements OnInit, OnDestroy {
   
   gameForm: FormGroup;
   user: User;
@@ -31,10 +34,14 @@ export class NewGameComponent implements OnInit {
   minDate = new Date();
   gameNames = Settings.gameNames;
   gameImages = Settings.standardGameImages;
-  sub: Subscription;
+  subs: Subscription[] = [];
+  assignmentListId: string;
+  assignments: Assignment[] = [];
 
   constructor(	private store: Store<fromRoot.State>,
                 private gameService: GameService,
+                private assignmentService: AssignmentService,
+                private route: ActivatedRoute,
                 private router: Router,
                 private uiService: UIService,
                 private chatService: ChatService) { }
@@ -43,11 +50,11 @@ export class NewGameComponent implements OnInit {
   	//get the loading state
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     //get the user and organisation from the root app state management
-    this.sub = this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
+    this.subs.push(this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
       if(user){
         this.user = user;
       }
-    })
+    }));
     //create the course form
     this.gameForm = new FormGroup({
       name: new FormControl(this.gameNames[Math.floor(Math.random() * this.gameNames.length)], Validators.required),
@@ -55,11 +62,23 @@ export class NewGameComponent implements OnInit {
       playing: new FormControl("Ja", Validators.required)
     });
     this.gameForm.get('date').setValue((new Date()).toISOString());
+    this.assignmentListId = this.route.snapshot.paramMap.get("id");
+    if(this.assignmentListId){
+      this.subs.push(this.assignmentService.fetchAssignments(null, this.assignmentListId).subscribe(assignments => {
+        this.assignments = assignments;
+      }));
+    }
+  }
+
+  ngOnDestroy(){
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
   onSubmit(){
     //first unsubscribe to the store because the authenticated user object will change
-    this.sub.unsubscribe();
+    
     //create the status of the new game
     let status : Status = {
       created: true,
@@ -89,6 +108,10 @@ export class NewGameComponent implements OnInit {
     let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
     //now add the game to the database and start adminstrating the game
     this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
+      if(this.assignments.length > 0){
+        console.log(this.assignments);
+        this.assignmentService.addAssignments(game.id, this.assignments);
+      }
       this.chatService.createChat(game.id, this.user.uid);
       this.router.navigate(['/games/' + game.id +'/admin']);
     });

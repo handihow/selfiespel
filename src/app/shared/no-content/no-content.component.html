@@ -1,0 +1,14 @@
+<mat-card class="no-content-card">
+  <mat-card-header>
+    <mat-card-title>{{title ?  title : 'Geen content'}}</mat-card-title>
+  </mat-card-header>
+  <img *ngIf="imageURL" mat-card-image [src]="imageURL">
+  <mat-card-content>
+    <p>
+      {{comment ? comment : 'Geen content om te tonen'}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions *ngIf="addUrl">
+    <a mat-raised-button color="primary" [routerLink]="addUrl">{{buttonText}}</a>
+  </mat-card-actions>
+</mat-card>

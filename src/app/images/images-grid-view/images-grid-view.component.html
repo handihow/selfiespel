@@ -1,6 +1,11 @@
 <section fxLayout="column" fxLayoutAlign="center center">
   <mat-divider [inset]="true"></mat-divider>
-  <p *ngIf="imageReferences?.length===0" class="no-content">Nog geen selfies</p>
+  <p *ngIf="imageReferences?.length===0" class="no-content">
+    <app-no-content
+        title="Geen selfies"
+        comment="Je hebt nog geen selfies. Doe mee met een spel en upload selfies. Ze zullen hier verschijnen"
+        imageURL="https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/standaard%2Fselfiestick.png?alt=media&token=ee325f8c-67da-4855-8a7d-159f19cccf23"></app-no-content>
+  </p>
 </section>
 
 <mat-grid-list [cols]="columns" rowHeight="1:1">

@@ -10,10 +10,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QRCodeModule } from 'angularx-qrcode';
 
 import { WarningDialogComponent } from './warning-dialog.component';
+import { NoContentComponent } from './no-content/no-content.component';
 
 @NgModule({
 	declarations: [ 
-		WarningDialogComponent 
+		WarningDialogComponent, 
+		NoContentComponent 
 	],
 	imports: [
 		CommonModule,
@@ -33,7 +35,8 @@ import { WarningDialogComponent } from './warning-dialog.component';
 		FlexLayoutModule,
 		QRCodeModule,
 		DragDropModule,
-		WarningDialogComponent
+		WarningDialogComponent,
+		NoContentComponent
 	],
 	entryComponents: [ 
 		WarningDialogComponent 

@@ -67,7 +67,6 @@ export class AddAssignmentListComponent implements OnInit {
       name: new FormControl(null, Validators.required),
       category: new FormControl(null, Validators.required),
       tags: new FormControl(null),
-      isPublic: new FormControl(null)
     });
     this.assignmentService.fetchTags().pipe(take(1)).subscribe(tags => {
     	this.allTags = tags;
@@ -126,7 +125,6 @@ export class AddAssignmentListComponent implements OnInit {
       userId: this.user.uid,
       category: this.assignmentListForm.value.category,
       tags: this.tags,
-      isPublic: this.assignmentListForm.value.isPublic
     }
     const newTags = this.compareArrays(this.tags);
     if(newTags.length > 0){

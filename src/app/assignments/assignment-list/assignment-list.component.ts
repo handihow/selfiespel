@@ -9,9 +9,6 @@ import { User } from '../../models/user.model';
   styleUrls: ['./assignment-list.component.css']
 })
 export class AssignmentListComponent implements OnInit {
-  
-  @Input() assignmentList: AssignmentList;
-  @Input() user: User;
 
   constructor() { }
 

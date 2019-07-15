@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -11,6 +12,8 @@ import { AssignmentService } from './assignment.service';
 import { AssignmentList } from '../models/assignment-list.model';
 import { User } from '../models/user.model';
 
+import { Settings } from '../shared/settings';
+
 @Component({
   selector: 'app-assignments',
   templateUrl: './assignments.component.html',
@@ -22,33 +25,37 @@ export class AssignmentsComponent implements OnInit {
   subs: Subscription[] = [];
 
   assignmentLists: AssignmentList[];
-  displayedColumns = ['created', 'name', 'category', 'tags', 'isPublic', 'owned'];
+  displayedColumns = ['created', 'name', 'category', 'tags', 'owned'];
   dataSource = new MatTableDataSource<AssignmentList>();
   selection = new SelectionModel<AssignmentList>(false, null);
-
+  categories = Settings.assignmentCategories;
+  selectedCategory: string;
+  slideUserListsOnly: boolean = false;
   filterValue: string;
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   
-  constructor(private store: Store<fromRoot.State>, private assignmentService: AssignmentService) { }
+  constructor(private store: Store<fromRoot.State>, 
+              private assignmentService: AssignmentService,
+              private router: Router) { }
 
   ngOnInit() {
   	this.subs.push(this.store.select(fromRoot.getCurrentUser).subscribe(user => {
       if(user){
         this.user = user;
-        this.subs.push(this.assignmentService.fetchAssignmentLists(user.uid).subscribe(lists => {
-          this.assignmentLists = lists;
-          this.dataSource.data = this.assignmentLists;  
-        }));
       }
+    }));
+    this.subs.push(this.assignmentService.fetchAssignmentLists().subscribe(lists => {
+        this.assignmentLists = lists;
+        this.onFilter();
     }));
     // selection changed
     this.selection.changed.subscribe((selectedEvaluation) =>
     {
         if (selectedEvaluation.added[0])   // will be undefined if no selection
         {   
-            console.log(selectedEvaluation.added[0]);
+            this.router.navigate(['/assignments/' + selectedEvaluation.added[0].id]);
         }
     });
   	
@@ -69,6 +76,22 @@ export class AssignmentsComponent implements OnInit {
   //filter the table based on user input
   doFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onFilter(){
+    if(this.slideUserListsOnly){
+      this.dataSource.data = this.assignmentLists.filter(list => list.userId === this.user.uid);
+    } else {
+      this.dataSource.data = this.assignmentLists;  
+    }
+  }
+
+  selectCategory(category: string){
+    if(category){
+      this.dataSource.data = this.assignmentLists.filter(list => list.category === category);
+    } else {
+      this.onFilter();
+    }
   }
 
 }

@@ -8,6 +8,7 @@ export interface Assignment {
   isOutside?: boolean;
   level: number;
   gameId?: string;
+  listId?: string;
   maxPoints: Rating;
   created?: any;
   updated?: any;

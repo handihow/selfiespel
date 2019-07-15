@@ -35,6 +35,7 @@ export class AssignmentListItemComponent implements OnInit {
   }
 
   onRemove(){
+    console.log(this.assignment);
   	this.assignmentService.deleteAssignment(this.assignment);
   }
 

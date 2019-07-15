@@ -1,9 +1,14 @@
 <section class="new-game" fxLayout fxLayoutAlign="center">
 	<form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
 		<mat-card fxFlex.xs="100%" fxFlex="400px">
-			<mat-card-title fxLayoutAlign="center">
-				Maak een nieuw spel
-			</mat-card-title>
+			<mat-card-header>
+				<mat-card-title>
+					Maak een nieuw spel
+				</mat-card-title>
+				<mat-card-subtitle *ngIf="assignmentListId">
+					Je hebt opdrachten geselecteerd voor dit spel
+				</mat-card-subtitle>
+			</mat-card-header>
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="!(isLoading$ | async)">
 				<mat-form-field class="full-width">
 				   <input matInput placeholder="Naam" formControlName="name" required>

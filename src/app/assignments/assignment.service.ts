@@ -2,7 +2,7 @@ import {map,  take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, of, concat } from 'rxjs';
+import { Observable, of, merge } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { UIService } from '../shared/ui.service';
@@ -28,6 +28,15 @@ export class AssignmentService {
 	addAssignments(gameId: string, assignments: Assignment[]){
 		let batch = this.db.firestore.batch();
 		assignments.forEach((assignment, index) => {
+			if(assignment.listId){
+				// this assignment must be copied into a new assignment for the game
+				// first some properties need to be deleted
+				delete assignment.id;
+				delete assignment.listId;
+				delete assignment.created;
+				delete assignment.updated;
+				delete assignment.gameId;
+			}
 			const assignmentRef = this.db.collection('assignments').doc(gameId + index.toString()).ref;
 			batch.set(assignmentRef, {
 				gameId: gameId, 
@@ -86,9 +95,14 @@ export class AssignmentService {
 	}
 
 	//retrieve game assignments
-	fetchAssignments(gameId: string): Observable<Assignment[]>{
+	fetchAssignments(gameId?: string, assignmentListId?: string): Observable<Assignment[]>{
 		this.store.dispatch(new UI.StartLoading());
-		var queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('order', 'asc'));
+		let queryStr;
+		if(gameId){
+			queryStr = (ref => ref.where('gameId', '==', gameId).orderBy('order', 'asc'));
+		} else if(assignmentListId){
+			queryStr = (ref => ref.where('listId', '==', assignmentListId).orderBy('order', 'asc'));
+		}
 		return this.db.collection('assignments', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -102,22 +116,8 @@ export class AssignmentService {
 	}
 
 	//retrieve assignment lists
-	fetchAssignmentLists(userId: string): Observable<AssignmentList[]>{
-		return concat(this.fetchAssignmentListsUserOrPublic(userId, true),
-		                   this.fetchAssignmentListsUserOrPublic(userId, false));		
-	}
-
-	private fetchAssignmentListsUserOrPublic(userId: string, fromUser: boolean): Observable<AssignmentList[]>{
-		let queryStr;
-		if(fromUser){
-			queryStr = (ref => ref.where('userId', '==', userId).orderBy('name', 'asc'));
-		} else {
-			queryStr = (ref => ref.where('userId', '>', userId)
-	    							.where('userId', '<', userId)
-	    							.where('isPublic', '==', true)
-	    							.orderBy('userId', 'asc')
-	    							.orderBy('name', 'asc'));
-		}
+	fetchAssignmentLists(category?: string): Observable<AssignmentList[]>{
+		let queryStr = (ref => ref.orderBy('created', 'desc'));
 		return this.db.collection('lists', queryStr)
 			.snapshotChanges().pipe(
 			map(docArray => {
@@ -128,6 +128,10 @@ export class AssignmentService {
 						return { id, ...data };
 					});
 			}));
+	}
+
+	fetchAssignmentList(assignmentListId: string){
+		return this.db.collection('lists').doc(assignmentListId).valueChanges() as Observable<AssignmentList>;
 	}
 
 	//retrieve tags
@@ -153,7 +157,7 @@ export class AssignmentService {
 	}
 
 	//update multiple assignments
-	updateAssignments(gameId: string, assignments: Assignment[]){
+	updateAssignments(assignments: Assignment[]){
 		let batch = this.db.firestore.batch();
 		assignments.forEach((assignment) => {
 			const assignmentRef = this.db.collection('assignments').doc(assignment.id).ref;

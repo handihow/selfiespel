@@ -4,14 +4,12 @@ import { AuthGuard } from '../auth/auth.guard';
 
 import { AssignmentsComponent } from './assignments.component';
 import { AddAssignmentListComponent } from './add-assignment-list/add-assignment-list.component';
+import { AssignmentListComponent } from './assignment-list/assignment-list.component';
 
 const routes: Routes = [
 	{ path: '', component: AssignmentsComponent, canLoad: [AuthGuard], pathMatch: "full" },
 	{ path: 'add', component: AddAssignmentListComponent, canLoad: [AuthGuard] },
-	// { path: 'new', component: NewGameComponent, canLoad: [AuthGuard] },
-	// { path: 'register', component: RegisterGameComponent, canLoad: [AuthGuard] },
-	// { path: ':id/admin', component: AdminGameComponent, canLoad: [AuthGuard] },
-	// { path: ':id/view', component: ViewGameComponent, canLoad: [AuthGuard] },
+	{ path: ':id', component: AssignmentListComponent, canLoad: [AuthGuard] },
 ];
 
 @NgModule({

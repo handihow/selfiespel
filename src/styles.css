@@ -26,12 +26,10 @@ body{
       justify-content: flex-end;
 }
 
-#wrapper {
-    opacity: 0.4;
-    filter: alpha(opacity=40); /* msie */
-    background-color: #000;
+.mat-row:hover {
+  background-color: #F5F5F5;
+  cursor: pointer;
 }
-
 /* If you will use matLine */
 
   /* LEFT align */

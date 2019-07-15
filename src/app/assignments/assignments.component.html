@@ -17,10 +17,28 @@
     <mat-icon>add</mat-icon>
   </a>
 </mat-toolbar>
-<div fxLayout="row" fxLayoutAlign="center center" >
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px"
+    fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="center stretch" fxLayoutGap.lt-sm="10px" class="assignment-options">
+  <mat-form-field class="full-width">
+  <mat-select
+      [(ngModel)]="selectedCategory"
+      placeholder="Selecteer categorie"
+      (ngModelChange)="selectCategory($event)">
+      <mat-option>Geen</mat-option>
+      <mat-option *ngFor="let category of categories" [value]="category">
+        {{category}}
+      </mat-option>
+  </mat-select>
+</mat-form-field>
   <mat-form-field fxFlex.gt-sm="40%">
     <input matInput type="text" [(ngModel)]="filterValue" (keyup)="doFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>    
+  </mat-form-field>
+  <mat-slide-toggle 
+        color="primary" 
+        [(ngModel)]="slideUserListsOnly" 
+        (ngModelChange)="onFilter()">
+        Toon alleen eigen opdrachtlijsten
+  </mat-slide-toggle>    
 </div>
 <mat-table [dataSource]="dataSource" matSort>
 
@@ -43,17 +61,14 @@
 
   <ng-container matColumnDef="tags">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Tags</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.tags }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="isPublic">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Openbaar</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.isPublic ? "Openbaar" : "Privé" }}</mat-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.tags ? element.tags.join(', ') : '' }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="owned">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Eigenaar</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.userId === user.uid ? "Eigenaar" : "Nee" }}</mat-cell>
+    <mat-cell *matCellDef="let element">{{ user && element.userId === user.uid ? "Eigenaar" : "Nee" }}</mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

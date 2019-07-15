@@ -4,7 +4,6 @@ export interface AssignmentList {
   id?: string;
   tags?: string[];
   category?: string;
-  isPublic?: boolean;
   userId?: string;
   created?: any;
   updated?: any;
