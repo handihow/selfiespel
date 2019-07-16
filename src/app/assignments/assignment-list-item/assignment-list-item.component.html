@@ -1,10 +1,13 @@
-<mat-list-item *ngIf="!editMode">
-	<mat-icon matListIcon>drag_handle</mat-icon>
+<mat-list-item>
+	<mat-icon matListIcon *ngIf="canEdit">drag_handle</mat-icon>
 	<p matLine fxLayout="row" fxLayoutAlign="space-between center">
 		<span>{{assignment.assignment}}</span>
 		<span fxLayout="row" fxLayoutAlign="space-between center">
 			<span>
-				<mat-button-toggle-group [value]="assignment.maxPoints" (change)="onChangePoints($event)">
+				<mat-button-toggle-group 
+					[value]="assignment.maxPoints" 
+					(change)="onChangePoints($event)"
+					[disabled]="!canEdit">
 				  <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
 				    <img src="assets/points_one.png">
 				  </mat-button-toggle>
@@ -16,7 +19,7 @@
 				  </mat-button-toggle>
 				</mat-button-toggle-group>
 			</span>
-			<span>
+			<span *ngIf="canEdit">
 				<button mat-icon-button [matMenuTriggerFor]="menu">
 			  	<mat-icon>more_vert</mat-icon>
 				</button>
@@ -33,13 +36,12 @@
 			</span>
 		</span>
 	</p>
+	<p matLine>
+		<span>{{assignment.description}}</span>
+	</p>
+	<p matLine>
+		<span class="location">{{assignment.location}}</span>
+	</p>
 	
 </mat-list-item>
 
-<mat-list-item *ngIf="editMode">
-	<mat-form-field>
-		 <input matInput placeholder="Opdracht" [(ngModel)]="assignmentValue">
-	</mat-form-field>
-	<button mat-icon-button matTooltip="Opdracht bewaren"
-			(click)="onSave()"><mat-icon>save</mat-icon></button>
-</mat-list-item>

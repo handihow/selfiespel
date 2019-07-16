@@ -8,12 +8,16 @@ import { AssignmentListItemComponent } from './assignment-list-item/assignment-l
 import { AssignmentsComponent } from './assignments.component';
 import { AssignmentListComponent } from './assignment-list/assignment-list.component';
 import { AddAssignmentListComponent } from './add-assignment-list/add-assignment-list.component';
+import { AddAssignmentModalComponent } from './add-assignment-modal/add-assignment-modal.component';
 
 @NgModule({
   declarations: [
   	AssignmentsCardComponent, 
   	AssignmentListItemComponent, 
-  	AssignmentsComponent, AssignmentListComponent, AddAssignmentListComponent
+  	AssignmentsComponent, 
+    AssignmentListComponent, 
+    AddAssignmentListComponent, 
+    AddAssignmentModalComponent
   ],
   imports: [
     CommonModule,
@@ -22,6 +26,9 @@ import { AddAssignmentListComponent } from './add-assignment-list/add-assignment
   ],
   exports: [
   	AssignmentsCardComponent
+  ],
+  entryComponents: [
+    AddAssignmentModalComponent
   ]
 })
 export class AssignmentsModule { }

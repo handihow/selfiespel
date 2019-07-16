@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Opdracht {{isEditing ? 'bewerken' : 'toevoegen'}}</h1>
+<form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+	<mat-dialog-content>
+		<mat-form-field class="full-width">
+		   <input matInput placeholder="Opdracht" formControlName="assignment" required>
+		   <mat-error>Vul de opdracht in in de vorm 'Maak een selfie met ...'</mat-error>
+		</mat-form-field>
+		<mat-form-field class="full-width">  
+		  <mat-select 
+		  		placeholder="Selecteer niveau" 
+		  		formControlName="maxPoints"
+		  		required>
+		    <mat-option *ngFor="let maxPoints of maxPointOptions" [value]="maxPoints">
+		      {{maxPoints}}
+		    </mat-option>
+		  </mat-select>
+		  <mat-error>Selecteer het niveau</mat-error>
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		   <input matInput placeholder="Omschrijving (meer uitleg, optioneel)" formControlName="description">
+		</mat-form-field>
+		<mat-form-field class="full-width">
+		   <input matInput placeholder="Locatie (plek waar de selfie moet worden genomen, optioneel)" formControlName="location">
+		</mat-form-field>
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button type="submit" mat-raised-button color="primary">Bewaren</button>
+		<button type="button" mat-raised-button color="accent" [mat-dialog-close]="false">Terug</button>
+	</mat-dialog-actions>
+</form>

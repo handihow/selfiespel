@@ -6,6 +6,9 @@ import { AssignmentService } from '../assignment.service';
 import { UIService } from '../../shared/ui.service';
 import { Rating } from '../../models/rating.model';
 
+import { MatDialog } from '@angular/material';
+import { AddAssignmentModalComponent } from '../add-assignment-modal/add-assignment-modal.component';
+
 @Component({
   selector: 'app-assignment-list-item',
   templateUrl: './assignment-list-item.component.html',
@@ -14,28 +17,29 @@ import { Rating } from '../../models/rating.model';
 export class AssignmentListItemComponent implements OnInit {
   
   @Input() assignment: Assignment;
-  editMode: boolean;
+  @Input() canEdit: boolean;
   assignmentValue: string;
   get rating() { return Rating; }
 
-  constructor(private assignmentService: AssignmentService, private uiService: UIService) { }
+  constructor(private assignmentService: AssignmentService, 
+              private dialog: MatDialog,
+              private uiService: UIService) { }
 
   ngOnInit() {
   }
 
   onEdit(){
-  	this.editMode = true;
-  	this.assignmentValue = this.assignment.assignment;
-  }
-
-  async onSave(){
-  	this.assignment.assignment = this.assignmentValue;
-  	await this.assignmentService.updateAssignment(this.assignment);
-  	this.editMode = false;
+    const dialogRef = this.dialog.open(AddAssignmentModalComponent, 
+        {
+          data: {
+            isEditing: true,
+            assignment: this.assignment
+          }
+        }
+    );
   }
 
   onRemove(){
-    console.log(this.assignment);
   	this.assignmentService.deleteAssignment(this.assignment);
   }
 

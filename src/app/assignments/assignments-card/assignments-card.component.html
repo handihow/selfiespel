@@ -24,14 +24,13 @@
 	<mat-card-content>
 		<mat-list cdkDropList (cdkDropListDropped)="drop($event)" class="list" *ngIf="game || assignmentList?.userId === user?.uid">
 		  <div *ngFor="let assignment of assignments" cdkDrag class="list-item">
-		    <app-assignment-list-item [assignment]="assignment"></app-assignment-list-item>
+		    <app-assignment-list-item [assignment]="assignment" [canEdit]="true"></app-assignment-list-item>
 		  </div>
 		</mat-list>
 		<mat-list *ngIf="!game && assignmentList?.userId !== user?.uid">
-			<mat-list-item *ngFor="let assignment of assignments">
-				<h3 matLine>{{assignment.assignment}}</h3> 
-				<p matLine>{{assignment.maxPoints}} punt(en)</p>
-			</mat-list-item>
+			<div *ngFor="let assignment of assignments" class="list-item">
+		    <app-assignment-list-item [assignment]="assignment" [canEdit]="false"></app-assignment-list-item>
+		  </div>
 		</mat-list>
 	</mat-card-content>
 	<mat-card-actions>

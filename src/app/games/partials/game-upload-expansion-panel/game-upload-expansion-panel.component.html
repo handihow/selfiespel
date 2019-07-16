@@ -17,6 +17,8 @@
 		    	</span>
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
+	  <p *ngIf="assignment.description">{{assignment.description}}</p>
+	  <p *ngIf="assignment.location">{{assignment.location}}</p>
 	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
 		  <app-file-upload 	[userId]="user?.uid" 
 		  					[gameId]="game?.id" 

@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
@@ -13,6 +14,8 @@ import { Assignment } from '../../models/assignment.model';
 import { AssignmentService } from '../assignment.service';
 import { User } from '../../models/user.model';
 import { AssignmentList } from '../../models/assignment-list.model';
+
+import { AddAssignmentModalComponent } from '../add-assignment-modal/add-assignment-modal.component';
 
 @Component({
   selector: 'app-assignments-card',
@@ -43,6 +46,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
               private store: Store<fromRoot.State>,
               private router: Router,
               private gameService: GameService,
+              private dialog: MatDialog,
               private assignmentService: AssignmentService) { }
 
   ngOnInit() {
@@ -132,15 +136,15 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   }
 
   onNew(){
-    const assignment: Assignment = {
-      assignment: 'Nieuwe opdracht',
-      level: 1,
-      maxPoints: 3,
-      order: this.assignments.length,
-      gameId: this.game ? this.game.id : null,
-      listId: this.assignmentListId
-    }
-    this.assignmentService.addAssignment(assignment);
+    const dialogRef = this.dialog.open(AddAssignmentModalComponent, 
+        {
+          data: {
+            listId: this.assignmentListId ? this.assignmentListId : null,
+            gameId: this.game ? this.game.id : null,
+            order: this.assignments.length
+          }
+        }
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {
