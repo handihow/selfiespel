@@ -33,8 +33,8 @@ export class AssignmentsComponent implements OnInit {
   slideUserListsOnly: boolean = false;
   filterValue: string;
 
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(private store: Store<fromRoot.State>, 
               private assignmentService: AssignmentService,

@@ -45,8 +45,8 @@ export class AddAssignmentListComponent implements OnInit {
 
   categories: string[] = Settings.assignmentCategories;
 
-  @ViewChild('tagInput', {static: false}) tagInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(	private store: Store<fromRoot.State>,
                 private assignmentService: AssignmentService,
