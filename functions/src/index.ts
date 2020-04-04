@@ -10,6 +10,7 @@ import * as chats from './chats';
 import * as emails from './emails';
 import * as contacts from './contacts';
 import * as roles from './roles';
+import * as teamlogin from './teamlogin';
 
 export const generateThumbs = images.generateThumbs;
 export const deletedImage = images.deletedImage;
@@ -29,3 +30,5 @@ export const onReadyToPlay = contacts.onReadyToPlay;
 export const addModerator = roles.addModerator;
 export const removeModerator = roles.removeModerator;
 export const addAdmin = roles.addAdmin;
+
+export const onCreateTeamCreateAutoAccount = teamlogin.onCreateTeamCreateAutoAccount;

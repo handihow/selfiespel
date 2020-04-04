@@ -36,7 +36,7 @@ export class ViewGameComponent implements OnInit {
   user: User;
   subs: Subscription[] = [];
   doneLoading: boolean = false;
-  hasTeam: boolean = true;
+  hasTeam: boolean = false;
   isAdmin: boolean;
   imageReferences: Image[];
   assignments: Assignment[];
@@ -61,8 +61,9 @@ export class ViewGameComponent implements OnInit {
       if(game){
         await this.setUser(game.administrator);
         let result = await this.fetchTeam(this.gameId);
-        if(!result){
-          this.hasTeam = false;
+        console.log(result);
+        if(result){
+          this.hasTeam = true;
         }
         this.fetchMessages(this.gameId);
         this.fetchImages(this.gameId);
@@ -119,11 +120,20 @@ export class ViewGameComponent implements OnInit {
   }
 
   fetchImages(gameId: string){
-    this.subs.push(this.imageService.fetchImageReferences(gameId, this.team.id).subscribe(imageReferences =>{
-      if(imageReferences){
-         this.imageReferences = imageReferences;
-      }
-    }))
+    if(this.hasTeam){
+      this.subs.push(this.imageService.fetchImageReferences(gameId, this.team.id).subscribe(imageReferences =>{
+        if(imageReferences){
+           this.imageReferences = imageReferences;
+        }
+      }))
+    } else {
+      this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
+        if(imageReferences){
+           this.imageReferences = imageReferences;
+        }
+      }))
+    }
+    
   }
 
   fetchAssignments(gameId: string){
