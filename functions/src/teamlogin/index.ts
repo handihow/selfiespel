@@ -48,7 +48,9 @@ export const onCreateTeamCreateAutoAccount = functions.firestore
 		.then( _ => {
 			return db.collection('teams').doc(teamId).update({
 				members: admin.firestore.FieldValue.arrayUnion(user.uid),
-				memberDisplayNames: admin.firestore.FieldValue.arrayUnion(displayName)
+				memberDisplayNames: admin.firestore.FieldValue.arrayUnion(displayName),
+				autoUser: user.uid,
+				autoUserDisplayName: displayName
 			})
 			.then( __ => {
 				return db.collection('games').doc(gameId).update({
@@ -70,5 +72,50 @@ export const onCreateTeamCreateAutoAccount = functions.firestore
 		console.error(err.message);
 		return 
 	});
+
+});
+
+
+export const onDeleteTeamDeleteAutoAccount = functions.firestore
+.document('teams/{teamId}')
+.onDelete(async (snap, context) => {
+
+	if (await helpers.alreadyTriggered(context.eventId)) {
+	  console.log("delete automatic team member function abandoned because it is run duplicate");
+	  return false;
+	}
+
+	//first define the reaction that came in
+	const teamData = snap.data() as Team;
+	const teamId = snap.id;
+	const team : Team = {id: teamId, ...teamData};
+
+	if(team.autoUser){
+		//create an automatic user for the team
+		return admin.auth().deleteUser(team.autoUser)
+		.then( _ => {
+			return db.collection('teams').doc(teamId).update({
+				members: admin.firestore.FieldValue.arrayRemove(team.autoUser),
+				memberDisplayNames: admin.firestore.FieldValue.arrayRemove(team.autoUserDisplayName),
+			})
+			.then( __ => {
+				return db.collection('games').doc(team.gameId || '').update({
+					participants: admin.firestore.FieldValue.arrayRemove(team.autoUser),
+					players: admin.firestore.FieldValue.arrayRemove(team.autoUser)
+				})
+			})
+			.catch(err => {
+				console.error(err.message);
+				return 
+			})
+		})
+		.catch(err => {
+			console.error(err.message);
+			return
+		});
+	} else {
+		console.error('no auto user in this team');
+		return
+	}
 
 });

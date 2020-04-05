@@ -11,4 +11,5 @@ export interface User {
   playing?: string[];
   judging?: string[];
   roles?: {};
+  isAutoAccount?: boolean;
 }

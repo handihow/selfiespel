@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
 import { Subscription, Observable, of } from 'rxjs';
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Game } from '../../models/games.model';
 import { User } from '../../models/user.model';

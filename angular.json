@@ -30,7 +30,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/my-theme.scss",
+              "src/my-theme.scss"
             ],
             "scripts": []
           },
@@ -140,5 +140,8 @@
       }
     }
   },
-  "defaultProject": "selfiespel"
+  "defaultProject": "selfiespel",
+  "cli": {
+    "analytics": "a78e8dee-4b1d-4709-84b2-5ce74d16cdf0"
+  }
 }

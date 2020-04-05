@@ -32,3 +32,4 @@ export const removeModerator = roles.removeModerator;
 export const addAdmin = roles.addAdmin;
 
 export const onCreateTeamCreateAutoAccount = teamlogin.onCreateTeamCreateAutoAccount;
+export const onDeleteTeamDeleteAutoAccount = teamlogin.onDeleteTeamDeleteAutoAccount;

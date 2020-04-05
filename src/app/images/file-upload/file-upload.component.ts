@@ -69,7 +69,7 @@ export class FileUploadComponent implements OnInit {
       return;
     }
 
-    const storagePathPrefix='images/'
+    const storagePathPrefix='media/' + this.userId + '/'
     const dateTime = new Date().getTime();
     const filename = "_" + file.name;
     // The storage path

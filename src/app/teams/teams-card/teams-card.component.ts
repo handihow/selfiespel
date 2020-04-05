@@ -159,7 +159,10 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
 
   drop(event: CdkDragDrop<User[]>, notPlaying: boolean) {
     const movedUser : User = event.item.data;
-    if(notPlaying && movedUser.playing.includes(this.game.id)){
+    if(movedUser.isAutoAccount){
+      console.log('this is an auto account');
+      return
+    }else if(notPlaying && movedUser.playing.includes(this.game.id)){
       //player is moved to not-playing
       this.gameService.manageGameParticipants(movedUser, this.game, 'player', false);
     } else if(!notPlaying && !movedUser.playing.includes(this.game.id)) {
@@ -201,7 +204,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   }
 
   onRemove(team: Team){
-    if(team.members.length>0){
+    if(team.members.length>1){
       return this.uiService.showSnackbar("Dit team heeft teamleden. Sleep de spelers eerst naar een ander team voordat je het team verwijdert.", null, 3000);
     }
     this.teamService.deleteTeam(team);

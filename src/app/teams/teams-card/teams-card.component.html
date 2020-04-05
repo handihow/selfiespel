@@ -34,8 +34,13 @@
 						[cdkDropListData]="team?.participants" 
 						(cdkDropListDropped)="drop($event, false)">
 				
-				<mat-list-item *ngFor="let player of team?.participants" cdkDrag [cdkDragData]="player" class="list-item">			<mat-icon matListIcon>drag_handle</mat-icon>
-					<p matLine>{{player.displayName}}</p>
+				<mat-list-item *ngFor="let player of team?.participants" 
+					cdkDrag [cdkDragData]="player" class="list-item"
+					[cdkDragDisabled]="player.isAutoAccount">
+						<mat-icon matListIcon *ngIf="!player.isAutoAccount">drag_handle</mat-icon>
+						<p matLine *ngIf="!player.isAutoAccount">{{player.displayName}}</p>
+						<mat-icon matTooltip="Password is 'selfies4ever'" matListIcon *ngIf="player.isAutoAccount">info</mat-icon>
+						<p matLine *ngIf="player.isAutoAccount">{{player.email}}</p>
 				</mat-list-item>
 			</mat-list>
 		</div>

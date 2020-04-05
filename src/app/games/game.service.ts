@@ -87,7 +87,7 @@ export class GameService {
 			}))
 	}
 
-	fetchGameParticipants(gameId: string, userLevel: string, limit?: number) : Observable<User[]> {
+	fetchGameParticipants(gameId: string, userLevel: string, limit?: number, noAutoAccounts?: boolean) : Observable<User[]> {
 		this.store.dispatch(new UI.StartLoading());
 		let variable : string = Settings.userLevels[userLevel].userVariable;
 		let queryStr = (ref => ref.where(variable, 'array-contains', gameId).orderBy('displayName', 'asc'));
@@ -101,7 +101,7 @@ export class GameService {
 				return docArray.map(doc => {
 						const data = doc.payload.doc.data() as User;
 						const id = doc.payload.doc.id;
-						return { id, ...data };
+						return { id, ...data };	
 					})
 			}))
 	}

@@ -6,7 +6,7 @@ import { AssignmentService } from '../assignment.service';
 import { UIService } from '../../shared/ui.service';
 import { Rating } from '../../models/rating.model';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AddAssignmentModalComponent } from '../add-assignment-modal/add-assignment-modal.component';
 
 @Component({

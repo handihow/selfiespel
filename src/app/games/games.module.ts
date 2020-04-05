@@ -26,7 +26,7 @@ import { CreateTeamsComponent } from './create-teams/create-teams.component';
 import { CreateAssignmentsComponent } from './create-assignments/create-assignments.component';
 import { FinishedSetupComponent } from './finished-setup/finished-setup.component';
 import { AdminGameComponent } from './admin-game/admin-game.component';
-
+import { AddUsersComponent } from './invite-players/add-users.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { AdminGameComponent } from './admin-game/admin-game.component';
     CreateTeamsComponent, 
     CreateAssignmentsComponent, 
     FinishedSetupComponent, 
-    AdminGameComponent
+    AdminGameComponent,
+    AddUsersComponent
   ],
   imports: [
     CommonModule,
@@ -56,6 +57,9 @@ import { AdminGameComponent } from './admin-game/admin-game.component';
     TeamsModule,
     ImagesModule,
     ChatsModule
+  ],
+  entryComponents: [
+    AddUsersComponent
   ]
 })
 export class GamesModule { }

@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { environment } from '../environments/environment';
 
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
@@ -21,8 +22,8 @@ import { MaterialModule } from './material.module';
 import { SharedModule } from './shared/shared.module';
 
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
-import { MatContactsModule } from '@angular-material-extensions/contacts';
-import { MatFaqModule } from '@angular-material-extensions/faq';
+// import { MatContactsModule } from '@angular-material-extensions/contacts';
+// import { MatFaqModule } from '@angular-material-extensions/faq';
 import { MatPagesModule } from '@angular-material-extensions/pages';
 import { ImgFallbackModule } from 'ngx-img-fallback';
 import {SlideshowModule} from 'ng-simple-slideshow';
@@ -35,7 +36,7 @@ import { ImageService } from './images/image.service';
 import { AssignmentService } from './assignments/assignment.service';
 import { TeamService } from './teams/team.service';
 import { ChatService} from './chats/chats.service';
-import { ContactsService } from './contacts/contacts.service';
+// import { ContactsService } from './contacts/contacts.service';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
@@ -46,7 +47,7 @@ import { Settings } from './shared/settings';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 import { TosComponent } from './tos/tos.component';
-import { FaqComponent } from './faq/faq.component';
+// import { FaqComponent } from './faq/faq.component';
 
 
 export function loginFunction():string { 
@@ -60,7 +61,7 @@ export function loginFunction():string {
     PrivacyComponent,
     SelfiethegameComponent,
     TosComponent,
-    FaqComponent
+    // FaqComponent
   ],
   imports: [
     BrowserModule,
@@ -78,11 +79,12 @@ export function loginFunction():string {
             toastMessageOnAuthSuccess: true,
             toastMessageOnAuthError: true
         }),
-    MatContactsModule.forRoot(),
-    MatFaqModule.forRoot(),
+    // MatContactsModule.forRoot(),
+    // MatFaqModule.forRoot(),
     MatPagesModule.forRoot(),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireFunctionsModule,
     FlexLayoutModule,
     AuthModule,
     SharedModule,
@@ -101,7 +103,7 @@ export function loginFunction():string {
     ImageService,
     AssignmentService,
     ChatService,
-    ContactsService,
+    // ContactsService,
     TeamService],
   bootstrap: [AppComponent]
 })

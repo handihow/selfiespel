@@ -4,7 +4,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 
 import { ContactsRoutingModule } from './contacts-routing.module';
 
-import { MatContactsModule } from '@angular-material-extensions/contacts';
+// import { MatContactsModule } from '@angular-material-extensions/contacts';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { MatContactsModule } from '@angular-material-extensions/contacts';
   imports: [
     CommonModule,
     ContactsRoutingModule,
-    MatContactsModule
+    // MatContactsModule
   ]
 })
 export class ContactsModule { }

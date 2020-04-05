@@ -95,3 +95,67 @@ export const removeModerator = functions.https.onCall((data, context) => {
 		};
 	});
 });
+
+export const createUsers = functions.https.onCall(async (data, context) => {
+  if(!context.auth || !context.auth.token || !context.auth.token.admin){
+    return {
+      error: "Verzoek afgewezen. Je hebt onvoldoende toegangsrechten."
+    };
+  } else if(!data || !data.organisation || !data.users || data.users.length === 0){
+    return {
+      error: "Verzoek bevat onvoldoende gegevens. Verzoek kan niet worden verwerkt."
+    };
+  }
+  //define the new users organisation
+  const organisation : string = data.organisation.id;
+  const organisationName : string = data.organisation.name;
+
+  const batch = db.batch();
+  const importedUsers = data.users;
+
+  importedUsers.forEach((importedUser) => {
+    importedUser.uid = UUID();
+    const customClaims = {
+      // parent: false,
+      student: importedUser.student,
+      teacher: importedUser.teacher,
+      schooladmin: importedUser.schooladmin,
+      // trajectorycounselor: false,
+      // companyadmin: false,
+      admin: importedUser.admin,
+      organisation: organisation
+    };
+    importedUser.customClaims = customClaims;
+    const userRef = db.collection('users').doc(importedUser.uid);
+    batch.set(userRef, {
+      uid: importedUser.uid,
+      email: importedUser.email,
+      displayName: importedUser.displayName,
+      organisation: organisationName,
+      organisationId: organisation,
+      role: importedUser.student ? 'Leerling' : importedUser.teacher ? 'Leraar' : 'Admin',
+      roles: customClaims,
+      photoURL: "https://ui-avatars.com/api/?background=03a9f4&color=F5F5F5&name=" + importedUser.displayName
+    });
+  });
+
+  return admin.auth().importUsers(importedUsers)
+     .then(function(results) {
+        return batch.commit()
+        .then( _ => {
+          return {
+            result: "Nieuwe gebruikers aangemaakt"
+          }
+        })
+        .catch(err => {
+          return {
+            error: "Probleem bij bewaren van gegevens: " + err
+          }
+        });
+      })
+      .catch(error => {
+        return {
+          error: "Probleem bij importeren van gebruikers: " + error
+        }
+      });
+});

@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';

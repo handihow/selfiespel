@@ -20,7 +20,7 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
   
   administrator: User;
   @Input() game: Game;
-  participants$: Observable<User[]>;
+  participants: User[];
   judges$: Observable<User[]>;
 
   subs: Subscription[] = [];
@@ -36,7 +36,11 @@ export class AssignJudgesComponent implements OnInit , OnDestroy {
   			this.administrator = administrator;
   		}
   	}))
-  	this.participants$ = this.gameService.fetchGameParticipants(this.game.id, 'participant');
+  	this.subs.push(this.gameService.fetchGameParticipants(this.game.id, 'participant').subscribe(participants => {
+      if(participants){
+        this.participants = participants.filter(p => !p.isAutoAccount)  
+      }
+    }));
   	this.judges$ = this.gameService.fetchGameParticipants(this.game.id, 'judge');
   }
 

@@ -14,7 +14,7 @@ export class ParticipantsCardComponent {
 
   @Input() administrator: User;
   @Input() game: Game;
-  @Input() participants$: Observable<User[]>;
+  @Input() participants: User[];
 
   constructor(private gameService: GameService) { }
 

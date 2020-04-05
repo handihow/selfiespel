@@ -6,7 +6,7 @@
 	</mat-card-header>
 	<mat-card-content>
 		<mat-list>
-			<mat-list-item *ngFor="let participant of participants$ | async">
+			<mat-list-item *ngFor="let participant of participants">
 				<mat-icon matListIcon matTooltip="Speler" color="primary">face</mat-icon>
 				<h3 matLine>{{participant?.displayName}}</h3>
 				<p matLine>Deelnemer</p>

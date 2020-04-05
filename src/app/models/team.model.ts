@@ -12,4 +12,6 @@ export interface Team {
   rating: number;
   // dynamically set helper properties
   participants?: User[];
+  autoUser?: string;
+  autoUserDisplayName?: string;
 }

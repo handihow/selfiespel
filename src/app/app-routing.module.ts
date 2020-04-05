@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { TosComponent } from './tos/tos.component';
-import { FaqComponent } from './faq/faq.component';
+// import { FaqComponent } from './faq/faq.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 
 const routes: Routes = [
@@ -20,10 +20,10 @@ const routes: Routes = [
 		path: 'tos',
 		component: TosComponent
 	},
-	{
-		path: 'faq',
-		component: FaqComponent
-	},
+	// {
+	// 	path: 'faq',
+	// 	component: FaqComponent
+	// },
 	{
 	  path: 'games',
 	  loadChildren: () => import('./games/games.module').then(m => m.GamesModule)
@@ -36,10 +36,10 @@ const routes: Routes = [
 	  path: 'selfies',
 	  loadChildren: () => import('./selfies/selfies.module').then(m => m.SelfiesModule)
 	},
-	{
-	  path: 'contacts',
-	  loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
-	},
+	// {
+	//   path: 'contacts',
+	//   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
+	// },
 	{
 	  path: 'assignments',
 	  loadChildren: () => import('./assignments/assignments.module').then(m => m.AssignmentsModule)
