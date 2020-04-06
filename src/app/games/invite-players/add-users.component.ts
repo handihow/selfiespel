@@ -92,7 +92,7 @@ export class AddUsersComponent implements OnInit {
 		// console.log(this.form.value);
     	this.isWaiting = true;
         const callable = this.fns.httpsCallable('createUsers');
-        callable({ users: this.form.value.users })
+        callable({ users: this.form.value.users, gameId: this.passedData.gameId })
         .subscribe(feedback => {
 			this.isWaiting = false;
 			this.isDone = true;

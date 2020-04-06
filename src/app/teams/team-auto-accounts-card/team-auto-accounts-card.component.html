@@ -1,0 +1,23 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>
+			Automatische accounts
+		</mat-card-title>
+		<mat-card-subtitle>
+			Team captain kan inloggen met team account
+		</mat-card-subtitle>
+	</mat-card-header>
+	<mat-card-content>
+		<mat-list >
+			<mat-list-item *ngFor="let team of teams">
+					<mat-icon matListIcon>supervisor_account</mat-icon>
+					<h3 matLine> {{team.name}} </h3>
+					<p matLine>Email: {{team.autoUserEmail}}</p>
+					<p matLine>Wachtwoord: selfies4ever</p>
+			</mat-list-item>
+		</mat-list>
+	</mat-card-content>
+	<mat-card-actions>
+		<button mat-raised-button color="accent" (click)="onDownload()">Download accounts</button>
+	</mat-card-actions>
+</mat-card>

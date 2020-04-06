@@ -48,8 +48,8 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       this.subs.push(this.gameService.fetchGameParticipants(this.game.id, 'participant').subscribe(participants => {
         if(participants){
-          this.players = participants.filter(p => p.playing && p.playing.includes(this.game.id));
-          this.notPlaying = participants.filter(p => !p.playing || !p.playing.includes(this.game.id));
+          this.players = participants.filter(p => p.playing && p.playing.includes(this.game.id) && !p.isAutoAccount);
+          this.notPlaying = participants.filter(p => (!p.playing || !p.playing.includes(this.game.id)) && !p.isAutoAccount);
           resolve(true);
         }
       }));
@@ -150,7 +150,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
 
   onChangeGroupSize(groupSize){
      this.playersPerGroup = groupSize.value;
-     this.makeNewGroups();
+     // this.makeNewGroups();
   }
 
   onShuffle(){
@@ -204,7 +204,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
   }
 
   onRemove(team: Team){
-    if(team.members.length>1){
+    if(team.members.length>0){
       return this.uiService.showSnackbar("Dit team heeft teamleden. Sleep de spelers eerst naar een ander team voordat je het team verwijdert.", null, 3000);
     }
     this.teamService.deleteTeam(team);

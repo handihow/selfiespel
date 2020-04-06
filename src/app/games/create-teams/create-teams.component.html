@@ -13,7 +13,9 @@
   <p>Je kunt controleren wie zich hebben aangemeld bij het eerste tabblad "Uitnodigen".</p>
   <button mat-raised-button (click)="onInvited()">ALLE SPELERS ZIJN AANGEMELD</button>
 </section>
-<section fxLayout="column" fxLayoutAlign="center center" class="team-container" *ngIf="game.status.teamsCreated">
-	Deel hier de teams in. Deelnemers die niet meespelen sleep je onder "Speelt niet mee".
+
+<section fxLayout="row" fxLayoutAlign="space-around stretch" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch"
+    *ngIf="game.status.teamsCreated">
 	<app-teams-card [game]="game"></app-teams-card>
+  <app-team-auto-accounts-card [game]="game"></app-team-auto-accounts-card>
 </section>

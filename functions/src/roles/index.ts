@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+const UUID = require("uuid/v4");
 
 const db = admin.firestore();
 
@@ -16,7 +17,7 @@ export const addAdmin = functions.auth.user().onCreate(event => {
     return admin.auth().setCustomUserClaims(user.uid, customClaims);
   } else {
   	console.log('no admin rights given');
-  	return;
+  	return false;
   }
 });
 
@@ -97,65 +98,59 @@ export const removeModerator = functions.https.onCall((data, context) => {
 });
 
 export const createUsers = functions.https.onCall(async (data, context) => {
-  if(!context.auth || !context.auth.token || !context.auth.token.admin){
+  if(!context.auth){
     return {
-      error: "Verzoek afgewezen. Je hebt onvoldoende toegangsrechten."
-    };
-  } else if(!data || !data.organisation || !data.users || data.users.length === 0){
-    return {
-      error: "Verzoek bevat onvoldoende gegevens. Verzoek kan niet worden verwerkt."
+      error: "Verzoek afgewezen. Je bent niet ingelogd."
     };
   }
-  //define the new users organisation
-  const organisation : string = data.organisation.id;
-  const organisationName : string = data.organisation.name;
 
   const batch = db.batch();
   const importedUsers = data.users;
+  const gameId = data.gameId;
+  const gameRef = db.collection('games').doc(gameId);
 
-  importedUsers.forEach((importedUser) => {
-    importedUser.uid = UUID();
-    const customClaims = {
-      // parent: false,
-      student: importedUser.student,
-      teacher: importedUser.teacher,
-      schooladmin: importedUser.schooladmin,
-      // trajectorycounselor: false,
-      // companyadmin: false,
-      admin: importedUser.admin,
-      organisation: organisation
-    };
-    importedUser.customClaims = customClaims;
-    const userRef = db.collection('users').doc(importedUser.uid);
-    batch.set(userRef, {
-      uid: importedUser.uid,
-      email: importedUser.email,
-      displayName: importedUser.displayName,
-      organisation: organisationName,
-      organisationId: organisation,
-      role: importedUser.student ? 'Leerling' : importedUser.teacher ? 'Leraar' : 'Admin',
-      roles: customClaims,
-      photoURL: "https://ui-avatars.com/api/?background=03a9f4&color=F5F5F5&name=" + importedUser.displayName
-    });
-  });
-
-  return admin.auth().importUsers(importedUsers)
-     .then(function(results) {
-        return batch.commit()
-        .then( _ => {
-          return {
-            result: "Nieuwe gebruikers aangemaakt"
-          }
-        })
-        .catch(err => {
-          return {
-            error: "Probleem bij bewaren van gegevens: " + err
-          }
-        });
-      })
-      .catch(error => {
-        return {
-          error: "Probleem bij importeren van gebruikers: " + error
-        }
+  for (let index = 0; index < importedUsers.length; index++) {
+    const email = importedUsers[index].email;
+    const displayName = importedUsers[index].displayName;
+    const uid = UUID();
+    let user: admin.auth.UserRecord;
+    try{
+      user = await admin.auth().getUserByEmail(email);
+      //user record already exists
+    } catch(err){
+      //user record needs to be created
+      user = await admin.auth().createUser({
+        uid: uid,
+        email: email,
+        displayName: displayName
       });
+      
+    }
+    const userRef = db.collection('users').doc(user.uid);
+    batch.set(userRef, {
+      email: user.email,
+      displayName: user.displayName,
+      uid: user.uid,
+      participating: admin.firestore.FieldValue.arrayUnion(gameId),
+      playing: admin.firestore.FieldValue.arrayUnion(gameId)
+    }, {merge: true})
+    batch.update(gameRef, {
+      participants: admin.firestore.FieldValue.arrayUnion(user.uid),
+      players: admin.firestore.FieldValue.arrayUnion(user.uid)
+    })
+
+  }
+  return batch.commit()
+  .then(_ => {
+      return {
+          result: 'Players added successfully to the game. They can log in with the email address you entered.'
+      }
+  })
+  .catch(err => {
+      return {
+          result: 'There was an error saving the information...' + err.message
+      }
+  })
+  
+
 });

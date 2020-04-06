@@ -36,7 +36,10 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
 
   addUsers(){
     const dialogRef = this.dialog.open(AddUsersComponent, {
-      width: '600px'
+      width: '600px',
+      data: {
+        gameId: this.game.id
+      }
     });
   }
 

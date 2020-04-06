@@ -30,6 +30,7 @@ export const onReadyToPlay = contacts.onReadyToPlay;
 export const addModerator = roles.addModerator;
 export const removeModerator = roles.removeModerator;
 export const addAdmin = roles.addAdmin;
+export const createUsers = roles.createUsers;
 
 export const onCreateTeamCreateAutoAccount = teamlogin.onCreateTeamCreateAutoAccount;
 export const onDeleteTeamDeleteAutoAccount = teamlogin.onDeleteTeamDeleteAutoAccount;

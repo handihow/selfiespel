@@ -9,6 +9,7 @@
 	</mat-card-header>
 	<mat-slider min="2" max="5" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
 	<mat-card-content cdkDropListGroup>
+  		
 		<div *ngFor="let team of teams">
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id!==teamId">
 				<h3>Team {{team?.name}}</h3>
@@ -35,17 +36,19 @@
 						(cdkDropListDropped)="drop($event, false)">
 				
 				<mat-list-item *ngFor="let player of team?.participants" 
-					cdkDrag [cdkDragData]="player" class="list-item"
-					[cdkDragDisabled]="player.isAutoAccount">
-						<mat-icon matListIcon *ngIf="!player.isAutoAccount">drag_handle</mat-icon>
-						<p matLine *ngIf="!player.isAutoAccount">{{player.displayName}}</p>
-						<mat-icon matTooltip="Password is 'selfies4ever'" matListIcon *ngIf="player.isAutoAccount">info</mat-icon>
-						<p matLine *ngIf="player.isAutoAccount">{{player.email}}</p>
+					cdkDrag [cdkDragData]="player" class="list-item">
+						<mat-icon matListIcon >drag_handle</mat-icon>
+						<p matLine >{{player.displayName}}</p>
 				</mat-list-item>
 			</mat-list>
 		</div>
 		<div>
-			<h3>Speelt niet mee</h3>
+			<h3>
+				Speelt niet mee
+				<mat-icon matTooltip="Deelnemers die alleen jureren sleep je hieronder">
+					info
+				</mat-icon>
+			</h3>
 			<mat-list cdkDropList class="list"
 						[cdkDropListData]="notPlaying" 
 						(cdkDropListDropped)="drop($event, true)">

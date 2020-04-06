@@ -50,7 +50,8 @@ export const onCreateTeamCreateAutoAccount = functions.firestore
 				members: admin.firestore.FieldValue.arrayUnion(user.uid),
 				memberDisplayNames: admin.firestore.FieldValue.arrayUnion(displayName),
 				autoUser: user.uid,
-				autoUserDisplayName: displayName
+				autoUserDisplayName: displayName,
+				autoUserEmail: email
 			})
 			.then( __ => {
 				return db.collection('games').doc(gameId).update({
@@ -90,6 +91,8 @@ export const onDeleteTeamDeleteAutoAccount = functions.firestore
 	const teamId = snap.id;
 	const team : Team = {id: teamId, ...teamData};
 
+	console.log(team);
+	
 	if(team.autoUser){
 		//create an automatic user for the team
 		return admin.auth().deleteUser(team.autoUser)

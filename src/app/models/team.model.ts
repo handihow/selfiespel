@@ -14,4 +14,5 @@ export interface Team {
   participants?: User[];
   autoUser?: string;
   autoUserDisplayName?: string;
+  autoUserEmail?: string;
 }
