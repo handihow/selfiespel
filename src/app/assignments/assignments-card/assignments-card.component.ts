@@ -55,6 +55,7 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     } else {
       this.initiateForAssignmentList();
     }
+    
   }
 
   initiateForGame(){

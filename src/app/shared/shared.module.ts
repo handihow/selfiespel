@@ -12,6 +12,8 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { WarningDialogComponent } from './warning-dialog.component';
 import { NoContentComponent } from './no-content/no-content.component';
 
+
+
 @NgModule({
 	declarations: [ 
 		WarningDialogComponent, 
@@ -25,7 +27,8 @@ import { NoContentComponent } from './no-content/no-content.component';
 		FlexLayoutModule,
 		RouterModule,
 		QRCodeModule,
-		DragDropModule
+		DragDropModule,
+		
 	],
 	exports: [
 		CommonModule,

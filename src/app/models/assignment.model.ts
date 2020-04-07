@@ -14,4 +14,22 @@ export interface Assignment {
   level?: number;
   created?: any;
   updated?: any;
+  //all properties from google places
+  hasGooglePlacesLocation?: boolean;
+  latitude?: number;
+  longitude?: number;
+  formatted_address?: string;
+  name?: string;
+  photos?: any;
+  place_id?: string;
+  rating?: number;
+  reference?: string;
+  reviews?: any;
+  types?: any;
+  url?: string;
+  user_ratings_total?: number;
+  vicinity?: string;
+  website?: string;
 }
+
+

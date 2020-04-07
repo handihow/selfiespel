@@ -47,6 +47,7 @@ import { Settings } from './shared/settings';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 import { TosComponent } from './tos/tos.component';
+
 // import { FaqComponent } from './faq/faq.component';
 
 

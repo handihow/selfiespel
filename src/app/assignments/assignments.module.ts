@@ -10,6 +10,11 @@ import { AssignmentListComponent } from './assignment-list/assignment-list.compo
 import { AddAssignmentListComponent } from './add-assignment-list/add-assignment-list.component';
 import { AddAssignmentModalComponent } from './add-assignment-modal/add-assignment-modal.component';
 
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+import { AgmCoreModule } from '@agm/core';
+
+import { environment } from '../../environments/environment';
+
 @NgModule({
   declarations: [
   	AssignmentsCardComponent, 
@@ -22,7 +27,12 @@ import { AddAssignmentModalComponent } from './add-assignment-modal/add-assignme
   imports: [
     CommonModule,
     SharedModule,
-    AssignmentsRoutingModule
+    AssignmentsRoutingModule,
+    MatGoogleMapsAutocompleteModule,
+      AgmCoreModule.forRoot({
+          apiKey: environment.googleAPIKey,
+          libraries: ['places']
+        })
   ],
   exports: [
   	AssignmentsCardComponent
