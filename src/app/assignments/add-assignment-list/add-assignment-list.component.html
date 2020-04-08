@@ -2,16 +2,16 @@
 	<form [formGroup]="assignmentListForm" (ngSubmit)="onSubmit()">
 		<mat-card fxFlex.xs="100%" fxFlex="400px">
 			<mat-card-title fxLayoutAlign="center">
-				Maak een eigen opdrachtenlijst
+				Create your own assignment list
 			</mat-card-title>
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="!(isLoading$ | async)">
 				<mat-form-field class="full-width">
-				   <input matInput placeholder="Naam" formControlName="name" required>
-				   <mat-error>Vul de naam van de lijst in</mat-error>
+				   <input matInput placeholder="Name" formControlName="name" required>
+				   <mat-error>Fill in the name of the list</mat-error>
 				</mat-form-field>
 				<mat-form-field class="full-width">  
 					<mat-select 
-							placeholder="Categorie" 
+							placeholder="Category" 
 							formControlName="category"
 							required>
 						<mat-option *ngFor="let category of categories" 
@@ -19,10 +19,10 @@
 							{{ category }}
 						</mat-option>
 					</mat-select>
-					<mat-error>Selecteer een categorie</mat-error>
+					<mat-error>Select a category</mat-error>
 				</mat-form-field>
 				<mat-form-field class="full-width">
-				  <mat-chip-list #tagList aria-label="Selecteer tags">
+				  <mat-chip-list #tagList aria-label="Select tags">
 				    <mat-chip
 				      *ngFor="let tag of tags"
 				      [selectable]="selectable"
@@ -32,7 +32,7 @@
 				      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 				    </mat-chip>
 				    <input
-				      placeholder="Voeg tags toe ..."
+				      placeholder="Add tags ..."
 				      #tagInput
 				      formControlName="tags"
 				      [matAutocomplete]="auto"
@@ -50,9 +50,9 @@
 			</mat-card-content>
 			<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>	
 			<mat-card-actions fxLayoutAlign="center">
-				<a routerLink="/assignments" mat-button color="warn">Annuleren</a>
+				<a routerLink="/assignments" mat-button color="warn">Cancel</a>
 				<button type="submit" mat-raised-button color="primary" [disabled]="assignmentListForm.invalid">
-					Bewaar
+					Save
 				</button>
 			</mat-card-actions>
 		</mat-card>	

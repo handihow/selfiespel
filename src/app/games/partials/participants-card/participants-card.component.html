@@ -1,15 +1,15 @@
 <mat-card>
 	<mat-card-header>
 		<mat-card-title>
-			Deelnemers
+			Participants
 		</mat-card-title>
 	</mat-card-header>
 	<mat-card-content>
 		<mat-list>
 			<mat-list-item *ngFor="let participant of participants">
-				<mat-icon matListIcon matTooltip="Speler" color="primary">face</mat-icon>
+				<mat-icon matListIcon matTooltip="Player" color="primary">face</mat-icon>
 				<h3 matLine>{{participant?.displayName}}</h3>
-				<p matLine>Deelnemer</p>
+				<p matLine>Participant</p>
 				<button mat-icon-button matTooltip="Voeg toe als jurylid" 
 						*ngIf="participant.uid !== administrator.uid"
 						(click)="onAddJudge(participant)">

@@ -1,29 +1,29 @@
 <mat-card class="full-width">
 	<mat-card-header>
 		<mat-card-title>
-			Acties
+			Actions
 		</mat-card-title>
 		<mat-card-subtitle *ngIf="game?.status.finished">
-			Spel is klaar
+			Game is finished
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-actions>
-		<button mat-fab color="primary" matTooltip="Begin het spel!" 
+		<button mat-fab color="primary" matTooltip="Start the game!" 
 			[disabled]="game?.status.playing || game?.status.finished"
 			(click)="onPlay()">
 			<mat-icon>play_arrow</mat-icon>
 		</button>
-		<button mat-fab color="accent" matTooltip="Pauzeer het spel"
+		<button mat-fab color="accent" matTooltip="Pause the game"
 			[disabled]="game?.status.pauzed || game?.status.finished"
 			(click)="onPauze()">
 			<mat-icon>pause</mat-icon>
 		</button>
-		<button mat-fab color="warn" matTooltip="Stop het spel"
+		<button mat-fab color="warn" matTooltip="Stop the game"
 			[disabled]="game?.status.pauzed || game?.status.finished"
 			(click)="onStop()">
 			<mat-icon>stop</mat-icon>
 		</button>
-		<button mat-fab color="warn" matTooltip="Heropen het spel" 
+		<button mat-fab color="warn" matTooltip="Reopen the game" 
 			*ngIf="game?.status.finished"
 			(click)="onReopen()">
 			<mat-icon>refresh</mat-icon>

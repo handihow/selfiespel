@@ -16,7 +16,7 @@
 
     <div class="form">
       <mat-form-field class="form-field">
-        <input matInput placeholder="Jouw bericht" [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)" maxlength="100">
+        <input matInput placeholder="Your message" [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)" maxlength="100">
         <button *ngIf="newMsg" matSuffix mat-icon-button (click)="submit(chat.id)" [disabled]="!newMsg">
           <mat-icon>send</mat-icon>
         </button>

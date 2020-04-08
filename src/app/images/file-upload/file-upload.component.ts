@@ -65,7 +65,7 @@ export class FileUploadComponent implements OnInit {
 
     // Client-side validation example
     if (file.type.split('/')[0] !== 'image') { 
-      this.uiService.showSnackbar('Geen geldig image file type. Upload geannuleerd.', null, 3000);
+      this.uiService.showSnackbar('Not a valid image file type. Upload canceled.', null, 3000);
       return;
     }
 

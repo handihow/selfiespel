@@ -5,7 +5,7 @@
 	   <mat-list>
 		   <mat-list-item>
 		      <mat-icon matListIcon>face</mat-icon>
-		      <h4 matLine>Deelnemers:</h4>
+		      <h4 matLine>Members:</h4>
 		      <p matLine>
 		      	<span *ngFor="let displayName of team?.memberDisplayNames; let i=index">
 		      		{{displayName}}{{ i === team?.memberDisplayNames.length - 1 ? '' : ', '}}
@@ -15,13 +15,13 @@
 		   <mat-divider></mat-divider>
 		   <mat-list-item>
 		      <mat-icon matListIcon>photo_camera</mat-icon>
-		      <h4 matLine>Opdrachten uitgevoerd:</h4>
-		      <p matLine>{{team?.progress}} opdrachten</p>
+		      <h4 matLine>Completed assignments:</h4>
+		      <p matLine>{{team?.progress}} assignments</p>
 		   </mat-list-item>
 		   <mat-divider></mat-divider>
 		   <mat-list-item>
 		      <mat-icon matListIcon>assessment</mat-icon>
-		      <h4 matLine>Totale score:</h4>
+		      <h4 matLine>Total score:</h4>
 		      <p matLine>{{team?.rating ? team.rating : 0}}</p>
 		   </mat-list-item>
 		   <mat-divider></mat-divider>

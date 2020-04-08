@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  Nieuw Selfiespel
+  New Selfie Game
   <span class="fill-remaining"></span>
-  <a mat-icon-button matTooltip="Terug" routerLink="/games">
+  <a mat-icon-button matTooltip="Back" routerLink="/games">
   	<mat-icon>arrow_back</mat-icon>
   </a>
 </mat-toolbar>
@@ -10,38 +10,38 @@
 	<mat-card class="games-card">
 		<mat-card-header>
 			<mat-card-title>
-				Spel maken
+				Create game
 			</mat-card-title>
 			<mat-card-subtitle>
-				Jij wordt de beheerder van het spel
+				You become the administrator of the game
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<p>Kies deze optie als je een nieuw spel beginnen als beheerder.</p>
-			<p>Andere spelers kunnen zich aanmelden voor het spel met de code die wordt gegenereerd.</p>
+			<p>Choose this option if you want to start a new game as an administrator.</p>
+			<p>Other players can sign up for the game with the code generated.</p>
 		</mat-card-content>
 		<mat-card-actions>
-			<a routerLink="/games/new" matTooltip="Maak een nieuw spel aan"
-				mat-raised-button color="primary">Spel toevoegen</a>
+			<a routerLink="/games/new" matTooltip="Create a new game"
+				mat-raised-button color="primary">Create game</a>
 		</mat-card-actions>
 	</mat-card>
 	
 	<mat-card class="games-card">
 		<mat-card-header>
 			<mat-card-title>
-				Meespelen
+				Play along
 			</mat-card-title>
 			<mat-card-subtitle>
-				Je gaat meespelen met een bestaand spel
+				You will play along with an existing game
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<p>Kies deze optie als je mee wilt doen aan een spel.</p>
-			<p>Je kunt je dan aanmelden voor het spel met de code die je hebt ontvangen.</p>
+			<p>Choose this option if you want to participate in a game.</p>
+			<p>You can then sign up for the game with the code you received.</p>
 		</mat-card-content>
 		<mat-card-actions>
-			<a routerLink="/games/register" matTooltip="Registreer met een code" 
-				mat-raised-button color="accent">Registreer met code</a>
+			<a routerLink="/games/register" matTooltip="Register with a code" 
+				mat-raised-button color="accent">Register with code</a>
 		</mat-card-actions>
 	</mat-card>
 </section>

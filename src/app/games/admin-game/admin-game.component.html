@@ -1,48 +1,48 @@
 <mat-toolbar color="primary">
-  Spel beheren
+  Manage game
   <span class="fill-remaining"></span>
-  <a mat-icon-button matTooltip="Terug" routerLink="/games">
+  <a mat-icon-button matTooltip="Back" routerLink="/games">
     <mat-icon>arrow_back</mat-icon>
   </a>
 </mat-toolbar>
 
 <mat-horizontal-stepper *ngIf="desktop && doneLoading && !game.status.closedAdmin">
-  <mat-step label="Uitnodigen">
+  <mat-step label="Players">
     <app-invite-players [game]="game"></app-invite-players>
   </mat-step>
-  <mat-step label="Opdrachten">
+  <mat-step label="Assignments">
     <app-create-assignments [game]="game"></app-create-assignments>
   </mat-step>
-  <mat-step label="Juryleden">
+  <mat-step label="Judges">
     <app-assign-judges [game]="game"></app-assign-judges>
   </mat-step>
   <mat-step label="Teams">
     <app-create-teams [game]="game"></app-create-teams>
   </mat-step>
-  <mat-step label="Klaar">
+  <mat-step label="Done">
     <app-finished-setup [game]="game"></app-finished-setup>
   </mat-step>
 </mat-horizontal-stepper>
 
 <mat-vertical-stepper *ngIf="!desktop && doneLoading && !game.status.closedAdmin">
-  <mat-step label="Uitnodigen">
+  <mat-step label="Players">
     <app-invite-players [game]="game"></app-invite-players>
   </mat-step>
-  <mat-step label="Opdrachten">
+  <mat-step label="Assignments">
     <app-create-assignments [game]="game"></app-create-assignments>
   </mat-step>
-  <mat-step label="Juryleden">
+  <mat-step label="Judges">
     <app-assign-judges [game]="game"></app-assign-judges>
   </mat-step>
   <mat-step label="Teams">
     <app-create-teams [game]="game"></app-create-teams>
   </mat-step>
-  <mat-step label="Klaar">
+  <mat-step label="Done">
     <app-finished-setup [game]="game"></app-finished-setup>
   </mat-step>
 </mat-vertical-stepper>
 
 <section class="action-card" *ngIf="doneLoading && game.status.closedAdmin">
-  <p>Als je het spel wilt starten, druk je op de "Play" knop.</p>
+  <p>If you want to start the game, press the "Play" button.</p>
   <app-actions-card [game]="game"></app-actions-card>
 </section>

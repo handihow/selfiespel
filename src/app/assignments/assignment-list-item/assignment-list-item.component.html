@@ -8,13 +8,13 @@
 					[value]="assignment.maxPoints" 
 					(change)="onChangePoints($event)"
 					[disabled]="!canEdit">
-				  <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
+				  <mat-button-toggle [value]="rating.easy" matTooltip="1 point">
 				    <img src="assets/points_one.png">
 				  </mat-button-toggle>
-				  <mat-button-toggle [value]="rating.medium" matTooltip="3 punten">
+				  <mat-button-toggle [value]="rating.medium" matTooltip="3 points">
 				    <img src="assets/points_three.png">
 				  </mat-button-toggle>
-				  <mat-button-toggle [value]="rating.hard" matTooltip="5 punten">
+				  <mat-button-toggle [value]="rating.hard" matTooltip="5 points">
 				    <img src="assets/points_five.png">
 				  </mat-button-toggle>
 				</mat-button-toggle-group>
@@ -26,11 +26,11 @@
 				<mat-menu #menu="matMenu">
 				  <button mat-menu-item (click)="onEdit()">
 					<mat-icon>edit</mat-icon>
-					<span>Opdracht bewerken</span>
+					<span>Edit assignment</span>
 				  </button>
 				  <button mat-menu-item (click)="onRemove()">
 				  	<mat-icon>remove</mat-icon>
-				  	<span>Opdracht verwijderen</span>
+				  	<span>Remove assignment</span>
 				  </button>
 				</mat-menu>
 			</span>

@@ -94,7 +94,7 @@ export class ContactsService {
 			created: Date.now()
 		}
 		return this.db.collection('emails').add(email)
-			.then( _ => this.uiService.showSnackbar("Email verstuurd naar " + contact.name, null, 3000))
+			.then( _ => this.uiService.showSnackbar("Email was sent to " + contact.name, null, 3000))
 			.catch(err => this.uiService.showSnackbar(err.message, null, 3000));
 	}
 

@@ -66,8 +66,8 @@ export class GamesCardComponent implements OnInit {
   onDelete(){
     const dialogRef = this.dialog.open(WarningDialogComponent, {
         data: {
-          title: 'Spel verwijderen',
-          content: 'Selfies en reacties worden niet verwijderd maar het spel en alle instellingen van het spel wel. Wil je doorgaan?'
+          title: 'Delete game',
+          content: 'Selfies and comments are not deleted, but the game and all game settings are. Do you want to continue?'
         }
       });
 

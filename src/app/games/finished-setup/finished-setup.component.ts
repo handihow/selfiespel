@@ -26,8 +26,8 @@ export class FinishedSetupComponent {
   onCloseAdmin(){
 	const dialogRef = this.dialog.open(WarningDialogComponent, {
       data: {
-        title: 'Waarschuwing',
-        content: 'Je bevestigt dat je klaar bent met instellen van het spel. Hierna kun je geen instellingen meer wijzigen en kunnen nieuwe spelers zich niet meer aanmelden. Wil je doorgaan?'
+        title: 'Warning',
+        content: 'You confirm that you have finished setting up the game. After this you can no longer change settings and new players can no longer sign up. Do you want to continue?'
       }
     });
 

@@ -2,8 +2,8 @@
   <mat-divider [inset]="true"></mat-divider>
   <p *ngIf="imageReferences?.length===0" class="no-content">
     <app-no-content
-        title="Geen selfies"
-        comment="Je hebt nog geen selfies. Doe mee met een spel en upload selfies. Ze zullen hier verschijnen"
+        title="No selfies"
+        comment="You don't have selfies yet. Join a game and upload selfies. They will appear here."
         imageURL="https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/standaard%2Fselfiestick.png?alt=media&token=ee325f8c-67da-4855-8a7d-159f19cccf23"></app-no-content>
   </p>
 </section>
@@ -22,7 +22,7 @@
                     [matBadge]="imageRef.likes ? imageRef.likes.length : 0" 
                     matBadgePosition="before" 
                     matBadgeColor="accent">thumb_up_alt</mat-icon>
-          {{hasLiked(imageRef) ? 'Unlike' : 'Geef like'}}
+          {{hasLiked(imageRef) ? 'Unlike' : 'Like'}}
         </button>
         <button mat-menu-item 
                   (click)="openCommentDialog(imageRef)">
@@ -31,25 +31,25 @@
                     matBadgePosition="before" 
                     matBadgeColor="accent">
                     insert_comment</mat-icon>
-          {{hasCommented(imageRef) ? 'Update commentaar' : 'Geef commentaar'}}
+          {{hasCommented(imageRef) ? 'Update comment' : 'Comment'}}
         </button>
         <button mat-menu-item 
                 (click)="removeComment(imageRef)" 
                 *ngIf="hasCommented(imageRef)">
           <mat-icon color="warn">
                     remove</mat-icon>
-          Verwijder commentaar
+          Remove comment
         </button>
         <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="!hasFoundInappropriate(imageRef)">
           <mat-icon color="warn">report</mat-icon>
-          <span>Rapporteer</span>
+          <span>Report</span>
         </button>
         <button mat-menu-item (click)="reportImage(imageRef)" *ngIf="hasFoundInappropriate(imageRef)">
           <mat-icon color="accent">report_off</mat-icon>
-          <span>Niet rapporteren</span>
+          <span>Don't report</span>
         </button>
       </mat-menu>
-      {{imageRef.teamName}} met {{imageRef.assignment}}
+      {{imageRef.teamName}} with {{imageRef.assignment}}
     </mat-grid-tile-header>
     <div class="container" (click)="onOpenImage(imageRef)">
       <img [src]="imageRef.downloadUrl" class="tile-image" 

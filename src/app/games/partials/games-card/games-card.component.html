@@ -4,24 +4,24 @@
 			{{game?.name}}
 		</mat-card-title>
 		<mat-card-subtitle>
-			{{isAdmin ? 'Beheerder' : 'Speler'}}
+			{{isAdmin ? 'Administrator' : 'Player'}}
 		</mat-card-subtitle>
 	</mat-card-header>
 	<img mat-card-image [attr.src]="gameImage$ | async" src-fallback="https://via.placeholder.com/500x350.png?text=SelfieTheGame.com">
 	<mat-card-content>
-		<p>Datum: {{ gameDate }}</p>
+		<p>Date: {{ gameDate }}</p>
 		<p>Code: {{game?.code}}</p>
-		<h4 *ngIf="!game.status.closedAdmin && !isAdmin">Spel is nog niet begonnen...</h4>
+		<h4 *ngIf="!game.status.closedAdmin && !isAdmin">Game has not started yet...</h4>
 	</mat-card-content>
 	<mat-card-actions>
 		<button mat-raised-button color="accent" (click)="onAdmin()"
 					*ngIf="!game.status.closedAdmin && isAdmin">
-			Beheer spel</button>
+			Manage game</button>
 		<button mat-raised-button color="accent" (click)="onOpen()"
 					*ngIf="game.status.closedAdmin">
 			Open</button>
 		<button mat-button color="warn" (click)="onDelete()"
 					*ngIf="isAdmin">
-			Verwijder</button>
+			Delete</button>
 	</mat-card-actions>
 </mat-card>

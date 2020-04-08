@@ -5,21 +5,21 @@
   <h1>Klaar om te beginnen!</h1>
 </section> -->
 <section fxLayout="column" fxLayoutAlign="center start" class="explanation">
-	<p>Controleer of je klaar bent met het instellen van het spel.</p>
+	<p>Check if you are done setting up the game.</p>
 	 <mat-checkbox [(ngModel)]="game.status.invited" (change)="onChange()">
-     	Alle spelers zijn aangemeld  
+     	All players are registered 
      </mat-checkbox>
       <mat-checkbox [(ngModel)]="game.status.assigned" (change)="onChange()">
-     	Opdrachten zijn klaar 
+     	Assignments are finished
      </mat-checkbox>
      <mat-checkbox [(ngModel)]="game.status.judgesAssigned" (change)="onChange()">
-     	Juryleden zijn ingesteld
+     	Judges are established
      </mat-checkbox>
      <mat-checkbox [(ngModel)]="game.status.teamsCreated" (change)="onChange()">
-     	Teams zijn ingesteld
+     	Teams are set up
      </mat-checkbox>
-     <p>Let op! Als je op de knop "Klaar met instellen" drukt, kunnen er geen nieuwe spelers meer meedoen!</p>
+     <p>Pay attention! If you press the "Done setting" button, no new players can participate!</p>
      <button mat-raised-button (click)="onCloseAdmin()"
      [disabled]="!game.status.invited || !game.status.assigned || !game.status.judgesAssigned || !game.status.teamsCreated">
- 		KLAAR MET INSTELLEN</button>
+ 		READY TO PLAY</button>
 </section>

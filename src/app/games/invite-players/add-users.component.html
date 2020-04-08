@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Spelers toevoegen</h1>
+<h1 mat-dialog-title>Add players</h1>
 <form [formGroup]="form" (submit)="onSubmit()" *ngIf="!isWaiting && !isDone">
 	<mat-dialog-content>
 		<div formArrayName="users">
@@ -10,25 +10,25 @@
 						   <input matInput placeholder="Email" formControlName="email" required>
 						</mat-form-field>
 						<mat-form-field>
-						   <input matInput placeholder="Volledige naam" formControlName="displayName" required>
+						   <input matInput placeholder="Full name" formControlName="displayName" required>
 						</mat-form-field>
-						<button mat-button type="button" color="warn" (click)="removeUser(i)">Verwijderen</button>
+						<button mat-button type="button" color="warn" (click)="removeUser(i)">Remove</button>
 					</div>
                 </div>
             </div>
 		</div>
 	</mat-dialog-content>
 	<mat-dialog-actions>
-		<button type="button" mat-raised-button color="warn" [mat-dialog-close]="false" >Annuleren</button>
-		<button mat-raised-button type="button" (click)="addUser()" color="accent">Nieuwe rij</button>
-		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Spelers toevoegen</button>
+		<button type="button" mat-raised-button color="warn" [mat-dialog-close]="false" >Cancel</button>
+		<button mat-raised-button type="button" (click)="addUser()" color="accent">New row</button>
+		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Add players</button>
 	</mat-dialog-actions>
 </form>
 
 <mat-dialog-content *ngIf="isWaiting">
 	<div fxFlex fxLayout="column" fxLayoutAlign="center center">
 		<p><mat-spinner></mat-spinner></p>
-		<p>Even geduld aub...</p>
+		<p>One moment please...</p>
 	</div>
 </mat-dialog-content>
 <mat-dialog-content *ngIf="isDone">
@@ -36,5 +36,5 @@
 	<p>{{this.error}}</p>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="isDone">
-	<button type="button" mat-raised-button color="primary" [mat-dialog-close]="false" >Klaar</button>
+	<button type="button" mat-raised-button color="primary" [mat-dialog-close]="false" >Done</button>
 </mat-dialog-actions>

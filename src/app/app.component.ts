@@ -15,7 +15,7 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'selfiespel';
+  title = 'SelfieTheGame';
    //listen to changes on the window size
   @HostListener('window:resize', ['$event'])
     onResize(event) {

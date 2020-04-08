@@ -1,7 +1,7 @@
 <mat-card *ngIf="game && !game.status.assigned">
 	<mat-card-header>
-		<mat-card-title>Opdrachten</mat-card-title>
-		<mat-card-subtitle>Kies niveau en aantal opdrachten</mat-card-subtitle>
+		<mat-card-title>Assignments</mat-card-title>
+		<mat-card-subtitle>Choose level and number of assignments</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
 		<mat-radio-group [(ngModel)]="selectedLevel">
@@ -12,14 +12,14 @@
 		<mat-slider min="5" max="20" step="1" [value]="12" (change)="onChangeQuantity($event)" thumbLabel></mat-slider>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent" (click)="onSave()">Maak opdrachten!</button>
+		<button mat-raised-button color="accent" (click)="onSave()">Create assignments!</button>
 	</mat-card-actions>
 </mat-card>
 
 <mat-card *ngIf="!game || game.status.assigned">
 	<mat-card-header>
-		<mat-card-title>{{ assignmentList ? assignmentList.name : 'Opdrachten' }}</mat-card-title>
-		<mat-card-subtitle>Maak een selfie met ....</mat-card-subtitle>
+		<mat-card-title>{{ assignmentList ? assignmentList.name : 'Assignments' }}</mat-card-title>
+		<mat-card-subtitle>Take a selfie with ....</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
 		<mat-list cdkDropList (cdkDropListDropped)="drop($event)" class="list" *ngIf="game || assignmentList?.userId === user?.uid">
@@ -34,12 +34,12 @@
 		</mat-list>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-button (click)="onNewAssignments()" *ngIf="game">Opnieuw!</button>
+		<button mat-button (click)="onNewAssignments()" *ngIf="game">Again!</button>
 		<button mat-raised-button color="accent" (click)="onNew()" *ngIf="game || assignmentList?.userId == user?.uid">
-			Nieuwe opdracht
+			New assignment
 		</button>
 		<button mat-raised-button color="primary" *ngIf="!game" (click)="onCreateGame()">
-			Maak spel
+			Create game
 		</button>
 	</mat-card-actions>
 </mat-card>

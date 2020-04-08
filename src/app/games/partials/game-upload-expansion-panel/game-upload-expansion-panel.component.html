@@ -1,5 +1,5 @@
 <section fxLayout="row" fxLayoutAlign="center center">
-	<h3>Neem een selfie met....</h3>
+	<h3>Take a selfie with....</h3>
 </section>
 
 <mat-accordion class="headers-align">
@@ -11,7 +11,7 @@
 		    {{assignment.assignment}}
 		</mat-panel-title>
 	    <mat-panel-description>
-		    	max. {{assignment.maxPoints}} punten
+		    	max. {{assignment.maxPoints}} points
 		    	<span *ngIf="containsImage(assignment)">
 		    		<img class="avatar" [src]="containsImage(assignment)">
 		    	</span>
@@ -34,7 +34,7 @@
 	  </div>
 	   <mat-action-row *ngIf="containsImage(assignment)">
 	    <!-- <button mat-button (click)="onRotate()">Roteren</button> -->
-	    <button mat-button color="warn" (click)="onRemoveImage()">Verwijderen</button>
+	    <button mat-button color="warn" (click)="onRemoveImage()">Remove image</button>
 	  </mat-action-row>
 	</mat-expansion-panel>
 </mat-accordion>

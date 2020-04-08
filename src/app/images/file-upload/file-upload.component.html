@@ -12,7 +12,7 @@
   </div>
   <div *ngIf="pct == 100">
     <mat-progress-bar mode="buffer"></mat-progress-bar>
-    Verwerken ...
+    Processing ...
   </div>
 </div>
 
@@ -21,7 +21,7 @@
 
   <button (click)="task.pause()" mat-button color="accent" [disabled]="!isActive(snap)">Pause</button>
   <button (click)="task.cancel()" mat-button color="warn" [disabled]="!isActive(snap)">Cancel</button>
-  <button (click)="task.resume()" mat-button color="primary"  [disabled]="!(snap?.state === 'paused')">Hervatten</button>
+  <button (click)="task.resume()" mat-button color="primary"  [disabled]="!(snap?.state === 'paused')">Resume</button>
 
 </div>
 	      

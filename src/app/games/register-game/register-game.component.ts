@@ -64,9 +64,9 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
     		if(games && games[0]){
     			let gameFound = games[0];
     			if(gameFound.administrator === this.user.uid) {
-    				this.uiService.showSnackbar("Je bent de beheerder van dit spel en doet dus al mee.", null, 3000);
+    				this.uiService.showSnackbar("You are the administrator of this game and therefore already participate.", null, 3000);
     			} else if(gameFound.status.closedAdmin) {
-            this.uiService.showSnackbar("Dit spel is al begonnen. Je kunt niet meer meedoen.", null, 3000);
+            this.uiService.showSnackbar("This game has already started. You can no longer participate.", null, 3000);
           } else {
             //first unsubscribe to the user and game because the user/game objects will change during the update process 
             this.subs.forEach(sub => {
@@ -83,7 +83,7 @@ export class RegisterGameComponent implements OnInit, OnDestroy {
             await this.gameService.manageGameParticipants(this.user, gameFound, 'player', true);
     			}
     		} else {
-    			this.uiService.showSnackbar("Geen spel gevonden met deze code", null, 3000);
+    			this.uiService.showSnackbar("No game found with this code", null, 3000);
     		}
         this.router.navigate(['/games']);
     	}));

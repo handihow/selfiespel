@@ -2,19 +2,19 @@
 	<form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
 		<mat-card fxFlex.xs="100%" fxFlex="400px">
 			<mat-card-title fxLayoutAlign="center">
-				Registreer voor een spel
+				Register for a game
 			</mat-card-title>
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center" *ngIf="!(isLoading$ | async)">
 				<mat-form-field class="full-width">
 				   <input matInput placeholder="Code" formControlName="code" required>
-				   <mat-error>Vul de code van het spel in</mat-error>
+				   <mat-error>Fill in the code</mat-error>
 				</mat-form-field>
 			</mat-card-content>
 			<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>	
 			<mat-card-actions fxLayoutAlign="center">
-				<a routerLink="/games" mat-button color="warn">Annuleren</a>
+				<a routerLink="/games" mat-button color="warn">Cancel</a>
 				<button type="submit" mat-raised-button color="primary" [disabled]="gameForm.invalid">
-					Registreer
+					Register
 				</button>
 			</mat-card-actions>
 		</mat-card>	

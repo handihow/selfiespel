@@ -1,20 +1,20 @@
 <mat-card>
 	<mat-card-header>
 		<mat-card-title>
-			Juryleden
+			Judges
 		</mat-card-title>
 	</mat-card-header>
 	<mat-card-content>
 		<mat-list>
 			<mat-list-item>
-				<mat-icon matListIcon matTooltip="Beheerder" color="primary">stars</mat-icon>
+				<mat-icon matListIcon matTooltip="Administrator" color="primary">stars</mat-icon>
 				<h3 matLine>{{administrator?.displayName}}</h3>
-				<p matLine>Beheerder</p>
+				<p matLine>Administrator</p>
 			</mat-list-item>
 			<mat-list-item *ngFor="let judge of judges$ | async">
 				<mat-icon matListIcon matTooltip="Jurylid" color="primary">supervisor_account</mat-icon>
 				<h3 matLine>{{judge?.displayName}}</h3>
-				<p matLine>Jurylid</p>
+				<p matLine>Judge</p>
 				<button mat-icon-button matTooltip="Verwijder jurylid" (click)="onRemoveJudge(judge)">
 					<mat-icon>clear</mat-icon>
 				</button>

@@ -18,8 +18,8 @@
 	
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial>Sluiten</button>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Close</button>
   <!-- <button mat-button (click)="onRotate()" *ngIf="user?.uid === image?.userId">Roteren</button> -->
   <button mat-button (click)="onDownload()" *ngIf="user?.uid === image?.userId">Download</button>
-  <button mat-button (click)="onRemoveImage()" *ngIf="user?.uid === image?.userId" color="warn">Verwijderen</button>
+  <button mat-button (click)="onRemoveImage()" *ngIf="user?.uid === image?.userId" color="warn">Remove</button>
 </div>

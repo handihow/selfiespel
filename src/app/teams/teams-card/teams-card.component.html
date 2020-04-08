@@ -1,10 +1,10 @@
 <mat-card>
 	<mat-card-header>
 		<mat-card-title>
-			Maak teams
+			Create teams
 		</mat-card-title>
 		<mat-card-subtitle>
-			Met de schuif kun je teams van 2, 3, 4 of 5 maken
+			With the slider you can make teams of 2, 3, 4 of 5 players
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-slider min="2" max="5" step="1" [value]="playersPerGroup" (change)="onChangeGroupSize($event)" thumbLabel></mat-slider>
@@ -14,19 +14,19 @@
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id!==teamId">
 				<h3>Team {{team?.name}}</h3>
 				<span>
-					<button mat-icon-button matTooltip="Wijzig teamnaam" (click)="onEdit(team)">
+					<button mat-icon-button matTooltip="Change team name" (click)="onEdit(team)">
 						<mat-icon>edit</mat-icon>
 					</button>
-					<button mat-icon-button matTooltip="Verwijder team" (click)="onRemove(team)">
+					<button mat-icon-button matTooltip="Remove team" (click)="onRemove(team)">
 						<mat-icon>clear</mat-icon>
 					</button>
 				</span>
 			</div>
 			<div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="team.id===teamId">
 				<mat-form-field>
-					<input matInput placeholder="Naam van het team" [(ngModel)]="teamName">
+					<input matInput placeholder="Name of the team" [(ngModel)]="teamName">
 				</mat-form-field>
-				<button mat-icon-button matTooltip="Bewaar naam van het team" (click)="onSave(team)">
+				<button mat-icon-button matTooltip="Save name of team" (click)="onSave(team)">
 					<mat-icon>save</mat-icon>
 				</button>
 			</div>
@@ -44,8 +44,8 @@
 		</div>
 		<div>
 			<h3>
-				Speelt niet mee
-				<mat-icon matTooltip="Deelnemers die alleen jureren sleep je hieronder">
+				Not playing
+				<mat-icon matTooltip="Drag participants who only judge and not play">
 					info
 				</mat-icon>
 			</h3>
@@ -61,7 +61,7 @@
 		</div>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-button (click)="onShuffle()">Opnieuw!</button>
-		<button mat-raised-button color="accent" (click)="onNew()">Nieuw team</button>
+		<button mat-button (click)="onShuffle()">Again!</button>
+		<button mat-raised-button color="accent" (click)="onNew()">New team</button>
 	</mat-card-actions>
 </mat-card>

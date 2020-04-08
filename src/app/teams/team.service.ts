@@ -29,7 +29,7 @@ export class TeamService {
 		})
 		return batch.commit()
 			.then(doc => {
-				this.uiService.showSnackbar("Teams bewaard", null, 3000);
+				this.uiService.showSnackbar("Teams saved", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -39,7 +39,7 @@ export class TeamService {
 	addTeam(team: Team){
 		return this.db.collection('teams').add(team)
 			.then(doc => {
-				this.uiService.showSnackbar("Team bewaard", null, 3000);
+				this.uiService.showSnackbar("Team saved", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -81,7 +81,7 @@ export class TeamService {
 		return this.db.collection('teams').doc(team.id)
 			.set(team, {merge: true})
 			.then( _ => {
-				this.uiService.showSnackbar("Groepsnaam aangepast", null, 3000);
+				this.uiService.showSnackbar("Team name adjusted", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -124,7 +124,7 @@ export class TeamService {
 		return this.db.collection('teams').doc(team.id)
 			.delete()
 			.then( _ => {
-				this.uiService.showSnackbar("Team is verwijderd", null, 3000);
+				this.uiService.showSnackbar("Team is removed", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);

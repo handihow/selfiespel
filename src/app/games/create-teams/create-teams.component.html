@@ -8,10 +8,10 @@
   </button>
 </section> -->
 <section class="team-container" *ngIf="!game.status.teamsCreated">
-	<p>Voordat je teams gaat instellen, moeten eerst alle spelers zich hebben aangemeld.</p>
-  <p>Bevestig eerst dat alle spelers zich hebben aangemeld.</p>
-  <p>Je kunt controleren wie zich hebben aangemeld bij het eerste tabblad "Uitnodigen".</p>
-  <button mat-raised-button (click)="onInvited()">ALLE SPELERS ZIJN AANGEMELD</button>
+	<p>Before setting up teams, all players must first have registered.</p>
+  <p>First confirm that all players have signed up.</p>
+  <p>You can check who have signed up in the first tab "Invite".</p>
+  <button mat-raised-button (click)="onInvited()">ALL PLAYERS ARE REGISTERED</button>
 </section>
 
 <section fxLayout="row" fxLayoutAlign="space-around stretch" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center stretch"

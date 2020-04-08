@@ -8,27 +8,27 @@
 		<qrcode mat-card-image [qrdata]="game?.code" [size]="128" [level]="'M'"></qrcode>
 		<mat-card-content>
 			<h3>Code: {{game?.code}}</h3>
-			<p>Spelers kunnen zich aanmelden voor het spel met de code.</p>
-			<p>Gebruikers van de mobiele app kunnen de QR code scannen.</p>
+			<p>Players can register for the game with the code.</p>
+			<p>Mobile app users can scan the QR code.</p>
 		</mat-card-content>
 		<mat-card-actions>
-			<button mat-raised-button color="primary" (click)="addUsers()">Spelers toevoegen</button>
+			<button mat-raised-button color="primary" (click)="addUsers()">Add Players</button>
 		</mat-card-actions>
 	</mat-card>
 	<mat-card>
 		<mat-card-header>
 			<mat-card-title>
-				Deelnemers
+				Participants
 			</mat-card-title>
 			<mat-card-subtitle>
-				De volgende mensen nemen deel aan het spel
+				The following people participate in the game
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
 			<mat-list>
 				<mat-list-item *ngFor="let participant of participants">
 					<h3 matLine>
-					{{participant.displayName ? participant.displayName : 'Anoniem'}}</h3>
+					{{participant.displayName ? participant.displayName : 'Anonymous'}}</h3>
 				</mat-list-item>
 			</mat-list>
 		</mat-card-content>

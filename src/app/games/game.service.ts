@@ -121,9 +121,9 @@ export class GameService {
 		}
 		let message: string;
 		if(add){
-			message = user.displayName + " doet mee aan het spel als " + Settings.userLevels[userLevel].level + " !";	
+			message = user.displayName + " is joining the game as " + Settings.userLevels[userLevel].level + " !";	
 		} else {
-			message = user.displayName + " is verwijderd van het spel als " + Settings.userLevels[userLevel].level + " !"
+			message = user.displayName + " is removed from the game as " + Settings.userLevels[userLevel].level + " !"
 		}
 		this.store.dispatch(new UI.StopLoading());
 		return this.uiService.showSnackbar(message, null, 3000);			
@@ -151,7 +151,7 @@ export class GameService {
 		//remove the game
 		await this.db.collection('games').doc(game.id).delete();
 		//show message
-		this.uiService.showSnackbar("Spel verwijderd", null, 3000);
+		this.uiService.showSnackbar("Game deleted", null, 3000);
 	}
 
 	fetchTeamProgress(teamId: string){

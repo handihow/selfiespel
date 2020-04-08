@@ -205,7 +205,7 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
 
   onRemove(team: Team){
     if(team.members.length>0){
-      return this.uiService.showSnackbar("Dit team heeft teamleden. Sleep de spelers eerst naar een ander team voordat je het team verwijdert.", null, 3000);
+      return this.uiService.showSnackbar("This team has team members. Drag the players to another team before removing the team.", null, 3000);
     }
     this.teamService.deleteTeam(team);
   }

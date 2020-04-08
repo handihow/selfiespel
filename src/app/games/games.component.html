@@ -1,18 +1,18 @@
 <mat-toolbar color="primary">
-  Spellen
+  Games
   <span class="fill-remaining"></span>
   <a fxHide.xs
           mat-fab
           color="accent"
           class="fab-add"
           routerLink="/games/choose" 
-          matTooltip="Spel toevoegen">
+          matTooltip="Add game">
     <mat-icon>add</mat-icon>
   </a>
   <a fxHide
           fxShow.xs
           mat-icon-button
-          matTooltip="Spel toevoegen"
+          matTooltip="Add game"
           routerLink="/games/choose">
     <mat-icon>add</mat-icon>
   </a>
@@ -21,11 +21,11 @@
 	<mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
 	<div *ngIf="(games$ | async)?.length===0">
     <app-no-content
-        title="Geen spellen"
-        comment="Je hebt nog geen spellen. Maak een nieuw spel of speel mee met een spel."
+        title="No games"
+        comment="You have no games yet. Create a new game or join a game."
         imageURL="https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/standaard%2Fselfie3.png?alt=media&token=37574672-e596-41e5-9e52-fe8ce4979770"
         addUrl="/games/choose"
-        buttonText="Voeg spel toe"></app-no-content>
+        buttonText="Add game"></app-no-content>
   </div>
 </section>
 <section fxLayout="row wrap" fxLayoutAlign="space-around stretch"

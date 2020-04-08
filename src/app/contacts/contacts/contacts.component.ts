@@ -51,8 +51,8 @@ export class ContactsComponent implements OnInit {
    private openDialog(contact: Contact){
        const dialogRef = this.dialog.open(WarningDialogComponent, {
         data: {
-          title: 'Geen speler gevonden',
-          content: 'We hebben geen speler gevonden met dit email adres. Wil je dit contact uitnodigen voor het Selfiespel?'
+          title: 'No player found',
+          content: 'We did not find a player with this email address. Would you like to invite this player to SelfieTheGame?'
         }
       });
 

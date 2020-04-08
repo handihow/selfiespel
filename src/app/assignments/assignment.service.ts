@@ -47,7 +47,7 @@ export class AssignmentService {
 		})
 		return batch.commit()
 			.then(doc => {
-				this.uiService.showSnackbar("Opdrachten bewaard", null, 3000);
+				this.uiService.showSnackbar("Assignments saved", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -62,7 +62,7 @@ export class AssignmentService {
 		});
 		return batch.commit()
 			.then(doc => {
-				this.uiService.showSnackbar("Nieuwe tags bewaard", null, 3000);
+				this.uiService.showSnackbar("New tags saved", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -74,7 +74,7 @@ export class AssignmentService {
 		assignment.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('assignments').add(assignment)
 			.then(doc => {
-				this.uiService.showSnackbar("Opdracht bewaard", null, 3000);
+				this.uiService.showSnackbar("Assignment saved", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -86,7 +86,7 @@ export class AssignmentService {
 		assignmentList.updated = firestore.FieldValue.serverTimestamp();
 		return this.db.collection('lists').add(assignmentList)
 			.then(doc => {
-				this.uiService.showSnackbar("Opdrachtenlijst bewaard", null, 3000);
+				this.uiService.showSnackbar("Assignment list saved", null, 3000);
 				return doc.id;
 			})
 			.catch(error => {
@@ -149,7 +149,7 @@ export class AssignmentService {
 		return this.db.collection('assignments').doc(assignment.id)
 			.set(assignment, {merge: true})
 			.then( _ => {
-				this.uiService.showSnackbar("Opdracht aangepast", null, 3000);
+				this.uiService.showSnackbar("Assignment edited", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);
@@ -174,7 +174,7 @@ export class AssignmentService {
 		return this.db.collection('assignments').doc(assignment.id)
 			.delete()
 			.then( _ => {
-				this.uiService.showSnackbar("Opdracht verwijderd", null, 3000);
+				this.uiService.showSnackbar("Assignment deleted", null, 3000);
 			})
 			.catch(error => {
 				this.uiService.showSnackbar(error.message, null, 3000);

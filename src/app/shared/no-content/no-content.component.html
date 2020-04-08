@@ -1,11 +1,11 @@
 <mat-card class="no-content-card">
   <mat-card-header>
-    <mat-card-title>{{title ?  title : 'Geen content'}}</mat-card-title>
+    <mat-card-title>{{title ?  title : 'No content'}}</mat-card-title>
   </mat-card-header>
   <img *ngIf="imageURL" mat-card-image [src]="imageURL">
   <mat-card-content>
     <p>
-      {{comment ? comment : 'Geen content om te tonen'}}
+      {{comment ? comment : 'No content to show'}}
     </p>
   </mat-card-content>
   <mat-card-actions *ngIf="addUrl">
