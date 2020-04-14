@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GameService } from '../../games/game.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
+import { UIService } from '../../shared/ui.service';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
@@ -16,6 +17,10 @@ import { User } from '../../models/user.model';
 import { AssignmentList } from '../../models/assignment-list.model';
 
 import { AddAssignmentModalComponent } from '../add-assignment-modal/add-assignment-modal.component';
+import { ChoosePoiModalComponent } from '../choose-poi-modal/choose-poi-modal.component';
+import { Location } from '@angular-material-extensions/google-maps-autocomplete';
+import { environment } from '../../../environments/environment';
+import PlaceResult = google.maps.places.PlaceResult;
 
 @Component({
   selector: 'app-assignments-card',
@@ -26,11 +31,15 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   
   selectedLevel: number = 0;
   levels: any[] = [
-  	{label: "Mix", level: 0},
+  	{label: "Mixed fun", level: 0},
     {label: "Level 1", level: 1},
   	{label: "Level 2", level: 2},
-  	{label: "Level 3", level: 3},
+  	{label: "Level 3", level: 3}
   ];
+
+  assignmentType : string = 'fun';
+  latitude: number;
+  longitude: number;
 
   @Input() game: Game;
   user: User;
@@ -42,12 +51,16 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
 
   quantity: number = 12;
 
+  loadingPlaces: boolean;
+
+
   constructor(private route: ActivatedRoute,
               private store: Store<fromRoot.State>,
               private router: Router,
               private gameService: GameService,
               private dialog: MatDialog,
-              private assignmentService: AssignmentService) { }
+              private assignmentService: AssignmentService,
+              private uiService: UIService) { }
 
   ngOnInit() {
     if(this.game){
@@ -126,7 +139,49 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
   }
 
   onSave(){
-    this.onRandomAssignments(this.selectedLevel, this.quantity);
+    const thisComponent = this;
+
+    if(this.assignmentType==='fun'){
+      this.onRandomAssignments(this.selectedLevel, this.quantity);  
+    } else if(this.latitude && this.longitude) {
+      this.loadingPlaces = true;
+      var selectedCenter = {lat: this.latitude, lng: this.longitude};
+      const service = new google.maps.places.PlacesService(new google.maps.Map(document.createElement('div')));
+      const placeResults : PlaceResult[] = [];
+      service.nearbySearch(
+      {location: selectedCenter, radius: 3000, type: 'tourist_attraction', keyword: 'Point Of Interest'},
+      function(results, status, pagination) {
+        if (status !== 'OK') {
+          this.uiService.showSnackbar('Could not find Points of Interest, status code: ' + status, null, 3000);
+          thisComponent.loadingPlaces = false;
+          return
+        } else {
+          const filteredResults = results.filter(r => 
+            !r.types.includes('travel_agency') &&
+            r.rating > 3 &&
+            r.user_ratings_total > 25)
+          placeResults.push(...filteredResults);
+        }
+        if(pagination.hasNextPage){
+          setTimeout(() => pagination.nextPage(), 2000);
+        } else {
+          thisComponent.loadingPlaces = false;
+          const dialogRef = thisComponent.dialog.open(ChoosePoiModalComponent, 
+              {
+                data: {
+                  pointsOfInterest: placeResults.sort((a,b) => b.user_ratings_total - a.user_ratings_total),
+                  gameId: thisComponent.game.id
+                }
+              }
+          );
+        }
+        
+        // console.log(results);
+      })
+    } else {
+       this.uiService.showSnackbar('You must select the center location of your game. Enter the location in the address input.', null, 3000);
+    }
+    
   }
 
   async onNewAssignments(){
@@ -165,5 +220,10 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     let routerLink = encodeURI('/games/new/' + this.assignmentListId);
     this.router.navigate([routerLink]);
   }
+
+  onSelectedBaseLocation(location: Location) {
+      this.latitude = location.latitude;
+      this.longitude = location.longitude;
+    }
 
 }

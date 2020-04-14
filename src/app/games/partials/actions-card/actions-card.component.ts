@@ -21,6 +21,7 @@ export class ActionsCardComponent {
     this.game.status.playing = true;
     this.game.status.pauzed = false;
     this.game.status.finished = false;
+    this.game.started = new Date();
     this.gameService.updateGameToDatabase(this.game);
     this.router.navigate(['/games/' + this.game.id + '/view']);
   }

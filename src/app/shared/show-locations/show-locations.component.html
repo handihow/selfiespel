@@ -1,0 +1,16 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center">
+
+	<h4 *ngIf="assignment?.name">
+		{{assignment?.name}} <span *ngIf="assignment?.formatted_address">- {{assignment?.formatted_address}}</span>
+	</h4>
+
+  <div fxFlex>
+    <agm-map [latitude]="assignment?.latitude" [longitude]="assignment?.longitude" [scrollwheel]="false" [zoom]="zoom">
+      <agm-marker 
+      	[latitude]="assignment?.latitude" [longitude]="assignment?.longitude"></agm-marker>
+      <agm-marker *ngIf="image?.hasLocation"
+      	[latitude]="image?.latitude" [longitude]="image?.longitude"></agm-marker>
+    </agm-map>
+  </div>
+
+</div>

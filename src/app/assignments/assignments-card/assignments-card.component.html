@@ -1,15 +1,37 @@
 <mat-card *ngIf="game && !game.status.assigned">
 	<mat-card-header>
 		<mat-card-title>Assignments</mat-card-title>
-		<mat-card-subtitle>Choose level and number of assignments</mat-card-subtitle>
+		<mat-card-subtitle>Choose type and number of assignments</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<mat-radio-group [(ngModel)]="selectedLevel">
-		  <mat-radio-button class="radio-button" *ngFor="let level of levels" [value]="level.level">
-		  	{{level.label}}
+		<mat-radio-group [(ngModel)]="assignmentType">
+		  <mat-radio-button class="radio-button" value="fun">
+		  	Just for fun
+		  </mat-radio-button>
+		  <mat-radio-button class="radio-button" value="poi">
+		  	Points of interest
 		  </mat-radio-button>
 		</mat-radio-group>
-		<mat-slider min="5" max="20" step="1" [value]="12" (change)="onChangeQuantity($event)" thumbLabel></mat-slider>
+		<div *ngIf="assignmentType==='poi' && !loadingPlaces">
+			<h4>Choose the center location of your game</h4>
+			<app-search-location
+				(selectedLocation)="onSelectedBaseLocation($event)"></app-search-location>
+		</div>
+		<div *ngIf="assignmentType==='poi' && loadingPlaces">
+			<h4>Loading points of interest...please wait</h4>
+			<mat-spinner></mat-spinner>
+		</div>
+		<div *ngIf="assignmentType==='fun'">
+			<h4>Choose the difficulty level</h4>
+			<mat-radio-group [(ngModel)]="selectedLevel" >
+			  <mat-radio-button class="radio-button" *ngFor="let level of levels" [value]="level.level">
+			  	{{level.label}}
+			  </mat-radio-button>
+			</mat-radio-group>
+			<p>How many? {{quantity}} 
+				<mat-slider min="5" max="20" step="1" [value]="12" (change)="onChangeQuantity($event)" thumbLabel></mat-slider>
+			</p>
+		</div>
 	</mat-card-content>
 	<mat-card-actions>
 		<button mat-raised-button color="accent" (click)="onSave()">Create assignments!</button>

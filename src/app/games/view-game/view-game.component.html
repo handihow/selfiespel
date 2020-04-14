@@ -1,9 +1,14 @@
+<mat-toolbar color="primary">
+  {{game?.name}}
+  <span class="fill-remaining"></span>
+  <countdown [config]="{leftTime: timeLeft}" *ngIf="timeLeft>0"></countdown>
+</mat-toolbar>
 <section *ngIf="doneLoading && !game.status.closedAdmin">
   The game has not yet started....
 </section>
 
 <mat-tab-group mat-align-tabs="center" *ngIf="doneLoading && game.status.closedAdmin">
-  <mat-tab label="Spel" *ngIf="game.status.playing && hasTeam">
+  <mat-tab label="Game" *ngIf="game.status.playing && hasTeam">
   	<ng-template matTabContent>
 	    <app-game-upload-expansion-panel
                   [imageReferences]="imageReferences"
@@ -39,7 +44,7 @@
       </div>
 	  </ng-template>
   </mat-tab>
-  <mat-tab label="Acties" *ngIf="isAdmin">
+  <mat-tab label="Actions" *ngIf="isAdmin">
     <ng-template matTabContent>
       <div class="action-card">
           <app-actions-card [game]="game"></app-actions-card>

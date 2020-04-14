@@ -9,13 +9,16 @@
 					(change)="onChangePoints($event)"
 					[disabled]="!canEdit">
 				  <mat-button-toggle [value]="rating.easy" matTooltip="1 point">
-				    <img src="assets/points_one.png">
+				    <!-- <img src="assets/points_one.png"> -->
+				    <mat-icon aria-hidden="false" aria-label="One" color="primary">looks_one</mat-icon>
 				  </mat-button-toggle>
 				  <mat-button-toggle [value]="rating.medium" matTooltip="3 points">
-				    <img src="assets/points_three.png">
+				  	<mat-icon aria-hidden="false" aria-label="Three" color="primary">looks_3</mat-icon>
+				    <!-- <img src="assets/points_three.png"> -->
 				  </mat-button-toggle>
 				  <mat-button-toggle [value]="rating.hard" matTooltip="5 points">
-				    <img src="assets/points_five.png">
+				  	<mat-icon aria-hidden="false" aria-label="Five" color="primary">looks_5</mat-icon>
+				    <!-- <img src="assets/points_five.png"> -->
 				  </mat-button-toggle>
 				</mat-button-toggle-group>
 			</span>

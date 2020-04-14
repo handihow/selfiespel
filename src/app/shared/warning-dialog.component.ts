@@ -9,8 +9,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 			{{passedData.content}}
 		</mat-dialog-content>
 		<mat-dialog-actions>
-			<button mat-raised-button color="warn" [mat-dialog-close]="false">Annuleren</button>
-			<button mat-button [mat-dialog-close]="true">Doorgaan</button>
+			<button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+			<button mat-button [mat-dialog-close]="true">Continue</button>
 		</mat-dialog-actions>
 	`
 })

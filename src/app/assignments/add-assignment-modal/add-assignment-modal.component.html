@@ -26,24 +26,10 @@
 		<mat-form-field class="full-width" *ngIf="!assignmentForm.value.hasGooglePlacesLocation">
 		   <input matInput placeholder="Describe the location (optional)" formControlName="location">
 		</mat-form-field>
-		<div class="container" fxLayout="column" fxLayoutAlign="center" 
-			*ngIf="assignmentForm.value.hasGooglePlacesLocation">
-
-		    <div fxFlex>
-		      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-		        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-		      </agm-map>
-		    </div>
-
-		    <div fxFlex fxFlexAlign="center"
-		         class="autocomplete-container"
-		         [ngStyle]="{'width.%': 100}">
-		      <mat-google-maps-autocomplete (onAutocompleteSelected)="onAutocompleteSelected($event)"
-		                                    (onLocationSelected)="onLocationSelected($event)">
-		      </mat-google-maps-autocomplete>
-		    </div>
-
-		</div>
+		<app-search-location
+			[assignment]="assignment"
+			(selectedLocation)="onSelectedLocation($event)"
+			(selectedPlaceResult)="onSelectedPlaceResult($event)"></app-search-location>
 	</mat-dialog-content>
 	<mat-dialog-actions>
 		<button type="submit" mat-raised-button color="primary">Save</button>

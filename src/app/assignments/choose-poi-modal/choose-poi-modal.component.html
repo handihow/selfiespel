@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Choose Points of Interest</h1>
+<mat-dialog-content>
+	<mat-selection-list [(ngModel)]="selectedPOIs">
+	  <mat-list-option *ngFor="let poi of pointsOfInterest" [value]="poi">
+	    <img matListAvatar [src]="poi.photos[0].getUrl()" alt="" *ngIf="poi.photos && poi.photos.length>0">
+	    <h3 matLine>{{poi.name}}</h3>
+	    <p matLine>
+	      <span>{{poi.types.join(', ')}} </span>
+	    </p>
+	    <p matLine>
+	      no. of ratings: {{poi.user_ratings_total}}, avg. rating:  {{poi.rating}}
+	    </p>
+	  </mat-list-option>
+	</mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button color="primary" (click)="onSelect()">Select</button>
+	<button mat-button color="warn" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

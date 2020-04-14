@@ -19,19 +19,28 @@
 	  </mat-expansion-panel-header>
 	  <p *ngIf="assignment.description">{{assignment.description}}</p>
 	  <p *ngIf="assignment.location">{{assignment.location}}</p>
-	  <div *ngIf="assignment.id===assignmentId" class="image-handler">
-		  <app-file-upload 	[userId]="user?.uid" 
-		  					[gameId]="game?.id" 
-		  					[team]="team" 
-		  					[assignment]="assignment" *ngIf="!containsImage(assignment)"></app-file-upload>
-		  <app-image-viewer 
-		  					[userId]="user?.uid" 
-		  					[gameId]="game?.id" 
-		  					[teamId]="team?.id" 
-		  					[hidden]="!containsImage(assignment)"
-		  					[assignmentId]="assignmentId" 
-		  					(containsImage)="retrieveImageState($event)"></app-image-viewer>
+	  <div *ngIf="assignment.id===assignmentId" 
+	  		fxLayout="row" fxLayoutAlign="space-evenly start"
+	  		fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
+	  	  <div *ngIf="assignment.hasGooglePlacesLocation">
+	  		<app-show-locations [assignment]="assignment"></app-show-locations>
+		  </div>
+		  <div class="image-handler">
+			  <app-file-upload 	[userId]="user?.uid" 
+			  					[gameId]="game?.id" 
+			  					[team]="team" 
+			  					[assignment]="assignment" *ngIf="!containsImage(assignment)"></app-file-upload>
+			  <app-image-viewer 
+			  					[userId]="user?.uid" 
+			  					[gameId]="game?.id" 
+			  					[teamId]="team?.id" 
+			  					[hidden]="!containsImage(assignment)"
+			  					[assignmentId]="assignmentId" 
+			  					(containsImage)="retrieveImageState($event)"></app-image-viewer>
+		  </div>
+	  	
 	  </div>
+	  
 	   <mat-action-row *ngIf="containsImage(assignment)">
 	    <!-- <button mat-button (click)="onRotate()">Roteren</button> -->
 	    <button mat-button color="warn" (click)="onRemoveImage()">Remove image</button>

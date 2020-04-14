@@ -11,13 +11,20 @@ import { QRCodeModule } from 'angularx-qrcode';
 
 import { WarningDialogComponent } from './warning-dialog.component';
 import { NoContentComponent } from './no-content/no-content.component';
+import { SearchLocationComponent } from './search-location/search-location.component';
 
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+import { AgmCoreModule } from '@agm/core';
 
+import { environment } from '../../environments/environment';
+import { ShowLocationsComponent } from './show-locations/show-locations.component';
 
 @NgModule({
 	declarations: [ 
 		WarningDialogComponent, 
-		NoContentComponent 
+		NoContentComponent, 
+		SearchLocationComponent, 
+		ShowLocationsComponent 
 	],
 	imports: [
 		CommonModule,
@@ -28,6 +35,11 @@ import { NoContentComponent } from './no-content/no-content.component';
 		RouterModule,
 		QRCodeModule,
 		DragDropModule,
+    	MatGoogleMapsAutocompleteModule,
+      	AgmCoreModule.forRoot({
+          apiKey: environment.googleAPIKey,
+          libraries: ['places']
+        })
 		
 	],
 	exports: [
@@ -39,7 +51,9 @@ import { NoContentComponent } from './no-content/no-content.component';
 		QRCodeModule,
 		DragDropModule,
 		WarningDialogComponent,
-		NoContentComponent
+		NoContentComponent,
+		SearchLocationComponent,
+		ShowLocationsComponent
 	],
 	entryComponents: [ 
 		WarningDialogComponent 

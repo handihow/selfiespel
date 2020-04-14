@@ -28,6 +28,9 @@ import { FinishedSetupComponent } from './finished-setup/finished-setup.componen
 import { AdminGameComponent } from './admin-game/admin-game.component';
 import { AddUsersComponent } from './invite-players/add-users.component';
 
+import { CountdownModule } from 'ngx-countdown';
+
+
 @NgModule({
   declarations: [
   	GamesComponent, 
@@ -56,7 +59,8 @@ import { AddUsersComponent } from './invite-players/add-users.component';
     AssignmentsModule,
     TeamsModule,
     ImagesModule,
-    ChatsModule
+    ChatsModule,
+    CountdownModule
   ],
   entryComponents: [
     AddUsersComponent

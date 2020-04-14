@@ -60,23 +60,32 @@
     </div>
   	<mat-grid-tile-footer  *ngIf="game && (isJudge || isAdmin)" fxFlex="column" fxLayoutAlign="center">
        <mat-button-toggle-group [value]="imageRef.userAwardedPoints" (change)="onAwardPoints($event, imageRef)">
-          <mat-button-toggle [value]="rating.invalid" matTooltip="0 punten">
-            <!-- <mat-icon>remove</mat-icon> -->
-            <img src="assets/points_zero.png">
+          <mat-button-toggle [value]="rating.invalid" matTooltip="0 points">
+            <mat-icon aria-hidden="false" aria-label="Zero" color="primary">remove</mat-icon>
+            <!-- <img src="assets/points_zero.png"> -->
           </mat-button-toggle>
-          <mat-button-toggle [value]="rating.easy" matTooltip="1 punt">
-            <!-- <mat-icon>check</mat-icon> -->
-            <img src="assets/points_one.png">
+          <mat-button-toggle [value]="rating.easy" matTooltip="1 point">
+            <mat-icon aria-hidden="false" aria-label="One" color="primary">looks_one</mat-icon>
+            <!-- <img src="assets/points_one.png"> -->
           </mat-button-toggle>
-          <mat-button-toggle [value]="rating.medium" matTooltip="3 punten" [disabled]="imageRef.maxPoints < rating.medium">
-            <!-- <mat-icon>thumb_up_alt</mat-icon> -->
-            <img src="assets/points_three.png" *ngIf="imageRef.maxPoints >= rating.medium">
-            <img src="assets/points_three_disabled.png" *ngIf="imageRef.maxPoints < rating.medium">
+          <mat-button-toggle [value]="rating.medium" 
+            [matTooltip]="imageRef.maxPoints < rating.medium ? 'not available' : '3 points'" 
+            [disabled]="imageRef.maxPoints < rating.medium">
+            <mat-icon aria-hidden="false" aria-label="Three" 
+              [color]="imageRef.maxPoints < rating.medium ? 'accent' : 'primary'">looks_3</mat-icon>
+           <!--  <img src="assets/points_three.png" *ngIf="imageRef.maxPoints >= rating.medium">
+            <img src="assets/points_three_disabled.png" *ngIf="imageRef.maxPoints < rating.medium"> -->
           </mat-button-toggle>
-          <mat-button-toggle [value]="rating.hard" matTooltip="5 punten" [disabled]="imageRef.maxPoints < rating.hard">
+          <mat-button-toggle [value]="rating.hard" 
+              [matTooltip]=" imageRef.maxPoints < rating.hard ? 'not available' : '5 points'" 
+              [disabled]="imageRef.maxPoints < rating.hard">
+            <mat-icon aria-hidden="false" aria-label="Five" 
+              [color]="imageRef.maxPoints < rating.hard ? 'accent' : 'primary'">
+              looks_5
+            </mat-icon>
             <!-- <mat-icon>whatshot</mat-icon> -->
-            <img src="assets/points_five.png" *ngIf="imageRef.maxPoints >= rating.hard">
-            <img src="assets/points_five_disabled.png" *ngIf="imageRef.maxPoints < rating.hard">
+            <!-- <img src="assets/points_five.png" *ngIf="imageRef.maxPoints >= rating.hard">
+            <img src="assets/points_five_disabled.png" *ngIf="imageRef.maxPoints < rating.hard"> -->
           </mat-button-toggle>
         </mat-button-toggle-group>
   	</mat-grid-tile-footer>

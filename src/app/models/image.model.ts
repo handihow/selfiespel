@@ -23,4 +23,7 @@ comments?: string[];			// the userIds of comments on the image
 ratings?: string[];				// the userIds of ratings on the image
 abuses?: string[];				// the userIds of abuses on the image
 userAwardedPoints?: Rating;		// the awarded number of points of the user (calculated)
+hasLocation?: boolean;
+latitude?: number;
+longitude?: number;
 }

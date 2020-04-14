@@ -3,7 +3,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Assignment } from '../../models/assignment.model';
 import { AssignmentService } from '../assignment.service';
 
-import { UIService } from '../../shared/ui.service';
 import { Rating } from '../../models/rating.model';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -22,8 +21,7 @@ export class AssignmentListItemComponent implements OnInit {
   get rating() { return Rating; }
 
   constructor(private assignmentService: AssignmentService, 
-              private dialog: MatDialog,
-              private uiService: UIService) { }
+              private dialog: MatDialog) { }
 
   ngOnInit() {
   }

@@ -7,9 +7,11 @@ imageUrl?: string;
 code: string;
 status: Status;
 date: any;
+duration?: number;
 // timestamps
 created: any;
 updated: any;
+started?: any;
 // different user level user Ids
 administrator: string;
 judges?: string[];

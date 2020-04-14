@@ -40,6 +40,7 @@ export class ViewGameComponent implements OnInit {
   isAdmin: boolean;
   imageReferences: Image[];
   assignments: Assignment[];
+  timeLeft: number = 0;
 
   private readonly notifier: NotifierService;
 
@@ -55,13 +56,13 @@ export class ViewGameComponent implements OnInit {
               private imageService: ImageService,
               ) { this.notifier = notifierService; }
 
+
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id'); 
     this.subs.push(this.gameService.fetchGame(this.gameId).subscribe(async game => {
       if(game){
         await this.setUser(game.administrator);
         let result = await this.fetchTeam(this.gameId);
-        console.log(result);
         if(result){
           this.hasTeam = true;
         }
@@ -71,6 +72,9 @@ export class ViewGameComponent implements OnInit {
         this.doneLoading = true;
         // console.log(this.doneLoading);
         this.game = {id: this.gameId,...game};
+        if(game.duration){
+          this.timeLeft = game.duration * 60;
+        }
       }
     }));
   }

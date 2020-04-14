@@ -59,9 +59,10 @@ export class NewGameComponent implements OnInit, OnDestroy {
     this.gameForm = new FormGroup({
       name: new FormControl(this.gameNames[Math.floor(Math.random() * this.gameNames.length)], Validators.required),
       date: new FormControl(null, Validators.required),
+      duration: new FormControl(null, Validators.required),
       playing: new FormControl("Ja", Validators.required)
     });
-    this.gameForm.get('date').setValue((new Date()).toISOString());
+    this.gameForm.get('date').setValue((new Date()));
     this.assignmentListId = this.route.snapshot.paramMap.get("id");
     if(this.assignmentListId){
       this.subs.push(this.assignmentService.fetchAssignments(null, this.assignmentListId).subscribe(assignments => {
@@ -95,6 +96,7 @@ export class NewGameComponent implements OnInit, OnDestroy {
     let newGame : Game = {
       name: this.gameForm.value.name,
       date: new Date(this.gameForm.value.date),
+      duration: this.gameForm.value.duration,
       imageUrl: this.gameImages[Math.floor(Math.random() * this.gameImages.length)],
       created: new Date(),
       updated: new Date(),
@@ -105,7 +107,7 @@ export class NewGameComponent implements OnInit, OnDestroy {
       judges: [],
       participants: []
     }
-    let isPlaying : boolean = this.gameForm.value.playing === "Ja" ? true : false;
+    let isPlaying : boolean = this.gameForm.value.playing === "Yes" ? true : false;
     //now add the game to the database and start adminstrating the game
     this.gameService.addGame(this.user, newGame, isPlaying).then(game => {
       if(this.assignments.length > 0){
