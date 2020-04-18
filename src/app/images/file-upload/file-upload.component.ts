@@ -38,6 +38,10 @@ export class FileUploadComponent implements OnInit {
   // State for dropzone CSS toggling
   isHovering: boolean;
 
+  hasLocation: boolean;
+  latitude: number;
+  longitude: number;
+
   constructor(  private storage: AngularFireStorage, 
                 private db: AngularFirestore, 
                 private uiService: UIService,
@@ -46,14 +50,25 @@ export class FileUploadComponent implements OnInit {
   
   ngOnInit(){
     this.screenType$ = this.store.select(fromRoot.getScreenType);
+     this.setCurrentPosition();
   }
 
   toggleHover(event: boolean) {
     this.isHovering = event;
   }
 
+  private setCurrentPosition() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.hasLocation = true;
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+      });
+    }
+  }
 
   startUpload(event: FileList) {
+   
     this.isUploading = true;
     // The File object
     const file = event.item(0)
@@ -83,7 +98,10 @@ export class FileUploadComponent implements OnInit {
        gameId: this.gameId,
        teamName: this.team.name,
        assignment: this.assignment.assignment,
-       maxPoints: this.assignment.maxPoints.toString()
+       maxPoints: this.assignment.maxPoints.toString(),
+       hasLocation: this.hasLocation ? 'true' : 'false',
+       latitude: this.hasLocation ? this.latitude.toString() : null,
+       longitude: this.hasLocation ? this.longitude.toString() : null
      };
 
     // The main task

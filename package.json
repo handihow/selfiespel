@@ -37,6 +37,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.4",
     "firebase": "^7.13.2",
+    "geolib": "^3.2.1",
     "moment": "^2.24.0",
     "ng-simple-slideshow": "^1.2.9",
     "ng2-avatar": "^2.3.1",

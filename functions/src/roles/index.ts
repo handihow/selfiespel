@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-const UUID = require("uuid/v4");
+import { v4 as uuidv4 } from 'uuid';
 
 const db = admin.firestore();
 
@@ -112,7 +112,7 @@ export const createUsers = functions.https.onCall(async (data, context) => {
   for (let index = 0; index < importedUsers.length; index++) {
     const email = importedUsers[index].email;
     const displayName = importedUsers[index].displayName;
-    const uid = UUID();
+    const uid = uuidv4();
     let user: admin.auth.UserRecord;
     try{
       user = await admin.auth().getUserByEmail(email);

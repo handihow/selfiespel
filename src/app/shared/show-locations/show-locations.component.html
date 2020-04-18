@@ -12,5 +12,6 @@
       	[latitude]="image?.latitude" [longitude]="image?.longitude"></agm-marker>
     </agm-map>
   </div>
+  <h4 *ngIf="distance>0">Photo taken {{distance}} meters from the assignment location</h4>
 
 </div>

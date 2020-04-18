@@ -19,7 +19,8 @@ import { join, dirname } from 'path';
 import * as sharp from 'sharp';
 import * as fs from 'fs-extra';
 
-const UUID = require("uuid/v4");
+import { v4 as uuidv4 } from 'uuid';
+
 
 // creates a resized image when an images is uploaded
 export const generateThumbs = functions.storage
@@ -61,7 +62,7 @@ export const generateThumbs = functions.storage
 		const thumbPath = join(workingDir, thumbName);
 		filePaths.push(join(bucketDir, thumbName));
 		//get the download url for the image
-		const uuid = UUID();
+		const uuid = uuidv4();
 		downloadUrls.push(
 			"https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/" +
 			encodeURIComponent(filePaths[index]) + 
@@ -93,6 +94,17 @@ export const generateThumbs = functions.storage
 
 	const imageId = metaData.assignmentId + '_' + metaData.teamId;
 
+	let latitude = 0;
+	let longitude = 0;
+	if(metaData.hasLocation === 'true'){
+		try {
+			latitude = parseFloat(metaData.latitude);
+			longitude = parseFloat(metaData.longitude);
+		} catch(e) {
+			console.error(e.message);
+		}
+	}
+
 	const image : Image = {
 		id: imageId,
 		pathOriginal: filePath,
@@ -108,7 +120,10 @@ export const generateThumbs = functions.storage
 		assignment: metaData.assignment,
 		created: admin.firestore.FieldValue.serverTimestamp(),
 		updated: admin.firestore.FieldValue.serverTimestamp(),
-		maxPoints: parseInt(metaData.maxPoints)
+		maxPoints: parseInt(metaData.maxPoints),
+		hasLocation: metaData.hasLocation === 'true' ? true : false,
+		latitude: latitude,
+		longitude: longitude
 	}
 	await db.collection('images').doc(imageId).set(image, {merge: true});
 

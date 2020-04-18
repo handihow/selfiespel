@@ -22,7 +22,10 @@ export class GameUploadExpansionPanelComponent {
   @Input() imageReferences: Image[];
   @Input() assignments: Assignment[];
 
+  image: Image;
+
   assignmentId: string;
+  distance: number;
   
   isOwner: boolean;
   hasObtainedImageStatus: boolean;
@@ -40,8 +43,11 @@ export class GameUploadExpansionPanelComponent {
   containsImage(assignment: Assignment){
     const index = this.imageReferences.findIndex(i => i.assignmentId == assignment.id);
     if(index>-1){
+      this.image = this.imageReferences[index];
       return this.imageReferences[index].downloadUrlTN;
     } else {
+      this.image = undefined;
+      this.distance = 0;
       return null;
     }
   }

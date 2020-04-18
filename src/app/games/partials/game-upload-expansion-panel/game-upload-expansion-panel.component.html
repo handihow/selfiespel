@@ -23,7 +23,7 @@
 	  		fxLayout="row" fxLayoutAlign="space-evenly start"
 	  		fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
 	  	  <div *ngIf="assignment.hasGooglePlacesLocation">
-	  		<app-show-locations [assignment]="assignment"></app-show-locations>
+	  		<app-show-locations [assignment]="assignment" [image]="image"></app-show-locations>
 		  </div>
 		  <div class="image-handler">
 			  <app-file-upload 	[userId]="user?.uid" 
@@ -42,7 +42,7 @@
 	  </div>
 	  
 	   <mat-action-row *ngIf="containsImage(assignment)">
-	    <!-- <button mat-button (click)="onRotate()">Roteren</button> -->
+	    <button mat-button (click)="onRotate()">Roteren</button>
 	    <button mat-button color="warn" (click)="onRemoveImage()">Remove image</button>
 	  </mat-action-row>
 	</mat-expansion-panel>

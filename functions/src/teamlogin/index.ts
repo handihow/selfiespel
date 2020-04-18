@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import * as helpers from '../helpers';
 
 const db = admin.firestore();
-const UUID = require("uuid/v4");
+import { v4 as uuidv4 } from 'uuid';
 
 import { Team } from '../../../src/app/models/team.model';
 
@@ -23,7 +23,7 @@ export const onCreateTeamCreateAutoAccount = functions.firestore
 	const team : Team = {id: teamId, ...teamData};
 	const gameId = team.gameId || 'zero';
 
-	const uid = UUID();
+	const uid = uuidv4();
 	const autoEmailPrefix = uid.split('-')[0];
 	const email = autoEmailPrefix + '@selfiethegame.com';
 	const displayName = team.name + ' auto account';
