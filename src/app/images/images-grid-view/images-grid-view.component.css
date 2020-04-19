@@ -28,7 +28,7 @@
 }
 
 /* The icon inside the overlay is positioned in the middle vertically and horizontally */
-/*.icon {
+.icon {
   color: white;
   font-size: 60px;
   position: absolute;
@@ -37,9 +37,9 @@
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
-}*/
+}
 
-/* When you move the mouse over the icon, change color */
-/*.fa-user:hover {
+ /*When you move the mouse over the icon, change color */
+.fa-user:hover {
   color: #eee;
-}*/
+}

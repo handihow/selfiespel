@@ -13,7 +13,8 @@
 	    <mat-panel-description>
 		    	max. {{assignment.maxPoints}} points
 		    	<span *ngIf="containsImage(assignment)">
-		    		<img class="avatar" [src]="containsImage(assignment)">
+		    		<img class="avatar" [src]="containsImage(assignment).downloadUrlTN" 
+		    		[style.transform]="getTransform(assignment)">
 		    	</span>
   	    </mat-panel-description>
 	  </mat-expansion-panel-header>
@@ -23,7 +24,7 @@
 	  		fxLayout="row" fxLayoutAlign="space-evenly start"
 	  		fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center">
 	  	  <div *ngIf="assignment.hasGooglePlacesLocation">
-	  		<app-show-locations [assignment]="assignment" [image]="image"></app-show-locations>
+	  		<app-show-locations [assignment]="assignment" [image]="containsImage(assignment)"></app-show-locations>
 		  </div>
 		  <div class="image-handler">
 			  <app-file-upload 	[userId]="user?.uid" 

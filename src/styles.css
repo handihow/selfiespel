@@ -68,3 +68,7 @@ agm-map{
   height: 300px;
   width: 400px;
 }
+
+.mat-grid-tile-header{
+  z-index: 2;
+}

@@ -4,6 +4,7 @@ import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { take, map, startWith, finalize, tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer'; 
@@ -11,6 +12,7 @@ import { UIService } from '../../shared/ui.service';
 
 import { Image } from '../../models/image.model';
 import { ImageService } from '../image.service';
+import { WarningDialogComponent } from '../../shared/warning-dialog.component';
 
 import {
   trigger,
@@ -59,6 +61,7 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
                 private db: AngularFirestore, 
                 private uiService: UIService,
                 private store: Store<fromRoot.State>,
+                private dialog: MatDialog,
                 private imageService: ImageService ) { }
 
   
@@ -113,6 +116,19 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   }
 
   deleteImage(){
-    this.imageService.removeImagesFromStorage(this.image);
+  const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: 'Warning',
+        content: 'You are about to remove an image. Do you want to continue?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+        this.imageService.removeImagesFromStorage(this.image);
+      }
+    });
+
   }
+
 }

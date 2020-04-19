@@ -1,5 +1,6 @@
 <h3 mat-dialog-title>{{image.teamName}} met {{image.assignment}}</h3>
 <div mat-dialog-content>
+	
  	<app-image-viewer [userId]="user?.uid" [gameId]="image?.gameId" [teamId]="image.teamId"
 		  					[assignmentId]="image.assignmentId"></app-image-viewer>
 
@@ -15,11 +16,17 @@
 	    </p>
 	  </mat-list-item>
 	</mat-list>
+
+	<p *ngIf="assignment.description">{{assignment.description}}</p>
+	<p *ngIf="assignment.location">{{assignment.location}}</p>
+	<div *ngIf="assignment.hasGooglePlacesLocation">
+  	  <app-show-locations [assignment]="assignment" [image]="image"></app-show-locations>
+	</div>
 	
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()" cdkFocusInitial>Close</button>
-  <!-- <button mat-button (click)="onRotate()" *ngIf="user?.uid === image?.userId">Roteren</button> -->
+  <button mat-button (click)="onRotate()">Roteren</button>
   <button mat-button (click)="onDownload()" *ngIf="user?.uid === image?.userId">Download</button>
   <button mat-button (click)="onRemoveImage()" *ngIf="user?.uid === image?.userId" color="warn">Remove</button>
 </div>

@@ -19,7 +19,7 @@ import { CommentDialogComponent } from './comment-dialog/comment-dialog.componen
 	  ImageViewerComponent,
 	  ImageDisplayDialogComponent,
     ImagesGridViewComponent,
-    CommentDialogComponent
+    CommentDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +31,7 @@ import { CommentDialogComponent } from './comment-dialog/comment-dialog.componen
 	  ImageViewerComponent,
     ImageDisplayDialogComponent,
     ImagesGridViewComponent,
-    CommentDialogComponent
+    CommentDialogComponent,
   ],
   entryComponents: [ImageDisplayDialogComponent, CommentDialogComponent]
 })

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Image } from '../../models/image.model';
 import { ImageService } from '../image.service';
 import { User } from '../../models/user.model';
+import { Assignment } from '../../models/assignment.model';
 
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
 
@@ -18,6 +19,7 @@ import { ReactionType } from '../../models/reactionType.model';
 })
 export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
 
+  assignment: Assignment;
   image: Image;
   user: User;
   reactions: Reaction[];
@@ -34,6 +36,7 @@ export class ImageDisplayDialogComponent implements OnInit, OnDestroy {
   ngOnInit(){
     this.user = this.data.user;
     this.image = this.data.image;
+    this.assignment = this.data.assignment;
     this.sub = this.imageService.getImageReactions(this.image.id).subscribe(reactions => {
       this.reactions = reactions;
     });

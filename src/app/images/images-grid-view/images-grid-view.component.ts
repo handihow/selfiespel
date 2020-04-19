@@ -18,8 +18,10 @@ import { DialogCommentData } from '../../models/dialogCommentData.model';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 
 import { ImageDisplayDialogComponent } from '../image-display-dialog/image-display-dialog.component';
+import { Assignment } from '../../models/assignment.model';
 
 import { Rating } from '../../models/rating.model';
+import { Settings } from '../../shared/settings';
 
 @Component({
   selector: 'app-images-grid-view',
@@ -28,7 +30,7 @@ import { Rating } from '../../models/rating.model';
 })
 export class ImagesGridViewComponent implements OnInit {
 
-
+  @Input() assignments: Assignment[];
   @Input() game: Game;
   @Input() user: User;
   @Input() imageReferences: Image[];
@@ -72,6 +74,14 @@ export class ImagesGridViewComponent implements OnInit {
   ngOnChanges(){
     if(this.game && this.user){
       this.setUser();
+    }
+  }
+
+  private getTransform(image: Image){
+    if(image.imageState && image.imageState.length > 0){
+      return Settings.imageTransforms[image.imageState];
+    } else {
+      return null;
     }
   }
 
@@ -145,10 +155,12 @@ export class ImagesGridViewComponent implements OnInit {
   }
 
   onOpenImage(image: Image){
+    const index = this.assignments.findIndex(a => a.id === image.assignmentId);
     this.dialog.open(ImageDisplayDialogComponent, {
       data: {
         image: image,
-        user: this.user
+        user: this.user,
+        assignment: index > -1 ? this.assignments[index] : null
       }
     });
   }

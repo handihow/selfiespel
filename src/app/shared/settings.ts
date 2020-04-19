@@ -230,6 +230,12 @@ public static assignmentCategories = [
 	"Other"	
 ];
 
+public static imageTransforms = {
+  	'90': 'rotateZ(90deg)',
+    '180': 'rotateY(180deg) rotateZ(180deg)',
+	'270': 'rotateY(180deg) rotateZ(-90deg)'
+  }
+
 }
 
 

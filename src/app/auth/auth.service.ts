@@ -74,7 +74,7 @@ export class AuthService {
 	}
 
 	logout(){
-		this.afAuth.auth.signOut();
+		this.afAuth.signOut();
 	}
 
 	//creates custom user profile 
