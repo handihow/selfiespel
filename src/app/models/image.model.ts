@@ -1,4 +1,5 @@
 import { Rating } from './rating.model';
+import { Mask } from './mask.model';
 
 export interface Image {
 id?: string;
@@ -26,4 +27,6 @@ userAwardedPoints?: Rating;		// the awarded number of points of the user (calcul
 hasLocation?: boolean;
 latitude?: number;
 longitude?: number;
+hasMasks?: boolean;
+masks?: Mask[];
 }

@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { TosComponent } from './tos/tos.component';
+import { SupportComponent } from './support/support.component';
+
 // import { FaqComponent } from './faq/faq.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 
@@ -19,6 +21,10 @@ const routes: Routes = [
 	{
 		path: 'tos',
 		component: TosComponent
+	},
+	{
+		path: 'support',
+		component: SupportComponent
 	},
 	// {
 	// 	path: 'faq',

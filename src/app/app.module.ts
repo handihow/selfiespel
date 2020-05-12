@@ -47,9 +47,9 @@ import { Settings } from './shared/settings';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 import { TosComponent } from './tos/tos.component';
+import { SupportComponent } from './support/support.component';
 
 // import { FaqComponent } from './faq/faq.component';
-
 
 export function loginFunction():string { 
     return 'com.handihow.selfiespel' 
@@ -62,6 +62,7 @@ export function loginFunction():string {
     PrivacyComponent,
     SelfiethegameComponent,
     TosComponent,
+    SupportComponent
     // FaqComponent
   ],
   imports: [

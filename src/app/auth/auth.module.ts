@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CallbackComponent } from './callback/callback.component';
+import { MatVideoModule } from 'mat-video';
 
 @NgModule({
 	declarations: [
@@ -21,7 +22,8 @@ import { CallbackComponent } from './callback/callback.component';
     	AuthRoutingModule,
     	HttpClientModule,
     	NgxAuthFirebaseUIModule,
-    	SharedModule
+    	SharedModule,
+    	MatVideoModule
 	],
 	exports: []
 })

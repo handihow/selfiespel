@@ -99,7 +99,7 @@ public static teamNames = [
 'I<3Selfie',
 'Selfie4Ever',
 'SuperSelfie',
-'De Selfies',
+'The Selfies',
 'SuperDuperSelfies',
 'SunnySelfie',
 'SelfieIt',

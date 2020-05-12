@@ -10,7 +10,7 @@ import { Reaction } from '../../../src/app/models/reaction.model';
 export const newImageMessage = (image: Image) => {
 
 		const message : Message = {
-			content: image.teamName + ' heeft een nieuwe selfie gemaakt met '
+			content: image.teamName + ' has made a new selfie with '
 										+ image.assignment + '!',
 			style: 'info',
 			gameId: image.gameId || '',
@@ -26,8 +26,8 @@ export const newImageMessage = (image: Image) => {
 export const deletedImageMessage = (image: Image) => {
 
 		const message: Message = {
-			content: image.teamName + ' heeft de selfie met '
-										+ image.assignment + ' verwijderd!',
+			content: image.teamName + ' has deleted the selfie with '
+										+ image.assignment,
 			style: 'warning',
 			gameId: image.gameId || '',
 			imageId: image.id || '',

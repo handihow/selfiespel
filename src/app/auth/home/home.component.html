@@ -1,8 +1,15 @@
 <section fxLayout="row" fxLayout.lt-sm="column">
 	
-	<mat-card fxFlex="65" fxFlex.lt-lg="50" class="background-image"></mat-card>
+	<mat-card fxFlex="65" fxFlex.lt-lg="50" >
+		<mat-video 
+			src="https://handihow.com/wp-content/uploads/2020/05/intro.mp4" title="Introduction SelfieTheGame" 
+			poster="/assets/SelfieTheGame_intro.png"
+			[playsinline]="true"
+			[preload]="false"
+			[autoplay]="false"></mat-video>
+	</mat-card>
 	
-	<mat-card fxFlex="35" fxFlex.lt-lg="50" fxHide.lt-sm>
+	<mat-card fxFlex="35" fxFlex.lt-lg="50">
 		<ngx-auth-firebaseui
 		[providers]="['google', 'facebook', 'microsoft']"
 		[guestEnabled]='false'
@@ -44,9 +51,9 @@
 		</mat-card-content>	
 		<mat-card-actions>
 			<a mat-button routerLink="/info">HOW DOES IT WORK?</a>
-			<a mat-button 
+<!-- 			<a mat-button 
 				href="https://docs.google.com/document/d/e/2PACX-1vRhVQDvlFdY1HL1cphS-iP4n-xUNohJPyB0THlib6F_vcWjWX5R9IpXkBLSGOvPZaWmdb5FdmkxnOuT/pub" 
-				target=_blank>INSTRUCTIONS FOR TEACHERS</a>
+				target=_blank>INSTRUCTIONS FOR TEACHERS</a> -->
 		</mat-card-actions>  
 	</mat-card>
 	

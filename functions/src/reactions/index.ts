@@ -30,24 +30,24 @@ export const onCreateReaction = functions.firestore
 	let messageType : string = 'info';
 	switch (reaction.reactionType) {
 		case ReactionType.like:
-			content = reaction.userDisplayName + ' heeft de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' geliked!';
+			content = reaction.userDisplayName + ' has liked the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			//count new like to the total likes collection
 			await imageRef.update({
 				likes: admin.firestore.FieldValue.arrayUnion(reaction.userId)
 			});
 			break;
 		case ReactionType.comment:
-			content = reaction.userDisplayName + ' heeft commentaar gegeven op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
+			content = reaction.userDisplayName + ' has commented on the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			//count new comment to the total comments collection
 			await imageRef.update({
 				comments: admin.firestore.FieldValue.arrayUnion(reaction.userId)
 			});
 			break;
 		case ReactionType.rating:
-			content = reaction.userDisplayName + ' heeft ' + reaction.rating + ' punt(en) gegeven aan de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
+			content = reaction.userDisplayName + ' has given ' + reaction.rating + ' point(s) to the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			await imageRef.update({
 				ratings: admin.firestore.FieldValue.arrayUnion(reaction.userId)
 			});
@@ -58,8 +58,8 @@ export const onCreateReaction = functions.firestore
 			})
 			break;
 		case ReactionType.inappropriate:
-			content = reaction.userDisplayName + ' vindt de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' ongepast!';
+			content = reaction.userDisplayName + ' thinks that the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' is inappropriate!';
 			messageType = 'warning';
 			await imageRef.update({
 				abuses: admin.firestore.FieldValue.arrayUnion(reaction.userId)
@@ -67,8 +67,8 @@ export const onCreateReaction = functions.firestore
 			await abuses.onNewAbuse(reaction);
 			break;
 		default:
-			content = reaction.userDisplayName + ' heeft gereageerd op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
+			content = reaction.userDisplayName + ' has reacted on the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 	}
 
 	return messages.reactionMessage(reaction, content, messageType);
@@ -106,8 +106,8 @@ export const onUpdateReaction = functions.firestore
 	let content : string;
 	switch (reactionAfter.reactionType) {
 		case ReactionType.rating:
-			content = reactionAfter.userDisplayName + ' heeft ' + reactionAfter.rating + ' punt(en) gegeven aan de selfie met ' 
-						+ reactionAfter.assignment + ' van ' + reactionAfter.teamName + ' !';
+			content = reactionAfter.userDisplayName + ' has given ' + reactionAfter.rating + ' point(s) to the selfie with ' 
+						+ reactionAfter.assignment + ' of ' + reactionAfter.teamName + ' !';
 			
 			const teamRef = db.collection('teams').doc(reactionAfter.teamId);
 
@@ -119,8 +119,8 @@ export const onUpdateReaction = functions.firestore
 
 			break;
 		default:
-			content = reactionAfter.userDisplayName + ' heeft de reactie op de selfie met ' 
-						+ reactionAfter.assignment + ' van ' + reactionAfter.teamName + ' gewijzigd!';
+			content = reactionAfter.userDisplayName + ' has changed the reaction on the selfie with ' 
+						+ reactionAfter.assignment + ' of ' + reactionAfter.teamName + ' !';
 	}
 	return messages.reactionMessage(reactionAfter, content, 'info');
 
@@ -147,22 +147,22 @@ export const onDeleteReaction = functions.firestore
 	let updateObj = {};
 	switch (reaction.reactionType) {
 		case ReactionType.like:
-			content = reaction.userDisplayName + ' heeft de like op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' verwijderd!';
+			content = reaction.userDisplayName + ' has removed the like from the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			updateObj = {
 				likes: admin.firestore.FieldValue.arrayRemove(reaction.userId)
 			};
 			break;
 		case ReactionType.comment:
-			content = reaction.userDisplayName + ' heeft commentaar op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' verwijderd!';
+			content = reaction.userDisplayName + ' has removed the comment from the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			updateObj = {
 				comments: admin.firestore.FieldValue.arrayRemove(reaction.userId)
 			};
 			break;
 		case ReactionType.rating:
-			content = reaction.userDisplayName + ' heeft de score op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' verwijderd!';
+			content = reaction.userDisplayName + ' has removed the score from the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 			
 			const teamRef = db.collection('teams').doc(reaction.teamId);
 
@@ -174,16 +174,16 @@ export const onDeleteReaction = functions.firestore
 			};
 			break;
 		case ReactionType.inappropriate:
-			content = reaction.userDisplayName + ' vindt de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' gepast!';
+			content = reaction.userDisplayName + ' thinks that the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' is appropriate!';
 			messageType = 'info';
 			updateObj = {
 				abuses: admin.firestore.FieldValue.arrayRemove(reaction.userId)
 			};
 			break;
 		default:
-			content = reaction.userDisplayName + ' heeft gereageerd op de selfie met ' 
-						+ reaction.assignment + ' van ' + reaction.teamName + ' !';
+			content = reaction.userDisplayName + ' has reacted on the selfie with ' 
+						+ reaction.assignment + ' of ' + reaction.teamName + ' !';
 	}
 	await messages.reactionMessage(reaction, content, messageType);
 

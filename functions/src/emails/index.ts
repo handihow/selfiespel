@@ -16,7 +16,7 @@ export const inviteUserEmail = functions.firestore
 			to: email.toEmail,
 			from: 'notifications@selfiethegame.com',
 			templateId: 'd-9a5d66c38e81434b88a29ce642599833',
-			subject: 'Uitnodiging voor het Selfiespel',
+			subject: 'Invitation for SelfieTheGame',
 			dynamic_template_data: {
               name: email.toName,
               user: email.fromName
@@ -34,7 +34,7 @@ export const firstReportAbuse = function(toEmail: string, toName: string, teamNa
 		to: toEmail,
 		from: 'notifications@selfiethegame.com',
 		templateId: 'd-e39e707ffc6745e380fe73b3e5035938',
-		subject: 'Ongepaste Content',
+		subject: 'Inapproriate Content',
 		dynamic_template_data: {
 			name: toName,
 			teamName: teamName,
@@ -52,7 +52,7 @@ export const secondReportAbuse = function(toEmail: string, toName: string, teamN
 		to: toEmail,
 		from: 'notifications@selfiethegame.com',
 		templateId: 'd-1267f8d848c747cb99af19ce0099c9b3',
-		subject: 'Ongepaste Content',
+		subject: 'Inapproriate Content',
 		dynamic_template_data: {
 			name: toName,
 			teamName: teamName,
@@ -70,7 +70,7 @@ export const thirdReportAbuse = function(toEmail: string, toName: string, teamNa
 		to: toEmail,
 		from: 'notifications@selfiethegame.com',
 		templateId: 'd-a1c920190f1c4fd18615b9fed2836020',
-		subject: 'Ongepaste Content',
+		subject: 'Inapproriate Content',
 		dynamic_template_data: {
 			name: toName,
 			teamName: teamName,
@@ -88,7 +88,7 @@ export const officialReportAbuse = function(gameId: string, imageId: string, use
 		to: 'office@handihow.com',
 		from: 'notifications@selfiethegame.com',
 		templateId: 'd-91cf48955df94dc695ade5a2ea829b47',
-		subject: 'Ongepaste Content',
+		subject: 'Inapproriate Content',
 		dynamic_template_data: {
 			gameId: gameId,
 			imageId: imageId,
