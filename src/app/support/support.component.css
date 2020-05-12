@@ -1,3 +1,8 @@
 mat-card {
 	margin: 5px;
 }
+
+mat-card img{
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  height: 350px;
+}
