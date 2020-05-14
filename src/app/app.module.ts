@@ -49,7 +49,7 @@ import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component'
 import { TosComponent } from './tos/tos.component';
 import { SupportComponent } from './support/support.component';
 
-// import { FaqComponent } from './faq/faq.component';
+import { FaqComponent } from './faq/faq.component';
 
 export function loginFunction():string { 
     return 'com.handihow.selfiespel' 
@@ -62,8 +62,8 @@ export function loginFunction():string {
     PrivacyComponent,
     SelfiethegameComponent,
     TosComponent,
-    SupportComponent
-    // FaqComponent
+    SupportComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,
@@ -79,10 +79,12 @@ export function loginFunction():string {
         {
             enableFirestoreSync: true,
             toastMessageOnAuthSuccess: true,
-            toastMessageOnAuthError: true
+            toastMessageOnAuthError: true,
+            enableEmailVerification: true,
+            guardProtectedRoutesUntilEmailIsVerified: true,
+            authGuardFallbackURL: '/', // url for unauthenticated users - to use in combination with canActivate feature on a route
+            authGuardLoggedInURL: '/games', 
         }),
-    // MatContactsModule.forRoot(),
-    // MatFaqModule.forRoot(),
     MatPagesModule.forRoot(),
     AngularFirestoreModule,
     AngularFireStorageModule,
@@ -96,9 +98,6 @@ export function loginFunction():string {
     SlideshowModule
   ],
   providers: [
-    // {provide: MAT_DATE_LOCALE, useValue: 'nl-be'},
-    // {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    // {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     AuthService,
     UIService,
     GameService,

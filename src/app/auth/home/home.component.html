@@ -6,16 +6,17 @@
 			poster="/assets/SelfieTheGame_intro.png"
 			[playsinline]="true"
 			[preload]="false"
+			[fullscreen]="false"
 			[autoplay]="false"></mat-video>
 	</mat-card>
 	
 	<mat-card fxFlex="35" fxFlex.lt-lg="50">
 		<ngx-auth-firebaseui
-		[providers]="['google', 'facebook', 'microsoft']"
-		[guestEnabled]='false'
-		privacyPolicyUrl="/privacy"
-		tosUrl="/tos">
-	</ngx-auth-firebaseui>
+			[providers]="['google', 'facebook', 'microsoft']"
+			[guestEnabled]='false'
+			privacyPolicyUrl="/privacy"
+			tosUrl="/tos">
+		</ngx-auth-firebaseui>
 </mat-card>
 
 </section>

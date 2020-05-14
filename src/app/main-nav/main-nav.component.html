@@ -18,7 +18,7 @@
       <a mat-list-item routerLink="/support" (click)="drawer.toggle()">Support</a>
       <a mat-list-item routerLink="/privacy" (click)="drawer.toggle()">Privacy Policy</a>
       <a mat-list-item routerLink="/tos" (click)="drawer.toggle()">Terms of Use</a>
-      <!-- <a mat-list-item routerLink="/faq" (click)="drawer.toggle()">Veelgestelde vragen</a> -->
+      <a mat-list-item routerLink="/faq" (click)="drawer.toggle()">FAQ</a>
       <mat-divider></mat-divider>
       <mat-list-item>Admin</mat-list-item>
       <a mat-list-item routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
@@ -38,11 +38,12 @@
       <div [ngClass]="{hidden: isHandset$ | async}">
         <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/" *ngIf="!(isAuth$ | async)">Home</a>
         <a routerLinkActive="active" routerLink="/info" *ngIf="!(isAuth$ | async)">How To</a>
-        <a routerLinkActive="active" routerLink="/support">Support</a>
-        <!-- <a routerLinkActive="active" routerLink="/faq" *ngIf="!(isAuth$ | async)">Veelgestelde vragen</a> -->
+        <a routerLinkActive="active" routerLink="/support" *ngIf="!(isAuth$ | async)">Support</a>
+        <a routerLinkActive="active" routerLink="/faq" *ngIf="!(isAuth$ | async)">FAQ</a>
       </div>
       <span class="spacer"></span>
       <div [ngClass]="{hidden: isHandset$ | async}">
+        <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Log In / Register</a>
         <a routerLinkActive="active" routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
         <!-- <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacten</a> -->
         <a routerLinkActive="active" routerLink="/assignments" *ngIf="isAuth$ | async">Assignments</a>
@@ -79,6 +80,7 @@
           <a class="active" routerLink="/privacy"><span class="footer-text">Privacy Policy</span></a>
           <a class="active" routerLink="/tos"><span class="footer-text">Terms of Use</span></a>
           <a class="active" routerLink="/info"><span class="footer-text">How To</span></a>
+          <a class="active" routerLink="/faq"><span class="footer-text">FAQ</span></a>
           <a class="active" href="https://www.patreon.com/bePatron?u=32959269"><span class="footer-text">Become a Patron!</span></a>
       </mat-toolbar>
     </footer>

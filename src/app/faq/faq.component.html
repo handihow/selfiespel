@@ -1,1 +1,14 @@
-<!-- <mat-faq [faqList]="list" title="Vragen over bètaversie van SelfieTheGame"></mat-faq> -->
+<mat-toolbar color="primary">Frequently Asked Questions</mat-toolbar>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let faqItem of faqList">
+    <mat-expansion-panel-header>{{faqItem.question}}</mat-expansion-panel-header>
+    <p>{{faqItem.answer}}</p>
+    <mat-action-row *ngIf="faqItem.links && faqItem.links.length > 0">
+    	<a 	mat-raised-button [color]="link.linkColor"
+    		class="button-tag"
+    		*ngFor="let link of faqItem.links" 
+    		[href]="link.link" 
+    		target="_blank">{{link.buttonText}}</a>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import {FaqItem} from '@angular-material-extensions/faq';
+import {FaqItem} from '../models/faq-item.model';
 
 @Component({
   selector: 'app-faq',
@@ -8,33 +8,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FaqComponent implements OnInit {
   
-  // list: FaqItem[] = [
-  //       {
-  //         question: 'Bètaversie?',
-  //         answer: 'SelfieTheGame bevindt zich in een testfase. De bètaversie van SelfieTheGame wordt momenteel uitgetest in verschillende settings zoals teamuitjes, familieaangelegenheden en op scholen.'
-  //       },
-  //       {
-  //         question: 'Wie kan SelfieTheGame spelen?',
-  //         answer: 'Iedereen kan het selfiespel spelen in groepsverband. Het kan bijvoorbeeld gespeeld worden tijdens familieaangelegenheden, bedrijfsuitjes en met de klas. We raden aan om het spel met minimaal 4 personen te spelen (2 teams van 2 mensen).'
-  //       },
-  //       {
-  //         question: 'Kan ik SelfieTheGame alleen spelen?',
-  //         answer: 'Nee, want SelfieTheGame is een groepsspel. We raden aan om het spel met minimaal 4 personen te spelen (2 teams van 2 mensen).'
-  //       },
-  //       {
-  //         question: 'Zijn er kosten verbonden aan SelfieTheGame?',
-  //         answer: 'Op dit moment is SelfieTheGame in een beta-versie beschikbaar en worden er verschillende tests gedaan. Er zijn op dit moment geen kosten aan verbonden. Later zullen er gratis en betaalde varianten worden toegevoegd aan het platform.'
-  //       },
-  //       {
-  //         question: 'Hoe kan ik meehelpen aan de ontwikkeling van SelfieTheGame?',
-  //         answer: 'SelfieTheGame bevindt zich momenteel in een testfase. Je kunt meehelpen door het spel te spelen, bugs te rapporteren en/of feedback te geven aan HandiHow met constructieve opmerkingen.'
-  //       },
-  //       {
-  //         question: 'Hoe kan ik feedback geven?',
-  //         answer: 'Je kunt feedback geven over SelfieTheGame door je bugs, vragen en opmerkingen te sturen naar office@handihow.com'
-  //       }
-  // ];
-
+  faqList: FaqItem[] = [
+        {
+          question: 'Who can play SelfieTheGame?',
+          answer: 'Everyone can play the selfie game in a group. For example, it can be played on family occasions, company outings and with the class. We recommend playing the game with a minimum of 4 people (2 teams of 2 people).',
+          links: [{link: 'https://youtu.be/5uWZU-JJpOM', buttonText: 'Introduction video', linkColor: 'primary'}]
+        },
+        {
+          question: 'Can I play SelfieTheGame alone?',
+          answer: 'No, because SelfieTheGame is a group game. We recommend playing the game with a minimum of 4 people (2 teams of 2 people).',
+          links: [{link: 'https://youtu.be/5uWZU-JJpOM', buttonText: 'Introduction video', linkColor: 'primary'}]
+        },
+        {
+          question: 'Are there any costs associated with SelfieTheGame?',
+          answer: 'No, SelfieTheGame is completely free, the software is open source and there is no commercial aspect. If you like the game, and you want to contribute towards further development, you can become a Patreon.',
+          links: [{link: 'https://www.patreon.com/bePatron?u=32959269', buttonText: 'Become a Patreon', linkColor: 'primary'}]
+        },
+        {
+          question: 'How can I help develop SelfieTheGame?',
+          answer: 'You can help by playing the game, reporting bugs and / or providing feedback to HandiHow with constructive comments. If you want to make a financial contribution, you can become a Patreon (check out the support page).',
+          links: [{link: 'https://www.patreon.com/bePatron?u=32959269', buttonText: 'Become a Patreon', linkColor: 'primary'}]  
+        },
+        {
+          question: 'How can I give feedback?',
+          answer: 'You can provide feedback about SelfieTheGame by sending your bugs, questions, and comments to office@handihow.com. You can also report bugs / issues by clicking the buttons below.',
+          links: [
+            {link: 'https://github.com/handihow/selfiespel/issues', buttonText: 'BUG ON WEBSITE', linkColor: 'primary'},
+            {link: 'https://github.com/handihow/selfiethegame/issues', buttonText: 'BUG ON APP', linkColor: 'accent'}
+           ] 
+        }
+  ];
 
   constructor() { }
 

@@ -6,7 +6,7 @@ import { PrivacyComponent } from './privacy/privacy.component';
 import { TosComponent } from './tos/tos.component';
 import { SupportComponent } from './support/support.component';
 
-// import { FaqComponent } from './faq/faq.component';
+import { FaqComponent } from './faq/faq.component';
 import { SelfiethegameComponent } from './selfiethegame/selfiethegame.component';
 
 const routes: Routes = [
@@ -26,10 +26,10 @@ const routes: Routes = [
 		path: 'support',
 		component: SupportComponent
 	},
-	// {
-	// 	path: 'faq',
-	// 	component: FaqComponent
-	// },
+	{
+		path: 'faq',
+		component: FaqComponent
+	},
 	{
 	  path: 'games',
 	  loadChildren: () => import('./games/games.module').then(m => m.GamesModule)
