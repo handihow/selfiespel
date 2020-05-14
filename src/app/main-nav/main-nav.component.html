@@ -6,7 +6,7 @@
       [opened]="!(isHandset$ | async)">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <!-- <a mat-list-item routerLink="/contacts" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Contacten</a> -->
+      <a mat-list-item routerLink="/contacts" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Contacts</a>
       <a mat-list-item routerLink="/assignments" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Assignments</a>
       <a mat-list-item routerLink="/selfies" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Selfies</a>
       <a mat-list-item routerLink="/games" *ngIf="isAuth$ | async" (click)="drawer.toggle()">Games</a>
@@ -45,7 +45,7 @@
       <div [ngClass]="{hidden: isHandset$ | async}">
         <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Log In / Register</a>
         <a routerLinkActive="active" routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
-        <!-- <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacten</a> -->
+        <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacts</a>
         <a routerLinkActive="active" routerLink="/assignments" *ngIf="isAuth$ | async">Assignments</a>
         <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
         <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Games</a>

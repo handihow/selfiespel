@@ -6,6 +6,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+
 import { environment } from '../environments/environment';
 
 // import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
@@ -89,6 +91,7 @@ export function loginFunction():string {
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireFunctionsModule,
+    AngularFireAnalyticsModule,
     FlexLayoutModule,
     AuthModule,
     SharedModule,

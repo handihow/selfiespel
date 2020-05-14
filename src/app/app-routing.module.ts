@@ -42,10 +42,10 @@ const routes: Routes = [
 	  path: 'selfies',
 	  loadChildren: () => import('./selfies/selfies.module').then(m => m.SelfiesModule)
 	},
-	// {
-	//   path: 'contacts',
-	//   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
-	// },
+	{
+	  path: 'contacts',
+	  loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
+	},
 	{
 	  path: 'assignments',
 	  loadChildren: () => import('./assignments/assignments.module').then(m => m.AssignmentsModule)

@@ -1,15 +1,31 @@
-<!-- <ng-container *ngIf="!isLoading">
-	<mat-contacts [contacts]="contacts"
-				  [title]="'Contacten'"
-	              (onContactAdded)="addContact($event)"
-	              (onContactRemoved)="removeContact($event)">
-	</mat-contacts>
-	<div *ngIf="contacts.length===0" class="no-content"></div>
-</ng-container>
-<ng-container *ngIf="isLoading">
-	<mat-contacts [contacts]="contacts"
-				  [title]="'Contacten'"
-				  [isLoading]="isLoading">
-	</mat-contacts>
-	<div class="no-content">Laden..</div>
-</ng-container> -->
+<mat-toolbar color="primary">Your Contacts</mat-toolbar>
+
+<app-no-content
+        *ngIf="contacts.length === 0"
+        title="No contacts"
+        comment="You do not have contacts yet. Create a new game or join a game. Players of the games you participate in, will appear in this overview."
+        imageURL="https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/standaard%2Fselfie3.png?alt=media&token=37574672-e596-41e5-9e52-fe8ce4979770"
+        addUrl="/games/choose"
+        buttonText="Add game"></app-no-content>
+
+<mat-list *ngIf="contacts.length > 0">
+  <ng-container  *ngFor="let contact of contacts">
+	  <mat-list-item>
+	    <img matListAvatar [src]="contact.photoURL ? contact.photoURL : 
+	    	'https://ui-avatars.com/api/?background=1A7EC1&color=F5F5F5&name=' + contact.name" alt="avatar">
+	    <h3 matLine> {{contact.name}} </h3>
+	    <p matLine fxLayout="row" fxLayoutAlign="space-between center">
+	      <span> {{contact.email}} </span>
+	      <span>
+		       <a mat-icon-button color="primary" [href]="'mailto:' + contact.email">
+		          <mat-icon>email</mat-icon>     
+		       </a>
+		       <button mat-icon-button color="warn" (click)="openDialog(contact)">
+		          <mat-icon>delete</mat-icon>     
+		       </button>
+		   </span>
+	    </p>
+	  </mat-list-item>
+	  <mat-divider></mat-divider>
+	</ng-container>
+</mat-list>

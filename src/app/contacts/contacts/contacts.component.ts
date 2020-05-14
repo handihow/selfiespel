@@ -19,7 +19,7 @@ import { WarningDialogComponent } from '../../shared/warning-dialog.component';
 })
 export class ContactsComponent implements OnInit {
 
-  contacts : Contact[];
+  contacts : Contact[] = [];
   user: User;
   isLoading: boolean = true;
 
@@ -51,14 +51,14 @@ export class ContactsComponent implements OnInit {
    private openDialog(contact: Contact){
        const dialogRef = this.dialog.open(WarningDialogComponent, {
         data: {
-          title: 'No player found',
-          content: 'We did not find a player with this email address. Would you like to invite this player to SelfieTheGame?'
+          title: 'Remove contact',
+          content: 'You want to remove the contact ' + contact.name + '. Are you sure?'
         }
       });
 
       dialogRef.afterClosed().subscribe(async result => {
         if(result){
-          this.contactService.sendEmailInvitation(contact, this.user);
+          this.removeContact(contact);
         }
       });
    }
