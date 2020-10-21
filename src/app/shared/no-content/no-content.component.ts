@@ -12,6 +12,9 @@ export class NoContentComponent implements OnInit {
   @Input() addUrl: string;
   @Input() buttonText: string;
   @Input() imageURL: string;
+  @Input() videoURL: string;
+  @Input() videoPoster: string;
+  @Input() videoTitle: string;
   constructor() { }
 
   ngOnInit() {

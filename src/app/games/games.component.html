@@ -22,8 +22,10 @@
 	<div *ngIf="(games$ | async)?.length===0">
     <app-no-content
         title="No games"
-        comment="You have no games yet. Create a new game or join a game."
-        imageURL="https://firebasestorage.googleapis.com/v0/b/selfiespel-250de.appspot.com/o/standaard%2Fselfie3.png?alt=media&token=37574672-e596-41e5-9e52-fe8ce4979770"
+        comment="You have no games yet. Create a new game or join a game. Check out the video to learn how."
+        videoURL="https://handihow.com/wp-content/uploads/2020/05/5FGEZEZ1Y6NLRVSR.mp4"
+        videoTitle="Create New Game in SelfieTheGame"
+        videoPoster="https://handihow.com/wp-content/uploads/2020/05/STG-TN-NG.png"
         addUrl="/games/choose"
         buttonText="Add game"></app-no-content>
   </div>

@@ -17,9 +17,9 @@
 	  </mat-list-item>
 	</mat-list>
 
-	<p *ngIf="assignment.description">{{assignment.description}}</p>
-	<p *ngIf="assignment.location">{{assignment.location}}</p>
-	<div *ngIf="assignment.hasGooglePlacesLocation">
+	<p *ngIf="assignment && assignment.description">{{assignment.description}}</p>
+	<p *ngIf="assignment && assignment.location">{{assignment.location}}</p>
+	<div *ngIf="assignment && assignment.hasGooglePlacesLocation">
   	  <app-show-locations [assignment]="assignment" [image]="image"></app-show-locations>
 	</div>
 	

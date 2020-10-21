@@ -15,6 +15,7 @@ import { SearchLocationComponent } from './search-location/search-location.compo
 
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
+import { MatVideoModule } from 'mat-video';
 
 import { environment } from '../../environments/environment';
 import { ShowLocationsComponent } from './show-locations/show-locations.component';
@@ -39,8 +40,8 @@ import { ShowLocationsComponent } from './show-locations/show-locations.componen
       	AgmCoreModule.forRoot({
           apiKey: environment.googleAPIKey,
           libraries: ['places']
-        })
-		
+        }),
+        MatVideoModule
 	],
 	exports: [
 		CommonModule,
@@ -50,6 +51,7 @@ import { ShowLocationsComponent } from './show-locations/show-locations.componen
 		FlexLayoutModule,
 		QRCodeModule,
 		DragDropModule,
+		MatVideoModule,
 		WarningDialogComponent,
 		NoContentComponent,
 		SearchLocationComponent,

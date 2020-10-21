@@ -34,21 +34,23 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span><a routerLink="/"><img src="/assets/selfieTheGame.png" class="selfieTheGame"></a></span>
-      <div [ngClass]="{hidden: isHandset$ | async}">
-        <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/" *ngIf="!(isAuth$ | async)">Home</a>
-        <a routerLinkActive="active" routerLink="/info" *ngIf="!(isAuth$ | async)">How To</a>
-        <a routerLinkActive="active" routerLink="/support" *ngIf="!(isAuth$ | async)">Support</a>
-        <a routerLinkActive="active" routerLink="/faq" *ngIf="!(isAuth$ | async)">FAQ</a>
-      </div>
+      <a mat-icon-button routerLink="/"><mat-icon>home</mat-icon></a>
       <span class="spacer"></span>
       <div [ngClass]="{hidden: isHandset$ | async}">
-        <a routerLinkActive="active" routerLink="/login" *ngIf="!(isAuth$ | async)">Log In / Register</a>
-        <a routerLinkActive="active" routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
-        <a routerLinkActive="active" routerLink="/contacts" *ngIf="isAuth$ | async">Contacts</a>
-        <a routerLinkActive="active" routerLink="/assignments" *ngIf="isAuth$ | async">Assignments</a>
-        <a routerLinkActive="active" routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
-        <a routerLinkActive="active" routerLink="/games" *ngIf="isAuth$ | async">Games</a>
+        <button mat-button [matMenuTriggerFor]="supportmenu">Support</button>
+        <mat-menu #supportmenu="matMenu">
+          <a mat-menu-item routerLink="/info">How To</a>
+          <a mat-menu-item routerLink="/support">Support</a>
+          <a mat-menu-item routerLink="/faq">FAQ</a>
+        </mat-menu>
+      </div>
+      <div [ngClass]="{hidden: isHandset$ | async}">
+        <a mat-button routerLink="/login" *ngIf="!(isAuth$ | async)">Log In / Register</a>
+        <a mat-button routerLink="/admin" *ngIf="(user$ | async)?.roles?.admin">Admin</a>
+        <a mat-button routerLink="/contacts" *ngIf="isAuth$ | async">Contacts</a>
+        <a mat-button routerLink="/assignments" *ngIf="isAuth$ | async">Assignments</a>
+        <a mat-button routerLink="/selfies" *ngIf="isAuth$ | async">Selfies</a>
+        <a mat-button routerLink="/games" *ngIf="isAuth$ | async">Games</a>
       </div>
       <button mat-mini-fab [matMenuTriggerFor]="profile" *ngIf="isAuth$ | async">
         {{(user$ | async)?.displayName.charAt(0)}}

@@ -30,13 +30,9 @@
 
 mat-toolbar a {
 	display: inline-block;
-	margin: 0 15px;
-	color: lightgrey;
-	text-decoration: none;
-}
-
-mat-toolbar a.active {
+	margin: 0 10px;
 	color: white;
+	text-decoration: none;
 }
 
 .selfieTheGame {

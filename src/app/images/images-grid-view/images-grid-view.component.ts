@@ -52,7 +52,7 @@ export class ImagesGridViewComponent implements OnInit {
     }))
     if(this.game){
       this.subs.push(this.imageService.getUserGameReactions(this.game.id, this.user.uid, ReactionType.rating).subscribe(reactions => {
-        if(reactions){
+        if(reactions && reactions.length > 0){
           this.imageReferences.forEach(imageRef => {
             const index = reactions.findIndex(r => r.imageId === imageRef.id);
             if(index>-1){
@@ -155,7 +155,7 @@ export class ImagesGridViewComponent implements OnInit {
   }
 
   onOpenImage(image: Image){
-    const index = this.assignments.findIndex(a => a.id === image.assignmentId);
+    const index = this.assignments ? this.assignments.findIndex(a => a.id === image.assignmentId) : -1;
     this.dialog.open(ImageDisplayDialogComponent, {
       data: {
         image: image,
