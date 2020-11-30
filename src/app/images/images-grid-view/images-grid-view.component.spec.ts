@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ImagesGridViewComponent } from './images-grid-view.component';
 
@@ -6,7 +6,7 @@ describe('ImagesGridViewComponent', () => {
   let component: ImagesGridViewComponent;
   let fixture: ComponentFixture<ImagesGridViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ImagesGridViewComponent ]
     })

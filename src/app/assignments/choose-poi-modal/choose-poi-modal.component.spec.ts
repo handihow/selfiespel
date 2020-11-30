@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChoosePoiModalComponent } from './choose-poi-modal.component';
 
@@ -6,7 +6,7 @@ describe('ChoosePoiModalComponent', () => {
   let component: ChoosePoiModalComponent;
   let fixture: ComponentFixture<ChoosePoiModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChoosePoiModalComponent ]
     })
