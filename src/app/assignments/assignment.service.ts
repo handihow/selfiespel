@@ -14,7 +14,7 @@ import { User } from '../models/user.model';
 import { Assignment } from '../models/assignment.model';
 import { AssignmentList } from '../models/assignment-list.model';
 
-import {firestore} from 'firebase/app';
+import firebase from 'firebase/app';
 
 @Injectable()
 export class AssignmentService {
@@ -41,8 +41,8 @@ export class AssignmentService {
 			batch.set(assignmentRef, {
 				gameId: gameId, 
 				order: index,
-				created: firestore.FieldValue.serverTimestamp(),
-				updated: firestore.FieldValue.serverTimestamp(),
+				created: firebase.firestore.FieldValue.serverTimestamp(),
+				updated: firebase.firestore.FieldValue.serverTimestamp(),
 				...assignment})
 		})
 		return batch.commit()
@@ -70,8 +70,8 @@ export class AssignmentService {
 	}
 
 	addAssignment(assignment: Assignment){
-		assignment.created = firestore.FieldValue.serverTimestamp();
-		assignment.updated = firestore.FieldValue.serverTimestamp();
+		assignment.created = firebase.firestore.FieldValue.serverTimestamp();
+		assignment.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('assignments').add(assignment)
 			.then(doc => {
 				this.uiService.showSnackbar("Assignment saved", null, 3000);
@@ -82,8 +82,8 @@ export class AssignmentService {
 	}
 
 	addAssignmentList(assignmentList: AssignmentList){
-		assignmentList.created = firestore.FieldValue.serverTimestamp();
-		assignmentList.updated = firestore.FieldValue.serverTimestamp();
+		assignmentList.created = firebase.firestore.FieldValue.serverTimestamp();
+		assignmentList.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('lists').add(assignmentList)
 			.then(doc => {
 				this.uiService.showSnackbar("Assignment list saved", null, 3000);
@@ -145,7 +145,7 @@ export class AssignmentService {
 
 	//update single assignment
 	updateAssignment(assignment: Assignment){
-		assignment.updated = firestore.FieldValue.serverTimestamp();
+		assignment.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('assignments').doc(assignment.id)
 			.set(assignment, {merge: true})
 			.then( _ => {
@@ -161,7 +161,7 @@ export class AssignmentService {
 		let batch = this.db.firestore.batch();
 		assignments.forEach((assignment) => {
 			const assignmentRef = this.db.collection('assignments').doc(assignment.id).ref;
-			batch.update(assignmentRef, {updated: firestore.FieldValue.serverTimestamp(), order: assignment.order})
+			batch.update(assignmentRef, {updated: firebase.firestore.FieldValue.serverTimestamp(), order: assignment.order})
 		})
 		return batch.commit()
 			.catch(error => {

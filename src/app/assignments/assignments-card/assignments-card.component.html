@@ -29,7 +29,7 @@
 			  </mat-radio-button>
 			</mat-radio-group>
 			<p>How many? {{quantity}} 
-				<mat-slider min="5" max="20" step="1" [value]="12" (change)="onChangeQuantity($event)" thumbLabel></mat-slider>
+				<mat-slider min=5 max=20 step=1 [(ngModel)]="quantity" thumbLabel></mat-slider>
 			</p>
 		</div>
 	</mat-card-content>

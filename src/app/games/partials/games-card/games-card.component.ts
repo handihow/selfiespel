@@ -31,6 +31,7 @@ export class GamesCardComponent implements OnInit {
               private gameService: GameService) { }
 
   ngOnInit() {
+    console.log('initializing game card')
     if(this.game.administrator === this.user.uid){
       this.isAdmin = true;
     }

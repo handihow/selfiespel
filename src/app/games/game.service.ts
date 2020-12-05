@@ -15,7 +15,7 @@ import { ReactionType } from '../models/reactionType.model';
 import { Reaction } from '../models/reaction.model';
 import { Settings } from '../shared/settings';
 
-import {firestore} from 'firebase/app';
+import firebase from 'firebase/app';
 
 import { TeamService } from '../teams/team.service';
 import { AssignmentService } from '../assignments/assignment.service';
@@ -31,8 +31,8 @@ export class GameService {
 
 
 	addGame(user: User, game: Game, playing: boolean){
-		game.created = firestore.FieldValue.serverTimestamp();
-		game.updated = firestore.FieldValue.serverTimestamp();
+		game.created = firebase.firestore.FieldValue.serverTimestamp();
+		game.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('games').add(game)
 			.then(async doc => {
 				game.id = doc.id;
@@ -113,11 +113,11 @@ export class GameService {
 		const userRef = this.db.collection('users').doc(user.uid);
 		const gameRef = this.db.collection('games').doc(game.id)
 		if(add){
-			await userRef.update({[userVariable]: firestore.FieldValue.arrayUnion(game.id)});
-			await gameRef.update({[gameVariable]: firestore.FieldValue.arrayUnion(user.uid)})
+			await userRef.update({[userVariable]: firebase.firestore.FieldValue.arrayUnion(game.id)});
+			await gameRef.update({[gameVariable]: firebase.firestore.FieldValue.arrayUnion(user.uid)})
 		} else {
-			await userRef.update({[userVariable]: firestore.FieldValue.arrayRemove(game.id)});
-			await gameRef.update({[gameVariable]: firestore.FieldValue.arrayRemove(user.uid)})
+			await userRef.update({[userVariable]: firebase.firestore.FieldValue.arrayRemove(game.id)});
+			await gameRef.update({[gameVariable]: firebase.firestore.FieldValue.arrayRemove(user.uid)})
 		}
 		let message: string;
 		if(add){
@@ -130,7 +130,7 @@ export class GameService {
 	}
 
 	updateGameToDatabase(game: Game): Promise<boolean>{
-		game.updated = firestore.FieldValue.serverTimestamp();
+		game.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('games').doc(game.id).set(game, {merge: true})
 			.then( _ => {
 				return true;

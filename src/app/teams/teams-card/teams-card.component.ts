@@ -148,11 +148,6 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onChangeGroupSize(groupSize){
-     this.playersPerGroup = groupSize.value;
-     // this.makeNewGroups();
-  }
-
   onShuffle(){
     this.makeNewGroups();
   }

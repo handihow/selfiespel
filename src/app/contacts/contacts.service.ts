@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 
 // import { AuthService } from '../auth/auth.service';
 import { UIService } from '../shared/ui.service';
@@ -67,7 +67,7 @@ export class ContactsService {
 				if (userId) {
 					const ref = this.db.collection('contacts').doc(userId);
 					await ref.update({
-						contacts: firestore.FieldValue.arrayUnion(contact)
+						contacts: firebase.firestore.FieldValue.arrayUnion(contact)
 					});
 				}
 				resolve(result);
@@ -80,7 +80,7 @@ export class ContactsService {
 		const ref = this.db.collection('contacts').doc(userId);
 		if (userId) {
 			return ref.update({
-				contacts: firestore.FieldValue.arrayRemove(contact)
+				contacts: firebase.firestore.FieldValue.arrayRemove(contact)
 			});
 		}
 	}

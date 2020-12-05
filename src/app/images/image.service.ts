@@ -15,7 +15,7 @@ import { Reaction } from '../models/reaction.model';
 import { ReactionType } from '../models/reactionType.model';
 import { Rating } from '../models/rating.model';
 
-import {firestore} from 'firebase/app';
+import firebase from 'firebase/app';
 
 @Injectable()
 export class ImageService {
@@ -58,7 +58,7 @@ export class ImageService {
 	}
 
 	updateImageReference(image: Image){
-		image.updated = firestore.FieldValue.serverTimestamp();
+		image.updated = firebase.firestore.FieldValue.serverTimestamp();
 		return this.db.collection('images').doc(image.id).set(image, {merge: true})
 			.then( _ => {
 				return true;
@@ -125,8 +125,8 @@ export class ImageService {
 			userDisplayName: user.displayName,
 			userId: user.uid,
 			imageId: image.id,
-			created: firestore.FieldValue.serverTimestamp(),
-			updated: firestore.FieldValue.serverTimestamp(),
+			created: firebase.firestore.FieldValue.serverTimestamp(),
+			updated: firebase.firestore.FieldValue.serverTimestamp(),
 			gameId: image.gameId,
 			teamId: image.teamId,
 			assignmentId: image.assignmentId,
@@ -150,14 +150,14 @@ export class ImageService {
 	updateAwardedPoints(reactionId: string, newValue: number){		
 		return this.db.collection('reactions').doc(reactionId).update({
 			rating: newValue,
-			updated: firestore.FieldValue.serverTimestamp()
+			updated: firebase.firestore.FieldValue.serverTimestamp()
 		});		
 	}
 
 	updateComment(reactionId: string, newComment: string){		
 		return this.db.collection('reactions').doc(reactionId).update({
 			comment: newComment,
-			updated: firestore.FieldValue.serverTimestamp()
+			updated: firebase.firestore.FieldValue.serverTimestamp()
 		});		
 	}
 

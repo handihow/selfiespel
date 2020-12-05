@@ -134,10 +134,6 @@ export class AssignmentsCardComponent implements OnInit, OnDestroy {
     return num;
   }
 
-  onChangeQuantity(quantity){
-    this.quantity = quantity.value;
-  }
-
   onSave(){
     const thisComponent = this;
 

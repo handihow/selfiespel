@@ -55,7 +55,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
 
   setColumns(screentype){
     if(screentype === 'desktop'){
-      this.columns = 4;
+      this.columns = 3;
     } else if (screentype === 'tablet'){
       this.columns = 2;
     } else {

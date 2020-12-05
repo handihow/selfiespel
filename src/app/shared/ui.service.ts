@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import {firestore} from 'firebase/app';
+import firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {map,  take } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class UIService {
 
 	sendMessage(content, style, gameId, uniqueId?) {
 	   const timestamp = new Date().toISOString();
-	   let message : Message = {content, style, gameId, isShow: false, created: firestore.FieldValue.serverTimestamp(),};
+	   let message : Message = {content, style, gameId, isShow: false, created: firebase.firestore.FieldValue.serverTimestamp(),};
 	   if(uniqueId){
 	   	this.db.collection('messages').doc(uniqueId).set(message);
 	   } else {

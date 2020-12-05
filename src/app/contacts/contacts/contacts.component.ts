@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 import * as fromRoot from '../../app.reducer';
@@ -17,17 +17,18 @@ import { WarningDialogComponent } from '../../shared/warning-dialog.component';
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.css']
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
 
   contacts : Contact[] = [];
   user: User;
   isLoading: boolean = true;
+  sub: Subscription;
 
   constructor(private contactService: ContactsService, private store: Store<fromRoot.State>, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.store.select(fromRoot.getCurrentUser).subscribe(user => {
-      if(user){
+    this.sub = this.store.select(fromRoot.getCurrentUser).subscribe(user => {
+      if(user && !this.user){
         this.user = user;
         this.contactService.getContactList(user.uid).subscribe(contactList => {
           if(contactList){
@@ -37,6 +38,12 @@ export class ContactsComponent implements OnInit {
         });
       }
     })
+  }
+
+  ngOnDestroy(){
+    if(this.sub){
+      this.sub.unsubscribe();
+    }
   }
 
   async addContact(contact: Contact) {

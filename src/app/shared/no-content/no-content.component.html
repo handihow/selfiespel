@@ -3,14 +3,17 @@
     <mat-card-title>{{title ?  title : 'No content'}}</mat-card-title>
   </mat-card-header>
   <img *ngIf="imageURL" mat-card-image [src]="imageURL">
-  <mat-video 
+  <video width="100%" height="100%" controls *ngIf="videoURL">
+      <source [src]="videoURL">
+  </video>
+  <!-- <mat-video 
       *ngIf="videoURL && videoTitle && videoPoster"
       [src]="videoURL" [title]="videoTitle" 
       [poster]="videoPoster"
       [playsinline]="true"
       [preload]="false"
       [fullscreen]="true"
-      [autoplay]="false"></mat-video>
+      [autoplay]="false"></mat-video> -->
   <mat-card-content>
     <p>
       {{comment ? comment : 'No content to show'}}

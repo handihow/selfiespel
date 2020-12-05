@@ -5,7 +5,7 @@ import {switchMap, map,  take, first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { UIService } from '../shared/ui.service';
@@ -56,6 +56,7 @@ export class AuthService {
 	    			//set the user display name to Anonimous if not available
 	    			user.displayName = "Anoniem"
 	    		}
+	    		console.log('setting user');
 	    		this.store.dispatch(new Auth.SetAuthenticated(user));
 	    		if(!this.router.url.includes('/games')){
 	    			this.router.navigate(['/games']);
@@ -81,30 +82,33 @@ export class AuthService {
 	updateUser(user: User) {
 
 	    let providerId = user.providerId || null;
-	    let authMethod: AuthMethod;
-	    switch (providerId) {
-	      case "google.com":
-	        authMethod = AuthMethod.google;
-	        break;
-	      case "facebook.com":
-	        authMethod = AuthMethod.facebook;
-	        break;
-	      case "twitter.com":
-	        authMethod = AuthMethod.twitter;
-	        break;
-	      default:
-	        authMethod = AuthMethod.email;
-	        break;
-	    }
-		
-	    // Sets user data to firestore
-	    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+	    if(!providerId){
+	    	let authMethod: AuthMethod;
+		    switch (providerId) {
+		      case "google.com":
+		        authMethod = AuthMethod.google;
+		        break;
+		      case "facebook.com":
+		        authMethod = AuthMethod.facebook;
+		        break;
+		      case "twitter.com":
+		        authMethod = AuthMethod.twitter;
+		        break;
+		      default:
+		        authMethod = AuthMethod.email;
+		        break;
+		    }
+			
+		    // Sets user data to firestore
+		    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
-	    //now save the users data in the database and resolve true when the database update is finished
-	    userRef.update({'authMethod': authMethod})
-	    .then( _ => {
-	    	this.createContactsList(user.uid);
-	    })
+		    //now save the users data in the database and resolve true when the database update is finished
+		    userRef.update({'authMethod': authMethod})
+		    .then( _ => {
+		    	this.createContactsList(user.uid);
+		    })	
+	    }
+	    
 	}
 
 	private async createContactsList(userId){

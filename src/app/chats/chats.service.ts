@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, combineLatest, of } from 'rxjs';
 
@@ -79,7 +79,7 @@ export class ChatService {
 
     const ref = this.afs.collection('chats').doc(chatId);
     return ref.update({
-      messages: firestore.FieldValue.arrayUnion(data)
+      messages: firebase.firestore.FieldValue.arrayUnion(data)
     });
   }
 
@@ -90,7 +90,7 @@ export class ChatService {
     if (chat.uid === user.uid || msg.uid === user.uid) {
       // Allowed to delete
       return ref.update({
-        messages: firestore.FieldValue.arrayRemove(msg)
+        messages: firebase.firestore.FieldValue.arrayRemove(msg)
       });
     }
   }
