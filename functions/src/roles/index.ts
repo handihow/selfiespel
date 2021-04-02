@@ -128,8 +128,8 @@ export const createUsers = functions.https.onCall(async (data, context) => {
     }
     const userRef = db.collection('users').doc(user.uid);
     batch.set(userRef, {
-      email: user.email,
-      displayName: user.displayName,
+      email: user.email ? user.email : email,
+      displayName: user.displayName ? user.displayName : displayName,
       uid: user.uid,
       participating: admin.firestore.FieldValue.arrayUnion(gameId),
       playing: admin.firestore.FieldValue.arrayUnion(gameId)
@@ -137,8 +137,7 @@ export const createUsers = functions.https.onCall(async (data, context) => {
     batch.update(gameRef, {
       participants: admin.firestore.FieldValue.arrayUnion(user.uid),
       players: admin.firestore.FieldValue.arrayUnion(user.uid)
-    })
-
+    });
   }
   return batch.commit()
   .then(_ => {
