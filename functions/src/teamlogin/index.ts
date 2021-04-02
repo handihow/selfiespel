@@ -48,7 +48,6 @@ export const onCreateTeamCreateAutoAccount = functions.firestore
 		.then( _ => {
 			return db.collection('teams').doc(teamId).update({
 				members: admin.firestore.FieldValue.arrayUnion(user.uid),
-				memberDisplayNames: admin.firestore.FieldValue.arrayUnion(displayName),
 				autoUser: user.uid,
 				autoUserDisplayName: displayName,
 				autoUserEmail: email

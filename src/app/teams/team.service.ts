@@ -92,14 +92,18 @@ export class TeamService {
 	updateTeams(teams: Team[]){
 		teams.forEach(team => {
 			team.members = [];
+			team.memberDisplayNames = [];
 			team.participants.forEach(participant => {
 				team.members.push(participant.uid);
+				if(participant.displayName && !participant.isAutoAccount){
+					team.memberDisplayNames.push(participant.displayName);
+				}
 			})
 		})
 		let batch = this.db.firestore.batch();
 		teams.forEach((team) => {
 			const teamRef = this.db.collection('teams').doc(team.id).ref;
-			batch.update(teamRef, {members: team.members})
+			batch.update(teamRef, {members: team.members, memberDisplayNames: team.memberDisplayNames})
 		})
 		return batch.commit()
 			.catch(error => {

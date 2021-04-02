@@ -86,12 +86,16 @@ export class TeamsCardComponent implements OnInit, OnDestroy {
         name: Settings.teamNames[randomIndex],
         order: i,
         members: [],
+        memberDisplayNames: [],
         color: Settings.teamColors[randomIndex].color,
         progress: 0,
         rating: 0
       }
       members.forEach(member => {
         newTeam.members.push(member.uid);
+        if(member.displayName && !member.isAutoAccount){
+          newTeam.memberDisplayNames.push(member.displayName);
+        }
       })
       teams.push(newTeam);
     }
