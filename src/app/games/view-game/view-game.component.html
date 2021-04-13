@@ -11,7 +11,7 @@
   <mat-tab label="Game" *ngIf="game.status.playing && hasTeam">
   	<ng-template matTabContent>
 	    <app-game-upload-expansion-panel
-                  [imageReferences]="imageReferences"
+                  [imageReferences]="teamImageReferences"
                   [assignments]="assignments"
                   [game]="game"
                   [team]="team"

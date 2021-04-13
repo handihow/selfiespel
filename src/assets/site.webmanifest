@@ -1,6 +1,6 @@
 {
-    "name": "Selfiespel",
-    "short_name": "Selfiespel",
+    "name": "SelfieTheGame",
+    "short_name": "SelfieTheGame",
     "icons": [
         {
             "src": "/assets/android-chrome-192x192.png",

@@ -38,7 +38,8 @@ export class ViewGameComponent implements OnInit {
   doneLoading: boolean = false;
   hasTeam: boolean = false;
   isAdmin: boolean;
-  imageReferences: Image[];
+  imageReferences: Image[] = [];
+  teamImageReferences: Image[] = [];
   assignments: Assignment[];
   timeLeft: number = 0;
 
@@ -124,19 +125,14 @@ export class ViewGameComponent implements OnInit {
   }
 
   fetchImages(gameId: string){
-    if(this.hasTeam){
-      this.subs.push(this.imageService.fetchImageReferences(gameId, this.team.id).subscribe(imageReferences =>{
-        if(imageReferences){
-           this.imageReferences = imageReferences;
-        }
-      }))
-    } else {
-      this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
-        if(imageReferences){
-           this.imageReferences = imageReferences;
-        }
-      }))
-    }
+    this.subs.push(this.imageService.fetchImageReferences(gameId).subscribe(imageReferences =>{
+      if(imageReferences){
+         this.imageReferences = imageReferences;
+         if(this.hasTeam){
+           this.teamImageReferences = imageReferences.filter(ir => ir.teamId === this.team.id);  
+         }
+      }
+    }));
     
   }
 
