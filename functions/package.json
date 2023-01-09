@@ -20,7 +20,7 @@
     "@types/sharp": "^0.26.0",
     "child-process-promise": "^2.2.1",
     "firebase": "^7.24.0",
-    "firebase-admin": "^9.2.0",
+    "firebase-admin": "^11.4.1",
     "firebase-functions": "^3.11.0",
     "fs-extra": "^9.0.1",
     "sharp": "^0.26.2",
